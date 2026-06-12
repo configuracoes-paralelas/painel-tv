@@ -189,8 +189,8 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 /* ---- Páginas ao vivo: ranking (esq) + feed de últimas vendas (dir) ---- */
 .livewrap{flex:1;display:flex;gap:clamp(18px,46.1px,40px);min-height:0;overflow:hidden}
 .livemain{flex:1 1 auto;display:flex;flex-direction:column;min-width:0;overflow:hidden}
-.col-head.live,.row.live{grid-template-columns:60px minmax(0,1fr) 120px 210px 210px;gap:18px}
-.row.live .num{font-size:clamp(20px,42.2px,34px);overflow:visible;text-overflow:clip}
+.col-head.live,.row.live{grid-template-columns:64px minmax(0,1fr) 140px 250px 250px;gap:18px}
+.row.live .num{font-size:clamp(30px,58px,48px);overflow:visible;text-overflow:clip}
 .row.live .name{font-size:clamp(20px,46.1px,38px)}
 
 .livefeed{flex:0 0 clamp(320px,499.2px,460px);display:flex;flex-direction:column;min-height:0;overflow:hidden}
@@ -208,10 +208,11 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .board.show .feedcard{animation:rowIn .55s cubic-bezier(.16,1,.3,1) forwards}
 .feedcard:first-child{box-shadow:0 0 30px rgba(61,220,151,.22);border-left-color:#7af0c0}
 .feedcard .fc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.feedcard .fc-emp{font-weight:800;font-size:clamp(15px,21px,22px);line-height:1.18;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.feedcard .fc-val{font-weight:800;color:var(--live);font-size:clamp(16px,30.7px,24px);white-space:nowrap;flex:0 0 auto}
-.feedcard .fc-meta{display:flex;flex-wrap:wrap;gap:4px 16px;color:var(--muted);font-size:clamp(13px,23px,17px)}
-.feedcard .fc-meta b{color:var(--text)}
+.feedcard .fc-seller{font-weight:800;text-transform:uppercase;font-size:clamp(18px,34px,28px);line-height:1.1;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feedcard .fc-val{font-weight:800;color:var(--live);font-size:clamp(16px,32px,25px);white-space:nowrap;flex:0 0 auto}
+.feedcard .fc-chain{display:flex;flex-wrap:wrap;gap:4px 18px;color:var(--muted);font-size:clamp(14px,26px,19px)}
+.feedcard .fc-chain b{color:var(--text);font-weight:700}
+.feedcard .fc-emp{font-weight:600;font-size:clamp(12px,20px,15px);color:var(--muted);line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .feedempty{flex:1;display:grid;place-items:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
 
 /* ---- Prata da Casa (hall de campeões do mês passado) ---- */
@@ -667,7 +668,7 @@ function buildRankings(rows, mKey){
   // Últimas 5 vendas validadas (mês vigente), mais recentes primeiro
   const recent = validated.filter(r=>hasDate(r.dataval))
     .sort((a,b)=> dateVal(b.dataval)-dateVal(a.dataval))
-    .slice(0,6);
+    .slice(0,5);
 
   // mês passado (para "Prata da Casa")
   const prevKey = mKey ? prevMonthKey(mKey) : "";
@@ -805,18 +806,18 @@ function feedCard(r){
   const sup=(r.gestor||"—").toString().trim();
   return `<div class="feedcard">
     <div class="fc-top">
-      <span class="fc-emp" title="${esc(emp)}">${esc(emp)}</span>
+      <span class="fc-seller" title="${esc(vend)}">${esc(vend)}</span>
       <span class="fc-val">${fmtCompact(r.vlrvenda,true)}</span>
     </div>
-    <div class="fc-meta">
-      <span class="fc-vend"><b>${esc(vend)}</b></span>
-      <span>Ger: ${esc(ger)}</span>
-      <span>Sup: ${esc(sup)}</span>
+    <div class="fc-chain">
+      <span>Ger: <b>${esc(ger)}</b></span>
+      <span>Sup: <b>${esc(sup)}</b></span>
     </div>
+    <div class="fc-emp" title="${esc(emp)}">${esc(emp)}</div>
   </div>`;
 }
 function feedHtml(){
-  const items=(recentValidations||[]).slice(0,6);
+  const items=(recentValidations||[]).slice(0,5);
   return `<aside class="livefeed">
     <div class="feedhead"><span class="fh-dot"></span> Últimas vendas validadas</div>
     <div class="feedlist">${ items.length ? items.map(feedCard).join("")
@@ -826,7 +827,7 @@ function feedHtml(){
 function refreshFeed(){
   const list=document.querySelector(".board.show .feedlist") || document.querySelector(".feedlist");
   if(!list) return;
-  const items=(recentValidations||[]).slice(0,6);
+  const items=(recentValidations||[]).slice(0,5);
   list.innerHTML = items.length ? items.map(feedCard).join("") : `<div class="feedempty">Aguardando validações…</div>`;
 }
 
