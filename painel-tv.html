@@ -37,8 +37,15 @@ body{
 button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .tabular{font-variant-numeric:tabular-nums}
 
-/* ---------- App shell ---------- */
-#app{position:fixed;inset:0;display:flex;flex-direction:column}
+/* ---------- App shell (canvas fixo escalado p/ travar layout) ---------- */
+#scaler{position:fixed;inset:0;display:grid;place-items:center;overflow:hidden}
+#app{
+  width:1920px;height:1080px;
+  position:relative;display:flex;flex-direction:column;overflow:hidden;
+  transform-origin:center center;
+  background:radial-gradient(120% 120% at 50% 0%,var(--ink-2) 0%,var(--ink) 60%);
+  border-radius:2px;
+}
 
 /* ---------- Top bar ---------- */
 .topbar{
@@ -320,7 +327,7 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 </style>
 </head>
 <body>
-<div id="app">
+<div id="scaler"><div id="app">
   <div class="topbar">
     <div class="brand">
       <span class="dot"></span>
@@ -351,7 +358,7 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
     <div class="seg" id="dots"></div>
     <button class="tlink" id="nextBtn">Próximo ›</button>
   </div>
-</div>
+</div></div>
 
 <div class="toast-wrap" id="toastWrap"></div>
 
