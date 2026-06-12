@@ -58,11 +58,11 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .brand{display:flex;align-items:center;gap:14px}
 .brand .dot{width:13px;height:13px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 var(--live);animation:beat 2s infinite}
 @keyframes beat{0%{box-shadow:0 0 0 0 rgba(61,220,151,.5)}70%{box-shadow:0 0 0 12px rgba(61,220,151,0)}100%{box-shadow:0 0 0 0 rgba(61,220,151,0)}}
-.brand b{font-weight:800;letter-spacing:.3px;font-size:clamp(16px,1.6vw,22px)}
-.brand .sub{color:var(--muted);font-size:clamp(12px,1.1vw,15px);font-weight:500}
+.brand b{font-weight:800;letter-spacing:.3px;font-size:clamp(16px,30.7px,22px)}
+.brand .sub{color:var(--muted);font-size:clamp(12px,21.1px,15px);font-weight:500}
 .spacer{flex:1}
 .month-pill{
-  font-weight:700;font-size:clamp(14px,1.4vw,19px);letter-spacing:.4px;text-transform:uppercase;
+  font-weight:700;font-size:clamp(14px,26.9px,19px);letter-spacing:.4px;text-transform:uppercase;
   padding:10px 20px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);
 }
 .icon-btn{
@@ -96,7 +96,7 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .titlecard.show .eyebrow{animation:fadeUp .7s .15s cubic-bezier(.16,1,.3,1) forwards}
 .titlecard .word{
   font-family:'Anton',sans-serif;font-weight:400;
-  font-size:clamp(64px,14vw,190px);line-height:.9;letter-spacing:.01em;text-transform:uppercase;
+  font-size:clamp(64px,268.8px,190px);line-height:.9;letter-spacing:.01em;text-transform:uppercase;
   background:linear-gradient(180deg,#fff 0%,var(--gold) 120%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   position:relative;
@@ -109,21 +109,21 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
 }
 .titlecard.show .rule{animation:ruleGrow .9s .4s cubic-bezier(.16,1,.3,1) forwards}
-@keyframes ruleGrow{to{width:min(420px,60vw)}}
+@keyframes ruleGrow{to{width:min(420px,1152px)}}
 @keyframes fadeUp{to{opacity:1;transform:none}}
 
 /* Ranking board */
 .board{
   position:absolute;inset:0;z-index:10;
-  padding:34px clamp(24px,5vw,80px) 40px;
+  padding:34px clamp(24px,96px,80px) 40px;
   display:flex;flex-direction:column;
   opacity:0;
 }
 .board.show{animation:boardIn .6s .1s ease forwards}
 @keyframes boardIn{to{opacity:1}}
 .board-head{display:flex;align-items:baseline;gap:22px;margin-bottom:14px}
-.board-head h2{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(44px,6vw,96px);letter-spacing:.02em;text-transform:uppercase}
-.board-head .count{color:var(--muted);font-weight:600;font-size:clamp(16px,1.6vw,22px)}
+.board-head h2{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(44px,115.2px,96px);letter-spacing:.02em;text-transform:uppercase}
+.board-head .count{color:var(--muted);font-weight:600;font-size:clamp(16px,30.7px,22px)}
 .board-head .count.gold{color:var(--gold)}
 
 /* shared grid for header + rows */
@@ -133,7 +133,7 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
   align-items:center;gap:20px;
 }
 .col-head{padding:0 28px 10px;border-bottom:1px solid var(--line);margin-bottom:12px}
-.col-head .lbl{text-align:right;color:var(--muted);font-size:clamp(13px,1.2vw,18px);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.col-head .lbl{text-align:right;color:var(--muted);font-size:clamp(13px,23px,18px);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 
 .rows{display:flex;flex-direction:column;gap:12px;overflow:hidden;flex:1}
 .row{
@@ -145,9 +145,9 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 }
 .board.show .row{animation:rowIn .55s cubic-bezier(.16,1,.3,1) forwards}
 @keyframes rowIn{to{opacity:1;transform:none}}
-.row .pos{font-family:'Anton',sans-serif;font-size:clamp(30px,3.2vw,50px);color:var(--muted);text-align:center;display:flex;align-items:center;justify-content:center}
-.row .name{font-weight:700;font-size:clamp(22px,2.6vw,42px);overflow:hidden;text-overflow:ellipsis}
-.row .num{text-align:right;font-weight:800;font-size:clamp(22px,2.4vw,38px);overflow:hidden;text-overflow:ellipsis}
+.row .pos{font-family:'Anton',sans-serif;font-size:clamp(30px,61.4px,50px);color:var(--muted);text-align:center;display:flex;align-items:center;justify-content:center}
+.row .name{font-weight:700;font-size:clamp(22px,49.9px,42px);overflow:hidden;text-overflow:ellipsis}
+.row .num{text-align:right;font-weight:800;font-size:clamp(22px,46.1px,38px);overflow:hidden;text-overflow:ellipsis}
 .row .num.sales{color:var(--text);text-align:center}
 .col-head .lbl.sales{text-align:center}
 .row .num.money{color:#dbe3f5}
@@ -164,43 +164,43 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 /* ---- composite page (Time de Parceria: dois painéis) ---- */
 .composite{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:30px;overflow:hidden;min-height:0}
 .subpanel{display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.subhead{font-family:'Anton',sans-serif;font-size:clamp(22px,2.4vw,40px);text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:baseline;gap:12px}
-.subhead small{font-family:'Inter',sans-serif;font-size:clamp(13px,1.2vw,16px);font-weight:600;color:var(--muted)}
+.subhead{font-family:'Anton',sans-serif;font-size:clamp(22px,46.1px,40px);text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:baseline;gap:12px}
+.subhead small{font-family:'Inter',sans-serif;font-size:clamp(13px,23px,16px);font-weight:600;color:var(--muted)}
 .composite .col-head,.composite .row{grid-template-columns:56px minmax(0,1fr) 76px 140px 140px;gap:12px}
 .composite .col-head{padding:0 18px 8px}
 .composite .row{padding:10px 18px;border-radius:13px}
-.composite .row .pos{font-size:clamp(22px,2.2vw,34px)}
-.composite .row .name{font-size:clamp(17px,1.9vw,28px)}
-.composite .row .num{font-size:clamp(16px,1.7vw,26px)}
-.composite .col-head .lbl{font-size:clamp(11px,1vw,15px)}
+.composite .row .pos{font-size:clamp(22px,42.2px,34px)}
+.composite .row .name{font-size:clamp(17px,36.5px,28px)}
+.composite .row .num{font-size:clamp(16px,32.6px,26px)}
+.composite .col-head .lbl{font-size:clamp(11px,19.2px,15px)}
 
 /* ---- Campeões do ano (grid 3x2 de blocos com top 3) ---- */
-.composite.yeargrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;gap:clamp(14px,1.7vw,26px)}
+.composite.yeargrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;gap:clamp(14px,32.6px,26px)}
 .yeargrid .subpanel{
-  padding:clamp(12px,1.4vw,20px) clamp(14px,1.6vw,22px);border-radius:18px;
+  padding:clamp(12px,26.9px,20px) clamp(14px,30.7px,22px);border-radius:18px;
   background:linear-gradient(160deg,rgba(244,210,122,.1),rgba(26,34,68,.5));
   border:1px solid rgba(244,210,122,.26);
 }
-.yeargrid .subhead{font-size:clamp(17px,1.9vw,30px)}
+.yeargrid .subhead{font-size:clamp(17px,36.5px,30px)}
 .yeargrid .subhead small{color:var(--gold-deep)}
 .yeargrid .col-head{padding:0 14px 6px}
 .yeargrid .row{padding:8px 14px}
 
 /* ---- Páginas ao vivo: ranking (esq) + feed de últimas vendas (dir) ---- */
-.livewrap{flex:1;display:flex;gap:clamp(18px,2.4vw,40px);min-height:0;overflow:hidden}
+.livewrap{flex:1;display:flex;gap:clamp(18px,46.1px,40px);min-height:0;overflow:hidden}
 .livemain{flex:1 1 auto;display:flex;flex-direction:column;min-width:0;overflow:hidden}
 .col-head.live,.row.live{grid-template-columns:60px minmax(0,1fr) 120px 210px 210px;gap:18px}
-.row.live .num{font-size:clamp(20px,2.2vw,34px);overflow:visible;text-overflow:clip}
-.row.live .name{font-size:clamp(20px,2.4vw,38px)}
+.row.live .num{font-size:clamp(20px,42.2px,34px);overflow:visible;text-overflow:clip}
+.row.live .name{font-size:clamp(20px,46.1px,38px)}
 
-.livefeed{flex:0 0 clamp(320px,26vw,460px);display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.feedhead{font-family:'Anton',sans-serif;font-size:clamp(17px,1.7vw,26px);text-transform:uppercase;letter-spacing:.03em;color:var(--live);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.livefeed{flex:0 0 clamp(320px,499.2px,460px);display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.feedhead{font-family:'Anton',sans-serif;font-size:clamp(17px,32.6px,26px);text-transform:uppercase;letter-spacing:.03em;color:var(--live);margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .feedhead .fh-dot{width:11px;height:11px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 var(--live);animation:beat 2s infinite}
-.feedlist{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,16px);overflow:hidden;flex:1}
+.feedlist{display:flex;flex-direction:column;gap:clamp(10px,23px,16px);overflow:hidden;flex:1}
 .feedcard{
   flex:1 1 0;min-height:0;overflow:hidden;
   display:flex;flex-direction:column;justify-content:center;gap:8px;
-  padding:clamp(12px,1.4vw,20px) clamp(14px,1.6vw,22px);
+  padding:clamp(12px,26.9px,20px) clamp(14px,30.7px,22px);
   border-radius:14px;border:1px solid var(--line);border-left:5px solid var(--live);
   background:linear-gradient(90deg,rgba(61,220,151,.12),rgba(26,34,68,.55));
   opacity:0;transform:translateY(14px);
@@ -208,17 +208,17 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .board.show .feedcard{animation:rowIn .55s cubic-bezier(.16,1,.3,1) forwards}
 .feedcard:first-child{box-shadow:0 0 30px rgba(61,220,151,.22);border-left-color:#7af0c0}
 .feedcard .fc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.feedcard .fc-emp{font-weight:800;font-size:clamp(15px,1.5vw,22px);line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.feedcard .fc-val{font-weight:800;color:var(--live);font-size:clamp(16px,1.6vw,24px);white-space:nowrap;flex:0 0 auto}
-.feedcard .fc-meta{display:flex;flex-wrap:wrap;gap:4px 16px;color:var(--muted);font-size:clamp(13px,1.2vw,17px)}
+.feedcard .fc-emp{font-weight:800;font-size:clamp(15px,21px,22px);line-height:1.18;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.feedcard .fc-val{font-weight:800;color:var(--live);font-size:clamp(16px,30.7px,24px);white-space:nowrap;flex:0 0 auto}
+.feedcard .fc-meta{display:flex;flex-wrap:wrap;gap:4px 16px;color:var(--muted);font-size:clamp(13px,23px,17px)}
 .feedcard .fc-meta b{color:var(--text)}
 .feedempty{flex:1;display:grid;place-items:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
 
 /* ---- Prata da Casa (hall de campeões do mês passado) ---- */
-.hall{flex:1;display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;gap:clamp(16px,2vw,30px);overflow:hidden;min-height:0}
+.hall{flex:1;display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;gap:clamp(16px,38.4px,30px);overflow:hidden;min-height:0}
 .hall-card{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(6px,1vw,12px);
-  padding:clamp(14px,2.2vw,30px);border-radius:22px;min-height:0;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(6px,19.2px,12px);
+  padding:clamp(14px,42.2px,30px);border-radius:22px;min-height:0;overflow:hidden;
   background:linear-gradient(160deg,rgba(244,210,122,.14),rgba(26,34,68,.5));
   border:1px solid rgba(244,210,122,.32);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 18px 40px rgba(0,0,0,.35);
@@ -226,24 +226,24 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 }
 .board.show .hall-card{animation:rowIn .6s cubic-bezier(.16,1,.3,1) forwards}
 .hall-card .portrait{
-  position:relative;width:clamp(60px,7vw,108px);height:clamp(60px,7vw,108px);border-radius:50%;
+  position:relative;width:clamp(60px,134.4px,108px);height:clamp(60px,134.4px,108px);border-radius:50%;
   display:grid;place-items:center;
   background:radial-gradient(circle at 32% 26%,#fff4d6,#f0cf86 64%,#caa44f);
-  color:#3b2b07;font-family:'Anton',sans-serif;font-size:clamp(28px,3.4vw,52px);
+  color:#3b2b07;font-family:'Anton',sans-serif;font-size:clamp(28px,65.3px,52px);
   box-shadow:0 0 0 4px rgba(244,210,122,.25),0 8px 22px rgba(0,0,0,.45);
 }
-.hall-card .crown{position:absolute;top:-15px;right:-8px;font-style:normal;font-size:clamp(22px,2.4vw,34px);filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
-.hall-card .cat{font-size:clamp(11px,1.15vw,16px);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.hall-card .crown{position:absolute;top:-15px;right:-8px;font-style:normal;font-size:clamp(22px,46.1px,34px);filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.hall-card .cat{font-size:clamp(11px,22.1px,16px);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
 .hall-card .cname{
-  font-family:'Anton',sans-serif;font-size:clamp(24px,3.1vw,50px);line-height:1;text-transform:uppercase;
+  font-family:'Anton',sans-serif;font-size:clamp(24px,59.5px,50px);line-height:1;text-transform:uppercase;
   background:linear-gradient(180deg,#fff,var(--gold) 130%);-webkit-background-clip:text;background-clip:text;color:transparent;
   max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
-.hall-card .hstats{display:flex;gap:clamp(12px,1.8vw,28px);margin-top:4px}
+.hall-card .hstats{display:flex;gap:clamp(12px,34.6px,28px);margin-top:4px}
 .hall-card .hstats div{display:flex;flex-direction:column}
-.hall-card .hstats b{font-size:clamp(17px,2vw,30px);font-weight:800;color:var(--text);white-space:nowrap}
-.hall-card .hstats span{font-size:clamp(10px,.95vw,13px);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-.slogan{text-align:center;margin-top:16px;color:var(--gold);font-style:italic;font-size:clamp(14px,1.5vw,22px);letter-spacing:.04em;opacity:.9}
+.hall-card .hstats b{font-size:clamp(17px,38.4px,30px);font-weight:800;color:var(--text);white-space:nowrap}
+.hall-card .hstats span{font-size:clamp(10px,18.2px,13px);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.slogan{text-align:center;margin-top:16px;color:var(--gold);font-style:italic;font-size:clamp(14px,28.8px,22px);letter-spacing:.04em;opacity:.9}
 
 /* progress dots */
 .nav{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;z-index:30;border-top:1px solid var(--line)}
@@ -257,7 +257,7 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 /* ---------- Live validation toast ---------- */
 .toast-wrap{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:center;pointer-events:none}
 .toast{
-  min-width:min(720px,92vw);max-width:92vw;
+  min-width:min(720px,1766.4px);max-width:1766.4px;
   display:flex;align-items:center;gap:22px;
   padding:26px 32px;border-radius:20px;
   background:linear-gradient(120deg,rgba(31,179,122,.22),var(--surface));
@@ -274,8 +274,8 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
   background:var(--live);color:#06231a;font-weight:800;font-size:30px;
 }
 .toast .body{line-height:1.35}
-.toast .body .who{font-weight:800;font-size:clamp(22px,2.2vw,30px)}
-.toast .body .what{color:#d8f7ea;font-size:clamp(18px,1.8vw,24px)}
+.toast .body .who{font-weight:800;font-size:clamp(22px,42.2px,30px)}
+.toast .body .what{color:#d8f7ea;font-size:clamp(18px,34.6px,24px)}
 .toast .body .val{font-weight:800;color:var(--live)}
 
 /* ---------- Settings / onboarding ---------- */
@@ -303,17 +303,17 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .btn.ghost:hover{background:var(--surface-2)}
 
 /* ---------- Status / empty ---------- */
-.status{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:30px;z-index:5}
-.status .big{font-family:'Anton',sans-serif;font-size:clamp(28px,5vw,52px);color:var(--muted)}
-.status p{color:var(--muted);max-width:520px;line-height:1.6}
-.status.err .big{color:var(--danger)}
-.spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--surface-2);border-top-color:var(--live);animation:spin 1s linear infinite}
+.status{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:38px;text-align:center;padding:60px;z-index:5}
+.status .big{font-family:'Anton',sans-serif;font-size:clamp(64px,172.8px,120px);letter-spacing:.02em;color:var(--text)}
+.status p{color:var(--muted);max-width:900px;line-height:1.6;font-size:clamp(22px,38.4px,34px)}
+.status.err .big{color:var(--danger);font-size:clamp(40px,115.2px,76px)}
+.spinner{width:120px;height:120px;border-radius:50%;border:9px solid var(--surface-2);border-top-color:var(--live);animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
-@media (max-width:720px){
+@media (max-width:1px){
   .col-head,.row{grid-template-columns:46px minmax(0,1fr) 70px 120px;gap:10px}
   .col-head .lbl:nth-child(4),.row .num:nth-child(4){display:none}
   .col-head.live,.row.live{grid-template-columns:46px minmax(0,1fr) 64px 110px 110px;gap:10px}
@@ -358,9 +358,9 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
     <div class="seg" id="dots"></div>
     <button class="tlink" id="nextBtn">Próximo ›</button>
   </div>
+  <div class="toast-wrap" id="toastWrap"></div>
 </div></div>
 
-<div class="toast-wrap" id="toastWrap"></div>
 
 <!-- Settings -->
 <div class="overlay" id="overlay">
@@ -436,12 +436,12 @@ const VALID_STAGES = [
 // Ordem e rótulo das categorias. col = coluna na planilha.
 // excludeNames: nomes a ignorar nesse ranking. rowFilter: filtro extra por linha.
 const LEVELS = [
-  { key:"DIRETOR",        word:"DIRETORES",        eyebrow:"Ranking de", col:"DIRETOR",
+  { key:"DIRETOR",        word:"DIRETORES",        eyebrow:"", col:"DIRETOR",
     excludeNames:["JEAN","PESSONIA","FELIX"], live:true },
-  { key:"SUPERINTENDENTE",word:"SUPERINTENDENTES", eyebrow:"Ranking de", col:"GESTOR",
+  { key:"SUPERINTENDENTE",word:"SUPERINTENDENTES", eyebrow:"", col:"GESTOR",
     excludeNames:["JEAN"], live:true },
-  { key:"GERENTE",        word:"GERENTES",         eyebrow:"Ranking de", col:"GERENTE", live:true },
-  { key:"VENDEDOR",       word:"VENDEDORES",       eyebrow:"Ranking de", col:"VENDEDOR",
+  { key:"GERENTE",        word:"GERENTES",         eyebrow:"", col:"GERENTE", live:true },
+  { key:"VENDEDOR",       word:"VENDEDORES",       eyebrow:"", col:"VENDEDOR",
     excludeNames:["PARCERIA"], live:true },
   { key:"HALLOFFAME",     word:"CAMPEÕES DO MÊS PASSADO", eyebrow:"Relembrando", winners:true },
   { key:"YEAR2026",       word:"CAMPEÕES 2026",     eyebrow:"O ano todo", topYear:true, year:"2026" },
@@ -667,7 +667,7 @@ function buildRankings(rows, mKey){
   // Últimas 5 vendas validadas (mês vigente), mais recentes primeiro
   const recent = validated.filter(r=>hasDate(r.dataval))
     .sort((a,b)=> dateVal(b.dataval)-dateVal(a.dataval))
-    .slice(0,5);
+    .slice(0,6);
 
   // mês passado (para "Prata da Casa")
   const prevKey = mKey ? prevMonthKey(mKey) : "";
@@ -816,7 +816,7 @@ function feedCard(r){
   </div>`;
 }
 function feedHtml(){
-  const items=(recentValidations||[]).slice(0,5);
+  const items=(recentValidations||[]).slice(0,6);
   return `<aside class="livefeed">
     <div class="feedhead"><span class="fh-dot"></span> Últimas vendas validadas</div>
     <div class="feedlist">${ items.length ? items.map(feedCard).join("")
@@ -826,7 +826,7 @@ function feedHtml(){
 function refreshFeed(){
   const list=document.querySelector(".board.show .feedlist") || document.querySelector(".feedlist");
   if(!list) return;
-  const items=(recentValidations||[]).slice(0,5);
+  const items=(recentValidations||[]).slice(0,6);
   list.innerHTML = items.length ? items.map(feedCard).join("") : `<div class="feedempty">Aguardando validações…</div>`;
 }
 
@@ -871,9 +871,11 @@ function renderLevel(i,withCard){
       ? top.map((d,idx)=>rowHtml(d,idx,'nocur',true)).join("")
       : emptyMsg("Nenhum registro validado nesta categoria no mês vigente.");
     board.innerHTML=`
-      <div class="board-head"><h2>${lvl.word}</h2></div>
       <div class="livewrap">
-        <div class="livemain">${COLHEAD_LIVE}<div class="rows">${rowsHtml}</div></div>
+        <div class="livemain">
+          <div class="board-head"><h2>${lvl.word}</h2></div>
+          ${COLHEAD_LIVE}<div class="rows">${rowsHtml}</div>
+        </div>
         ${feedHtml()}
       </div>`;
   }
@@ -891,7 +893,7 @@ function renderLevel(i,withCard){
   if(withCard){
     const card=document.createElement("div");
     card.className="titlecard";
-    card.innerHTML=`<div class="eyebrow">${lvl.eyebrow}</div>
+    card.innerHTML=`${lvl.eyebrow?`<div class="eyebrow">${lvl.eyebrow}</div>`:""}
       <div class="word">${splitLetters(lvl.word)}</div><div class="rule"></div>`;
     stage.appendChild(card);
     requestAnimationFrame(()=>{ card.classList.add("show"); board.classList.add("show"); });
@@ -1078,6 +1080,20 @@ function restart(){
   seenValidations=null; levelIndex=0; playing=true; $("#playBtn").textContent="⏸";
   loadAll(true).then(startPolling);
 }
+
+/* ============================================================
+   FIT — trava o layout: canvas fixo 1920x1080 escalado p/ caber
+============================================================ */
+function fitApp(){
+  const app=document.getElementById("app");
+  if(!app) return;
+  const s=Math.min(window.innerWidth/1920, window.innerHeight/1080);
+  app.style.transform="scale("+s+")";
+}
+window.addEventListener("resize", fitApp);
+window.addEventListener("orientationchange", fitApp);
+fitApp();
+
 restart();
 </script>
 </body>
