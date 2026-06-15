@@ -290,10 +290,10 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
     radial-gradient(70% 55% at 8% 110%, rgba(0,39,118,.22), transparent 60%),
     linear-gradient(160deg,#0a3d20 0%, #073018 50%, #04240f 100%);
 }
-.copa-head{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:clamp(20px,50px,40px);margin-bottom:clamp(8px,22px,18px)}
-.copa-title{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.02em;line-height:.9;
+.copa-head{position:relative;display:flex;align-items:center;justify-content:center;min-height:clamp(110px,190px,160px);margin-bottom:clamp(8px,22px,18px)}
+.copa-title{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.02em;line-height:.9;text-align:center;
   font-size:clamp(44px,120px,96px);color:#FFDF00;text-shadow:0 4px 0 rgba(0,0,0,.28)}
-.copa-logo{height:clamp(100px,180px,150px);width:auto;max-width:92%;object-fit:contain;filter:drop-shadow(0 10px 26px rgba(0,0,0,.55))}
+.copa-logo{position:absolute;left:0;top:50%;transform:translateY(-50%);height:clamp(100px,180px,150px);width:auto;max-width:34%;object-fit:contain;filter:drop-shadow(0 10px 26px rgba(0,0,0,.55))}
 .copa-sub{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:clamp(16px,30px,24px);
   color:#FFDF00;text-shadow:0 2px 0 rgba(0,0,0,.35)}
 .copa-colhead,.copa-row{
@@ -340,12 +340,24 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 5%,#000 95%,transparent);
   mask-image:linear-gradient(180deg,transparent,#000 5%,#000 95%,transparent)}
 .copa-track{display:flex;flex-direction:column;gap:clamp(4px,10px,8px);will-change:transform}
-.copa-track.scroll{animation:copaScroll linear infinite}
-@keyframes copaScroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
 .copa-name{font-weight:700;font-size:clamp(16px,30px,24px);color:#fff;white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis;padding:clamp(5px,10px,8px) clamp(8px,14px,12px);
   border-radius:10px;background:rgba(255,255,255,.05)}
 .copa-empty{color:#CFEFD8;opacity:.6;padding:10px}
+/* marcador: lista que não coube e vai continuar na próxima exibição */
+.copa-list.paginated .copa-list-head::after{content:"continua ▾";font-family:'Inter',sans-serif;font-weight:700;
+  font-size:clamp(11px,18px,14px);letter-spacing:.04em;color:#04240f;background:rgba(255,223,0,.9);
+  border-radius:999px;padding:3px 12px;margin-left:auto}
+
+/* ---- PROMOÇÕES (imagens do Painel B4:B6) ---- */
+.board.promoboard{padding:clamp(16px,40px,32px)}
+.promo-wrap{flex:1;display:flex;align-items:center;justify-content:center;gap:clamp(12px,32px,26px);min-height:0;overflow:hidden}
+.promo-card{flex:1 1 0;height:100%;display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden;
+  opacity:0;transform:translateY(16px)}
+.board.show .promo-card{animation:rowIn .6s cubic-bezier(.16,1,.3,1) forwards}
+.promo-card.hide{display:none}
+.promo-card img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:16px;
+  box-shadow:0 20px 55px rgba(0,0,0,.55)}
 
 /* progress dots */
 .nav{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;z-index:30;border-top:1px solid var(--line)}
@@ -566,8 +578,9 @@ const LEVELS = [
     excludeNames:["PARCERIA"], live:true },
 
   { key:"HALLOFFAME",     word:"CAMPEÕES DO MÊS PASSADO", eyebrow:"Relembrando", cardTitle:"RELEMBRANDO", winners:true },
-  { key:"COPA",           word:"COPA METROCASA",   eyebrow:"Campeonato interno", copa:true },
   { key:"YEAR2026",       word:"CAMPEÕES 2026",     eyebrow:"", topYear:true, year:"2026" },
+  { key:"COPA",           word:"COPA METROCASA",   eyebrow:"Campeonato interno", copa:true },
+  { key:"PROMOCOES",      word:"PROMOÇÕES",        eyebrow:"", promo:true },
 ];
 
 // Campeões (top da categoria) — usados em "Prata da Casa" (top 1) e "Campeões 2026" (top 3).
@@ -759,7 +772,7 @@ function rowsFromTab(rows){
   return out;
 }
 
-// aba "COPA MC": colunas APELIDO, FUNÇÃO, COPA MC -> ranking por pontos (desc)
+// aba "COPA MC": colunas APELIDO, FUNÇÃO, COPA MC. Só entram os "CLASSIFICADO" (coluna C).
 function rowsFromCopa(rows){
   if(!rows || !rows.length) return [];
   let hdr=-1, ci=null;
@@ -769,23 +782,23 @@ function rowsFromCopa(rows){
       const n=norm(h);
       if(n==="APELIDO"||n==="NOME") idx.apelido=i;
       else if(n==="FUNCAO"||n==="CARGO") idx.funcao=i;
-      else if(n==="COPA MC"||n==="PONTOS"||n==="PONTUACAO"||n==="COPA") idx.pontos=i;
+      else if(n.includes("CLASSIF")||n.includes("STATUS")||n.includes("SITUAC")||n.startsWith("COPA")||n==="PONTOS") idx.status=i;
     });
     if(idx.apelido!=null && idx.funcao!=null){ hdr=r; ci=idx; break; }
   }
   if(hdr<0){ console.warn("rowsFromCopa: cabeçalho da aba COPA MC não encontrado"); return []; }
+  if(ci.status==null) ci.status = 2; // garantia: coluna C
   const out=[];
   for(let r=hdr+1;r<rows.length;r++){
     const a=rows[r]; if(!a) continue;
     const apelido=(a[ci.apelido]||"").toString().trim();
     if(!apelido) continue;
-    // coluna COPA MC (coluna C): só entram os "CLASSIFICADO"
-    const status=(ci.pontos!=null && a[ci.pontos]!=null)?norm(a[ci.pontos]):"";
-    if(ci.pontos!=null && status!=="CLASSIFICADO") continue;
+    // só entra quem está "CLASSIFICADO" na coluna C (tolera espaços/símbolos extras)
+    const st=norm(a[ci.status]).replace(/[^A-Z]/g,"");
+    if(st!=="CLASSIFICADO") continue;
     out.push({
       apelido,
       funcao:(ci.funcao!=null?(a[ci.funcao]||""):"").toString().trim(),
-      status,
     });
   }
   return out;
@@ -830,12 +843,13 @@ function buildRankings(rows, mKey, resRows, copaItems){
   // o Resumo já traz o recorte da semana corrente.
   const validatedSem = (resRows||[]).filter(r=>isValid(r) && notJean(r));
 
-  // Últimas 5 vendas validadas (mês vigente), mais recentes primeiro
-  const recent = validated.filter(r=>hasDate(r.dataval))
+  // Últimas 5 vendas validadas (mês vigente), mais recentes primeiro — sem PARCERIA
+  const notParceria = r => !norm(r.vendedor).includes("PARCERIA");
+  const recent = validated.filter(r=>hasDate(r.dataval) && notParceria(r))
     .sort((a,b)=> dateVal(b.dataval)-dateVal(a.dataval))
     .slice(0,5);
-  // Últimas 5 vendas validadas só do Resumo (feed das telas SEMANAL)
-  const recentSem = validatedSem.filter(r=>hasDate(r.dataval))
+  // Últimas 5 vendas validadas só do Resumo (feed das telas SEMANAL) — sem PARCERIA
+  const recentSem = validatedSem.filter(r=>hasDate(r.dataval) && notParceria(r))
     .sort((a,b)=> dateVal(b.dataval)-dateVal(a.dataval))
     .slice(0,5);
 
@@ -853,6 +867,7 @@ function buildRankings(rows, mKey, resRows, copaItems){
 
   const result={};
   for(const lvl of LEVELS){
+    if(lvl.promo) continue; // painel de imagens, sem ranking
     if(lvl.copa){
       result[lvl.key] = { copa:true, items: copaItems||[] };
     }else if(lvl.winners){
@@ -894,6 +909,12 @@ async function loadAll(initial){
       mKey=monthKey(mRaw);
     }catch(e){ /* if painel fails, no month filter */ }
 
+    // promoções: links de view das imagens em Painel!B4:B6
+    try{
+      const pp=await fetchCsv(CFG.painel, "B4:B6");
+      promoImages=(pp||[]).map(r=>driveThumb((r&&r[0])||"")).filter(Boolean);
+    }catch(e){ console.warn("Falha ao ler promoções (Painel B4:B6):", e.message); promoImages=[]; }
+
     const [h,res,copaCsv]=await Promise.all([
       fetchCsv(CFG.hist).catch(e=>{ console.warn("Falha ao ler historico:", e.message); return []; }),
       fetchCsv(CFG.resumo).catch(e=>{ console.warn("Falha ao ler Resumo:", e.message); return []; }),
@@ -928,7 +949,7 @@ async function loadAll(initial){
 
     $("#monthPill").textContent = "MÊS · "+monthLabel;
     const totalVal=validated.length;
-    $("#liveSub").textContent = `${fmtInt(totalVal)} validada(s) · hist ${histRows.length}/res ${resRows.length} · ${CFG.poll}s`;
+    $("#liveSub").textContent = `${fmtInt(totalVal)} venda(s) validada(s) · ao vivo`;
 
     hideStatus();
     if(initial){ levelIndex=0; renderLevel(0,true); $("#nav").style.visibility="visible"; scheduleAdvance(); }
@@ -1047,9 +1068,11 @@ function renderLevel(i,withCard){
 
   stage.querySelectorAll(".board,.titlecard").forEach(n=>n.remove());
   const board=document.createElement("div");
-  board.className="board"+((entry&&entry.copa)?" copaboard":"");
+  board.className="board"+(lvl.promo?" promoboard":((entry&&entry.copa)?" copaboard":""));
 
-  if(entry && entry.copa){
+  if(lvl.promo){
+    board.innerHTML = promoHtml();
+  }else if(entry && entry.copa){
     board.innerHTML = copaHtml(entry);
   }else if(entry && entry.winners){
     const items=entry.items.filter(x=>x.champ);
@@ -1097,6 +1120,9 @@ function renderLevel(i,withCard){
   board.querySelectorAll(".feedcard").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.2:0.2)+idx*0.08+"s"; });
   // stagger copa lists
   board.querySelectorAll(".copa-list").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
+  if(entry && entry.copa) setupCopaScroll(board, withCard);
+  // stagger promo cards
+  board.querySelectorAll(".promo-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
 
   if(withCard){
     const card=document.createElement("div");
@@ -1172,18 +1198,57 @@ function copaClassify(items){
     superintendente:sortNames(cats.superintendente),
   };
 }
-function copaList(title, names){
-  const SCROLL_AT=12; // a partir daqui a lista rola sozinha
-  const scroll = names.length>SCROLL_AT;
-  const dur = Math.max(14, names.length*1.3).toFixed(1); // velocidade constante
+const copaScrollPos = {}; // marcador: de onde cada lista retoma na próxima exibição
+let promoImages = [];     // URLs das imagens de promoção (Painel B4:B6)
+
+function copaList(title, names, key){
   const itemsHtml = names.map(n=>`<div class="copa-name" title="${esc(n)}">${esc(n)}</div>`).join("");
-  const track = scroll
-    ? `<div class="copa-track scroll" style="animation-duration:${dur}s">${itemsHtml}${itemsHtml}</div>`
-    : `<div class="copa-track">${itemsHtml || `<div class="copa-empty">— sem nomes —</div>`}</div>`;
-  return `<div class="copa-list">
+  return `<div class="copa-list" data-cat="${key}">
     <div class="copa-list-head">${esc(title)} <span class="cnt">${names.length}</span></div>
-    <div class="copa-vp">${track}</div>
+    <div class="copa-vp"><div class="copa-track">${itemsHtml || `<div class="copa-empty">— sem nomes —</div>`}</div></div>
   </div>`;
+}
+// Listas que cabem numa exibição fazem "bate e volta". As que NÃO cabem mostram um trecho
+// e RETOMAM de onde pararam na próxima vez que a Copa aparecer (marcador por lista).
+function setupCopaScroll(board, withCard){
+  const SPEED = 66;                              // px/s — mais rápido, ainda legível
+  const dwellMs = Math.max(4, CFG.secs)*1000;    // tempo do painel (de volta aos 15s)
+  const cardMs = withCard ? 2600 : 200;          // card de transição cobre o início
+  const visibleMs = Math.max(2000, dwellMs - cardMs);
+  board.querySelectorAll(".copa-list").forEach(list=>{
+    const key=list.dataset.cat;
+    const vp=list.querySelector(".copa-vp");
+    const track=list.querySelector(".copa-track");
+    if(!track || !vp || typeof track.animate!=="function") return;
+    const dist = Math.max(0, track.offsetHeight - vp.clientHeight);
+    if(dist < 6){ copaScrollPos[key]=0; list.classList.remove("paginated"); return; } // cabe inteiro
+    const fullMs = (dist/SPEED)*1000;
+    if(fullMs <= visibleMs){
+      // cabe rolar tudo numa exibição -> bate e volta, sem marcador
+      list.classList.remove("paginated");
+      copaScrollPos[key]=0;
+      track.animate(
+        [{transform:"translateY(0)"},{transform:`translateY(${-dist}px)`}],
+        {duration:fullMs, delay:cardMs, direction:"alternate", iterations:Infinity, easing:"linear"}
+      );
+    }else{
+      // não cabe -> mostra um trecho e retoma de onde parou na próxima exibição
+      list.classList.add("paginated");
+      let start = copaScrollPos[key]||0; if(start>=dist) start=0;
+      const advance = (visibleMs/1000)*SPEED;
+      const remaining = dist - start;
+      let travel, dur, next;
+      if(advance >= remaining){ travel=remaining; dur=Math.max(500,(remaining/SPEED)*1000); next=0; } // chega no fim -> recomeça do topo
+      else { travel=advance; dur=visibleMs; next=start+advance; }
+      const end = start+travel;
+      track.style.transform = `translateY(${-start}px)`;
+      track.animate(
+        [{transform:`translateY(${-start}px)`},{transform:`translateY(${-end}px)`}],
+        {duration:dur, delay:cardMs, fill:"both", easing:"linear"}
+      );
+      copaScrollPos[key]=next;
+    }
+  });
 }
 function copaHtml(entry){
   const c=copaClassify(entry.items);
@@ -1193,10 +1258,25 @@ function copaHtml(entry){
       <h2 class="copa-title">CLASSIFICATÓRIAS</h2>
     </div>
     <div class="copa-3">
-      ${copaList("VENDEDORES", c.vendedor)}
-      ${copaList("GERENTES", c.gerente)}
-      ${copaList("SUPERINTENDENTES", c.superintendente)}
+      ${copaList("VENDEDORES", c.vendedor, "vendedor")}
+      ${copaList("GERENTES", c.gerente, "gerente")}
+      ${copaList("SUPERINTENDENTES", c.superintendente, "superintendente")}
     </div>`;
+}
+
+// PROMOÇÕES: imagens vindas do Painel B4:B6 (links de view do Google Drive)
+function driveThumb(url){
+  const s=String(url||"").trim();
+  if(!s) return "";
+  const m=s.match(/\/d\/([A-Za-z0-9_-]{20,})/) || s.match(/[?&]id=([A-Za-z0-9_-]{20,})/);
+  if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1920`;
+  return s; // já é URL direta de imagem
+}
+function promoHtml(){
+  const imgs=(promoImages||[]).filter(Boolean);
+  if(!imgs.length) return emptyMsg("Sem imagens em Painel!B4, B5 e B6 (ou as imagens não estão compartilhadas por link).");
+  const cards=imgs.map(u=>`<div class="promo-card"><img src="${esc(u)}" alt="Promoção" onerror="this.closest('.promo-card').classList.add('hide')"></div>`).join("");
+  return `<div class="promo-wrap promo-${imgs.length}">${cards}</div>`;
 }
 
 function renderDots(){
@@ -1258,6 +1338,18 @@ function initAudio(){
     try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
   }
 }
+// Liga o som e atualiza o botão. Navegador exige 1 interação do usuário antes de tocar áudio.
+function armSound(){
+  soundArmed=true;
+  initAudio();
+  if(audioCtx && audioCtx.state==="suspended") audioCtx.resume();
+  const b=$("#soundBtn"); if(b){ b.classList.add("armed"); b.textContent="🔔"; }
+}
+// No primeiro clique/toque/tecla (o mesmo gesto que dispara o fullscreen), arma o som.
+function armAudioOnGesture(){
+  const h=()=>{ armSound(); ["click","touchend","keydown","pointerdown"].forEach(ev=>document.removeEventListener(ev,h,true)); };
+  ["click","touchend","keydown","pointerdown"].forEach(ev=>document.addEventListener(ev,h,true));
+}
 function playNotif(){
   if(!soundArmed) return;
   if(notifAudio){
@@ -1281,7 +1373,7 @@ function chimeFallback(){
     o.type="sine"; o.frequency.value=freq;
     o.connect(g); g.connect(audioCtx.destination);
     g.gain.setValueAtTime(0,now+t);
-    g.gain.linearRampToValueAtTime(0.18,now+t+0.02);
+    g.gain.linearRampToValueAtTime(0.25,now+t+0.02);
     g.gain.exponentialRampToValueAtTime(0.0001,now+t+0.35);
     o.start(now+t); o.stop(now+t+0.4);
   }
@@ -1396,6 +1488,7 @@ function armFullscreenOnGesture(){
   ["click","touchend","keydown"].forEach(ev=>document.addEventListener(ev,handler,true));
 }
 setTimeout(()=>{ goFullscreen().catch(()=>armFullscreenOnGesture()); }, 3000);
+armAudioOnGesture();
 
 restart();
 </script>
