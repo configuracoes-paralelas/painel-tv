@@ -358,6 +358,47 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .promo-card.hide{display:none}
 .promo-card img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:16px;
   box-shadow:0 20px 55px rgba(0,0,0,.55)}
+.promo-empty{flex:1;display:grid;place-items:center;color:var(--muted);text-align:center;padding:20px;
+  border:1px dashed var(--line);border-radius:16px}
+.promo-layout{flex:1;display:flex;align-items:stretch;gap:clamp(16px,44px,36px);min-height:0;overflow:hidden}
+.promo-layout .promo-wrap{flex:1 1 auto}
+
+/* termômetro de score (meta da construtora) */
+.thermo{flex:0 0 clamp(180px,300px,260px);display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-end;gap:clamp(6px,16px,12px);opacity:0;transform:translateY(16px)}
+.board.show .thermo{animation:rowIn .6s cubic-bezier(.16,1,.3,1) forwards}
+.thermo-goal{display:flex;flex-direction:column;align-items:center;line-height:1}
+.thermo-goal span{font-size:clamp(13px,22px,17px);font-weight:700;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+.thermo-goal b{font-family:'Anton',sans-serif;font-size:clamp(34px,72px,56px);color:var(--highlight);letter-spacing:.01em}
+.thermo-tube{position:relative;flex:1 1 0;min-height:0;width:clamp(54px,86px,72px);border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,.25));
+  border:3px solid rgba(255,255,255,.12);overflow:hidden;display:flex;align-items:flex-end}
+.thermo-fill{width:100%;height:0%;border-radius:0 0 999px 999px;
+  background:linear-gradient(180deg,#FF8A80 0%,var(--primary-soft) 60%,#B6211D 100%);
+  box-shadow:0 0 24px rgba(236,28,36,.45) inset;transition:height 1.6s cubic-bezier(.16,1,.3,1)}
+.thermo-bulb{width:clamp(74px,118px,98px);height:clamp(74px,118px,98px);border-radius:50%;margin-top:-14px;
+  background:radial-gradient(circle at 38% 32%,#FF8A80,var(--primary-soft) 70%);
+  border:3px solid rgba(255,255,255,.12);box-shadow:0 0 30px rgba(236,28,36,.5)}
+.thermo-cur{display:flex;flex-direction:column;align-items:center;line-height:1.05;margin-top:4px}
+.thermo-cur b{font-family:'Anton',sans-serif;font-size:clamp(40px,92px,72px);color:#fff}
+.thermo-cur span{font-size:clamp(13px,22px,17px);font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+
+/* ---- NOVIDADES METROCASA ---- */
+.news-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:clamp(16px,50px,40px);min-height:0;overflow:hidden}
+.news-text{font-size:clamp(28px,76px,58px);font-weight:700;line-height:1.3;text-align:center;color:var(--text);
+  max-width:1500px;white-space:pre-wrap;opacity:0;transform:translateY(16px)}
+.board.show .news-text{animation:rowIn .6s cubic-bezier(.16,1,.3,1) forwards}
+
+/* ---- frame uniforme (verde) quando o painel da Copa está ativo ---- */
+#app.copa-frame{background:radial-gradient(120% 120% at 50% 0%, #0a4526 0%, #04240f 62%)}
+#app.copa-frame .topbar{background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);border-bottom-color:rgba(255,223,0,.18)}
+#app.copa-frame .nav{border-top-color:rgba(255,223,0,.18)}
+#app.copa-frame .icon-btn{background:rgba(0,80,30,.5);border-color:rgba(255,223,0,.22);color:#CFEFD8}
+#app.copa-frame .icon-btn:hover{background:rgba(0,110,42,.6);color:#fff}
+#app.copa-frame .month-pill{background:rgba(0,80,30,.55);border-color:rgba(255,223,0,.22)}
+#app.copa-frame .brand .dot{background:#FFDF00;box-shadow:none;animation:none}
+#app.copa-frame .nav .dot{background:rgba(255,223,0,.22)}
+#app.copa-frame .nav .dot.active{background:#FFDF00}
 
 /* progress dots */
 .nav{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;z-index:30;border-top:1px solid var(--line)}
@@ -367,6 +408,12 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .nav .ctrl{margin:0 6px;color:var(--muted);font-size:12px;font-weight:600}
 .nav button.tlink{background:transparent;color:var(--muted);font-size:12px;font-weight:600;padding:6px 10px;border-radius:8px}
 .nav button.tlink:hover{color:var(--text);background:var(--surface)}
+
+/* auto-ocultar cabeçalho/rodapé após inatividade (volta ao mover o mouse) */
+.topbar,.nav{transition:opacity .45s ease, transform .45s ease}
+body.chrome-hidden{cursor:none}
+body.chrome-hidden .topbar{opacity:0;transform:translateY(-14px);pointer-events:none}
+body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none}
 
 /* ---------- Live validation toast ---------- */
 .toast-wrap{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:center;pointer-events:none}
@@ -581,6 +628,7 @@ const LEVELS = [
   { key:"YEAR2026",       word:"CAMPEÕES 2026",     eyebrow:"", topYear:true, year:"2026" },
   { key:"COPA",           word:"COPA METROCASA",   eyebrow:"Campeonato interno", copa:true },
   { key:"PROMOCOES",      word:"PROMOÇÕES",        eyebrow:"", promo:true },
+  { key:"NOVIDADES",      word:"NOVIDADES METROCASA", cardTitle:"NOVIDADES", news:true },
 ];
 
 // Campeões (top da categoria) — usados em "Prata da Casa" (top 1) e "Campeões 2026" (top 3).
@@ -599,6 +647,7 @@ let CFG = loadCfg();
 let levelIndex = 0;
 let playing = true;
 let advanceTimer = null;
+let copaFrameTimer = null;
 let pollTimer = null;
 let rankings = null;          // { DIRETOR:[...], ... }
 let monthLabel = "";
@@ -838,6 +887,8 @@ function buildRankings(rows, mKey, resRows, copaItems){
 
   const monthRows = mKey ? rows.filter(r=>monthKey(r.mes)===mKey) : rows.slice();
   const validated = monthRows.filter(r=>isValid(r) && notJean(r));
+  // total de vendas validadas do mês (INCLUI o Jean) — usado no termômetro de score
+  const monthSalesCount = monthRows.filter(isValid).length;
 
   // SEMANAL: somente a aba RESUMO (validadas, sem Jean), sem filtro de mês —
   // o Resumo já traz o recorte da semana corrente.
@@ -867,7 +918,7 @@ function buildRankings(rows, mKey, resRows, copaItems){
 
   const result={};
   for(const lvl of LEVELS){
-    if(lvl.promo) continue; // painel de imagens, sem ranking
+    if(lvl.promo || lvl.news) continue; // painéis de imagem/texto, sem ranking
     if(lvl.copa){
       result[lvl.key] = { copa:true, items: copaItems||[] };
     }else if(lvl.winners){
@@ -887,7 +938,7 @@ function buildRankings(rows, mKey, resRows, copaItems){
       result[lvl.key] = aggregate(src, lvl);
     }
   }
-  return {result, validated, recent, recentSem};
+  return {result, validated, recent, recentSem, monthSalesCount};
 }
 
 // key to dedupe a validation event
@@ -909,11 +960,16 @@ async function loadAll(initial){
       mKey=monthKey(mRaw);
     }catch(e){ /* if painel fails, no month filter */ }
 
-    // promoções: links de view das imagens em Painel!B4:B6
+    // promoções (B4:B6) na aba Painel
     try{
       const pp=await fetchCsv(CFG.painel, "B4:B6");
       promoImages=(pp||[]).map(r=>driveThumb((r&&r[0])||"")).filter(Boolean);
     }catch(e){ console.warn("Falha ao ler promoções (Painel B4:B6):", e.message); promoImages=[]; }
+    // novidades (B8) — leitura isolada pra não depender de posição na lista
+    try{
+      const nv=await fetchCsv(CFG.painel, "B8");
+      novidadesText=((nv[0]&&nv[0][0])||"").toString().trim();
+    }catch(e){ console.warn("Falha ao ler novidades (Painel B8):", e.message); novidadesText=""; }
 
     const [h,res,copaCsv]=await Promise.all([
       fetchCsv(CFG.hist).catch(e=>{ console.warn("Falha ao ler historico:", e.message); return []; }),
@@ -926,8 +982,9 @@ async function loadAll(initial){
     console.log(`[painel] historico: ${histRows.length} linhas · Resumo: ${resRows.length} linhas · Copa: ${copaItems.length}`);
     if(!rows.length) throw new Error("Nenhuma linha encontrada nas abas de dados. Confira os nomes das abas e o acesso por link.");
 
-    const {result,validated,recent,recentSem}=buildRankings(rows,mKey,resRows,copaItems);
+    const {result,validated,recent,recentSem,monthSalesCount:msc}=buildRankings(rows,mKey,resRows,copaItems);
     rankings=result;
+    monthSalesCount=msc||0;
     recentValidations=recent;
     recentValidationsSem=recentSem;
     monthLabel = mKey ? labelForMonth(mKey,mRaw) : "TODOS OS MESES";
@@ -1050,8 +1107,11 @@ function isMondayBR(){
   }catch(e){ return new Date().getDay()===1; }
 }
 // Segunda-feira no Brasil: esconde os painéis SEMANAL. De terça a domingo: mostra tudo.
+// Novidades só aparece se houver conteúdo em B8.
 function viewLevels(){
-  return (CFG.mondayFilter && isMondayBR()) ? LEVELS.filter(l=>l.source!=="semanal") : LEVELS;
+  let arr = (CFG.mondayFilter && isMondayBR()) ? LEVELS.filter(l=>l.source!=="semanal") : LEVELS.slice();
+  if(!String(novidadesText||"").trim()) arr = arr.filter(l=>!l.news);
+  return arr;
 }
 
 function headTitle(lvl){
@@ -1067,11 +1127,19 @@ function renderLevel(i,withCard){
   const topN=Math.max(3, CFG.top|0);
 
   stage.querySelectorAll(".board,.titlecard").forEach(n=>n.remove());
+  // verde da Copa só DEPOIS do card de transição (evita header verde com corpo vinho);
+  // ao sair da Copa, remove na hora
+  clearTimeout(copaFrameTimer);
+  const appEl=document.getElementById("app");
+  if(entry && entry.copa){ copaFrameTimer=setTimeout(()=>appEl.classList.add("copa-frame"), withCard?2500:0); }
+  else { appEl.classList.remove("copa-frame"); }
   const board=document.createElement("div");
-  board.className="board"+(lvl.promo?" promoboard":((entry&&entry.copa)?" copaboard":""));
+  board.className="board"+(lvl.promo?" promoboard":(lvl.news?" newsboard":((entry&&entry.copa)?" copaboard":"")));
 
   if(lvl.promo){
     board.innerHTML = promoHtml();
+  }else if(lvl.news){
+    board.innerHTML = newsHtml();
   }else if(entry && entry.copa){
     board.innerHTML = copaHtml(entry);
   }else if(entry && entry.winners){
@@ -1121,6 +1189,7 @@ function renderLevel(i,withCard){
   // stagger copa lists
   board.querySelectorAll(".copa-list").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
   if(entry && entry.copa) setupCopaScroll(board, withCard);
+  if(lvl.promo) setupThermo(board, withCard);
   // stagger promo cards
   board.querySelectorAll(".promo-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
 
@@ -1200,6 +1269,9 @@ function copaClassify(items){
 }
 const copaScrollPos = {}; // marcador: de onde cada lista retoma na próxima exibição
 let promoImages = [];     // URLs das imagens de promoção (Painel B4:B6)
+let novidadesText = "";   // texto/link de novidades (Painel B8)
+let monthSalesCount = 0;  // total de vendas validadas do mês (inclui Jean)
+const SCORE_GOAL = 1000;  // meta da construtora
 
 function copaList(title, names, key){
   const itemsHtml = names.map(n=>`<div class="copa-name" title="${esc(n)}">${esc(n)}</div>`).join("");
@@ -1264,7 +1336,7 @@ function copaHtml(entry){
     </div>`;
 }
 
-// PROMOÇÕES: imagens vindas do Painel B4:B6 (links de view do Google Drive)
+// PROMOÇÕES: termômetro de score + imagens (Painel B4:B6). NOVIDADES: B8.
 function driveThumb(url){
   const s=String(url||"").trim();
   if(!s) return "";
@@ -1272,11 +1344,63 @@ function driveThumb(url){
   if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1920`;
   return s; // já é URL direta de imagem
 }
+function looksLikeImage(v){
+  const s=String(v||"").trim();
+  return /^https?:\/\//i.test(s) || /\/d\/[A-Za-z0-9_-]{20,}/.test(s) || /[?&]id=[A-Za-z0-9_-]{20,}/.test(s);
+}
+function thermoHtml(){
+  const cur=monthSalesCount||0;
+  const pct=Math.max(0, Math.min(100, (cur/SCORE_GOAL)*100));
+  return `<div class="thermo">
+    <div class="thermo-goal"><span>VENDAS</span><b>${fmtInt(SCORE_GOAL)}</b></div>
+    <div class="thermo-tube">
+      <div class="thermo-fill" data-pct="${pct.toFixed(1)}" style="height:0%"></div>
+    </div>
+    <div class="thermo-bulb"></div>
+    <div class="thermo-cur"><b class="thermo-num" data-to="${cur}">0</b></div>
+  </div>`;
+}
 function promoHtml(){
   const imgs=(promoImages||[]).filter(Boolean);
-  if(!imgs.length) return emptyMsg("Sem imagens em Painel!B4, B5 e B6 (ou as imagens não estão compartilhadas por link).");
-  const cards=imgs.map(u=>`<div class="promo-card"><img src="${esc(u)}" alt="Promoção" onerror="this.closest('.promo-card').classList.add('hide')"></div>`).join("");
-  return `<div class="promo-wrap promo-${imgs.length}">${cards}</div>`;
+  const cards = imgs.length
+    ? imgs.map(u=>`<div class="promo-card"><img src="${esc(u)}" alt="Promoção" onerror="this.closest('.promo-card').classList.add('hide')"></div>`).join("")
+    : `<div class="promo-empty">${"Sem imagens em Painel!B4, B5 e B6 (ou não compartilhadas por link)."}</div>`;
+  return `<div class="promo-layout">
+    ${thermoHtml()}
+    <div class="promo-wrap promo-${imgs.length}">${cards}</div>
+  </div>`;
+}
+// anima o termômetro subindo e o número contando, depois do card de transição
+function setupThermo(board, withCard){
+  const fill=board.querySelector(".thermo-fill");
+  const num=board.querySelector(".thermo-num");
+  const delay=(withCard?2400:200);
+  if(fill){
+    const pct=parseFloat(fill.dataset.pct)||0;
+    setTimeout(()=>{ fill.style.height=pct+"%"; }, delay);
+  }
+  if(num){
+    const to=parseInt(num.dataset.to,10)||0;
+    setTimeout(()=>{
+      const dur=1600, t0=performance.now();
+      const step=now=>{
+        const k=Math.min(1,(now-t0)/dur);
+        const e=1-Math.pow(1-k,3); // ease-out
+        num.textContent=fmtInt(Math.round(to*e));
+        if(k<1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, delay);
+  }
+}
+function newsHtml(){
+  const v=String(novidadesText||"").trim();
+  if(!v) return emptyMsg("Sem novidades (Painel!B8 vazio).");
+  if(looksLikeImage(v)){
+    const u=driveThumb(v);
+    return `<div class="promo-wrap promo-1"><div class="promo-card"><img src="${esc(u)}" alt="Novidades" onerror="this.closest('.promo-card').classList.add('hide')"></div></div>`;
+  }
+  return `<div class="news-wrap"><div class="news-text">${esc(v)}</div></div>`;
 }
 
 function renderDots(){
@@ -1426,6 +1550,21 @@ document.addEventListener("keydown",e=>{
   else if(e.code==="Space"){ e.preventDefault(); togglePlay(); }
   else if(e.key==="f"||e.key==="F") $("#fsBtn").click();
 });
+
+/* ============================================================
+   AUTO-OCULTAR CABEÇALHO/RODAPÉ (volta ao mover o mouse)
+============================================================ */
+let chromeTimer=null;
+const CHROME_HIDE_MS=4000; // some após 4s parado
+function showChrome(){
+  document.body.classList.remove("chrome-hidden");
+  clearTimeout(chromeTimer);
+  chromeTimer=setTimeout(()=>document.body.classList.add("chrome-hidden"), CHROME_HIDE_MS);
+}
+["mousemove","pointermove","mousedown","touchstart","wheel","keydown"].forEach(ev=>
+  document.addEventListener(ev, showChrome, {passive:true})
+);
+showChrome();
 
 /* ============================================================
    BOOT
