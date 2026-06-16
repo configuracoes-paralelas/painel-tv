@@ -430,6 +430,19 @@ body.chrome-hidden{cursor:none}
 body.chrome-hidden .topbar{opacity:0;transform:translateY(-14px);pointer-events:none}
 body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none}
 
+/* crédito discreto, sempre visível (não some com o auto-ocultar) */
+#credit{
+  position:fixed;
+  right:calc(12px + env(safe-area-inset-right));
+  bottom:calc(8px + env(safe-area-inset-bottom));
+  z-index:50;
+  font-family:'Inter',sans-serif;
+  font-size:12px;font-weight:600;letter-spacing:.04em;
+  color:var(--muted);opacity:.5;
+  pointer-events:none;user-select:none;
+  text-shadow:0 1px 4px rgba(0,0,0,.55);
+}
+
 /* ---------- Live validation toast ---------- */
 .toast-wrap{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:14px;align-items:center;pointer-events:none}
 .toast{
@@ -525,6 +538,7 @@ body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none
   </div>
   <div class="toast-wrap" id="toastWrap"></div>
 </div></div>
+<div id="credit">Pedro Aquino - Operações</div>
 
 
 <!-- Settings -->
