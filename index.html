@@ -918,11 +918,12 @@ function buildRankings(rows, mKey, resRows, copaItems){
   const validSet = new Set(VALID_STAGES.map(norm));
   const isValid = r => validSet.has(norm(r.estagio));
   const notJean = r => norm(r.diretor)!=="JEAN"; // remove globalmente tudo que é do Jean
-  // VAGAS: empreendimento (ou código curto) com token "M0" ou "V0" não conta como venda.
-  // Casa token isolado: "M0", "V0", "M0-123", "VAGA V0" -> sim;  "V01", "M00", "MIRANTE" -> não.
-  const VAGA_TOKENS = new Set(["M0","V0"]);
-  const notVaga = r => !(norm(r.empreendimento)+" "+norm(r.empreend))
-    .split(/[^A-Z0-9]+/).some(t => VAGA_TOKENS.has(t));
+  // VAGAS: empreendimento (ou código curto) que CONTÉM "M0" ou "V0" não conta como venda.
+  // Ex.: "U-M001", "M0123", "V0", "VAGA V01" -> vaga.  (M0/V0 = série de vaga + nº)
+  const notVaga = r => {
+    const s = norm(r.empreendimento) + " " + norm(r.empreend);
+    return !(s.includes("M0") || s.includes("V0"));
+  };
 
   const monthRows = mKey ? rows.filter(r=>monthKey(r.mes)===mKey) : rows.slice();
   const validated = monthRows.filter(r=>isValid(r) && notJean(r) && notVaga(r));
