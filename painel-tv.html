@@ -629,29 +629,28 @@ const VALID_STAGES = [
 ];
 // Ordem e rótulo das categorias. col = coluna na planilha.
 // excludeNames: nomes a ignorar nesse ranking. rowFilter: filtro extra por linha.
+
+  
 const LEVELS = [
-  // ----- DIRETORES (mensal + semanal intercalados) -----
-  { key:"DIRETOR",        word:"DIRETORES",        tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"DIRETOR",
-    excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO"], live:true },
+  // ===== BLOCO SEMANAL (cadeia completa) =====
   { key:"DIRETOR_SEM",    word:"DIRETORES",        tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"DIRETOR",
     excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO"], live:true },
-
-  // ----- SUPERINTENDENTES -----
-  { key:"SUPERINTENDENTE",    word:"SUPERINTENDENTES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"GESTOR",
-    excludeNames:["JEAN"], live:true },
   { key:"SUPERINTENDENTE_SEM",word:"SUPERINTENDENTES", tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"GESTOR",
     excludeNames:["JEAN"], live:true },
-
-  // ----- GERENTES -----
-  { key:"GERENTE",     word:"GERENTES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"GERENTE", live:true },
   { key:"GERENTE_SEM", word:"GERENTES", tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"GERENTE", live:true },
-
-  // ----- VENDEDORES -----
-  { key:"VENDEDOR",     word:"VENDEDORES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"VENDEDOR",
-    excludeNames:["PARCERIA"], live:true },
   { key:"VENDEDOR_SEM", word:"VENDEDORES", tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"VENDEDOR",
     excludeNames:["PARCERIA"], live:true },
 
+  // ===== BLOCO MENSAL (cadeia completa) =====
+  { key:"DIRETOR",        word:"DIRETORES",        tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"DIRETOR",
+    excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO","---"], live:true },
+  { key:"SUPERINTENDENTE",    word:"SUPERINTENDENTES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"GESTOR",
+    excludeNames:["JEAN"], live:true },
+  { key:"GERENTE",     word:"GERENTES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"GERENTE", live:true },
+  { key:"VENDEDOR",     word:"VENDEDORES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"VENDEDOR",
+    excludeNames:["PARCERIA"], live:true },
+
+  // ===== DEMAIS PAINÉIS =====
   { key:"HALLOFFAME",     word:"CAMPEÕES DO MÊS PASSADO", eyebrow:"Relembrando", cardTitle:"RELEMBRANDO", winners:true },
   { key:"YEAR2026",       word:"CAMPEÕES 2026",     eyebrow:"", topYear:true, year:"2026" },
   { key:"COPA",           word:"COPA METROCASA",   eyebrow:"Campeonato interno", copa:true },
