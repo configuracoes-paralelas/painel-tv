@@ -1152,6 +1152,8 @@ function isMondayBR(){
 function viewLevels(){
   let arr = (CFG.mondayFilter && isMondayBR()) ? LEVELS.filter(l=>l.source!=="semanal") : LEVELS.slice();
   if(!String(novidadesText||"").trim()) arr = arr.filter(l=>!l.news);
+  // PROMOÇÕES: se não houver nenhuma imagem (Painel B4:B6), não mostra o painel.
+  if(!(promoImages||[]).filter(Boolean).length) arr = arr.filter(l=>!l.promo);
   return arr;
 }
 
