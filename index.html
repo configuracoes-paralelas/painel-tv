@@ -918,15 +918,20 @@ function buildRankings(rows, mKey, resRows, copaItems){
   const validSet = new Set(VALID_STAGES.map(norm));
   const isValid = r => validSet.has(norm(r.estagio));
   const notJean = r => norm(r.diretor)!=="JEAN"; // remove globalmente tudo que é do Jean
+  // VAGAS: empreendimento (ou código curto) com token "M0" ou "V0" não conta como venda.
+  // Casa token isolado: "M0", "V0", "M0-123", "VAGA V0" -> sim;  "V01", "M00", "MIRANTE" -> não.
+  const VAGA_TOKENS = new Set(["M0","V0"]);
+  const notVaga = r => !(norm(r.empreendimento)+" "+norm(r.empreend))
+    .split(/[^A-Z0-9]+/).some(t => VAGA_TOKENS.has(t));
 
   const monthRows = mKey ? rows.filter(r=>monthKey(r.mes)===mKey) : rows.slice();
-  const validated = monthRows.filter(r=>isValid(r) && notJean(r));
-  // total de vendas validadas do mês (INCLUI o Jean) — usado no termômetro de score
-  const monthSalesCount = monthRows.filter(isValid).length;
+  const validated = monthRows.filter(r=>isValid(r) && notJean(r) && notVaga(r));
+  // total de vendas validadas do mês (INCLUI o Jean, mas sem vagas)
+  const monthSalesCount = monthRows.filter(r=>isValid(r) && notVaga(r)).length;
 
   // SEMANAL: somente a aba RESUMO (validadas, sem Jean), sem filtro de mês —
   // o Resumo já traz o recorte da semana corrente.
-  const validatedSem = (resRows||[]).filter(r=>isValid(r) && notJean(r));
+  const validatedSem = (resRows||[]).filter(r=>isValid(r) && notJean(r) && notVaga(r));
 
   // Últimas 5 vendas validadas (mês vigente), mais recentes primeiro — sem PARCERIA
   const notParceria = r => !norm(r.vendedor).includes("PARCERIA");
@@ -941,7 +946,7 @@ function buildRankings(rows, mKey, resRows, copaItems){
   // mês passado (para "Prata da Casa")
   const prevKey = mKey ? prevMonthKey(mKey) : "";
   const prevValidated = prevKey
-    ? rows.filter(r=>monthKey(r.mes)===prevKey && isValid(r) && notJean(r))
+    ? rows.filter(r=>monthKey(r.mes)===prevKey && isValid(r) && notJean(r) && notVaga(r))
     : [];
   const winners = {
     winners:true,
@@ -962,7 +967,7 @@ function buildRankings(rows, mKey, resRows, copaItems){
       const exGer=new Set((lvl.excludeGerente||[]).map(sp));
       const exGes=new Set((lvl.excludeGestor||[]).map(sp));
       const yv = rows.filter(r=> String(monthKey(r.mes)).startsWith(lvl.year)
-        && isValid(r) && notJean(r)
+        && isValid(r) && notJean(r) && notVaga(r)
         && !exGer.has(sp(r.gerente))
         && !exGes.has(sp(r.gestor)) );
       result[lvl.key] = { topYear:true, year:lvl.year,
