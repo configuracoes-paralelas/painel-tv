@@ -905,7 +905,9 @@ function aggregate(validated, spec){
   const exSet=new Set((spec.excludeNames||[]).map(norm));
   for(const r of validated){
     if(spec.rowFilter && !spec.rowFilter(r)) continue;
-    const name=(colValue(r,spec)||"").toString().trim();
+    let name=(colValue(r,spec)||"").toString().trim();
+    // gerentes: remove sufixos "(G)" / "(B)" do nome exibido (ex.: "FULANO (G)" -> "FULANO")
+    if(spec.col==="GERENTE") name=name.replace(/\s*\([GB]\)\s*$/i,"").trim();
     if(!name) continue;
     if(exSet.has(norm(name))) continue;
     const cur=agg.get(name)||{name,vendas:0,entrada:0,vlrvenda:0};
@@ -1100,7 +1102,7 @@ const COLHEAD_LIVE = `<div class="col-head live">
 function feedCard(r){
   const emp=(r.empreendimento||r.empreend||"—").toString().trim();
   const vend=(r.vendedor||"—").toString().trim();
-  const ger=(r.gerente||"—").toString().trim();
+  const ger=(r.gerente||"—").toString().trim().replace(/\s*\([GB]\)\s*$/i,"").trim();
   const sup=(r.gestor||"—").toString().trim();
   return `<div class="feedcard">
     <div class="fc-top">
