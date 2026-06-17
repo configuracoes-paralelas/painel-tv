@@ -1033,7 +1033,10 @@ async function loadAll(initial){
     const histRows=rowsFromTab(h), resRows=rowsFromTab(res);
     const copaItems=rowsFromCopa(copaCsv);
     const rows=[...histRows, ...resRows];
-    console.log(`[painel] historico: ${histRows.length} linhas · Resumo: ${resRows.length} linhas · Copa: ${copaItems.length}`);
+    // Mês vigente existe na aba histórico? Se não, só temos semanal -> esconde painéis mensais.
+    // (checado só no histórico de propósito; o Resumo/semanal não conta aqui.)
+    monthHasHist = !!mKey && histRows.some(r=>monthKey(r.mes)===mKey);
+    console.log(`[painel] historico: ${histRows.length} linhas · Resumo: ${resRows.length} linhas · Copa: ${copaItems.length} · mês "${mKey||"(todos)"}" no histórico: ${monthHasHist}`);
     if(!rows.length) throw new Error("Nenhuma linha encontrada nas abas de dados. Confira os nomes das abas e o acesso por link.");
 
     const {result,validated,recent,recentSem,monthSalesCount:msc}=buildRankings(rows,mKey,resRows,copaItems);
@@ -1168,6 +1171,8 @@ function viewLevels(){
   if(!String(novidadesText||"").trim()) arr = arr.filter(l=>!l.news);
   // PROMOÇÕES: se não houver nenhuma imagem (Painel B4:B6), não mostra o painel.
   if(!(promoImages||[]).filter(Boolean).length) arr = arr.filter(l=>!l.promo);
+  // MENSAIS: se o mês vigente não existe no histórico, só temos semanal -> esconde os mensais.
+  if(!monthHasHist) arr = arr.filter(l=>l.source!=="mensal");
   return arr;
 }
 
@@ -1338,6 +1343,7 @@ function copaClassify(items){
 const copaScrollPos = {}; // marcador: de onde cada lista retoma na próxima exibição
 let promoImages = [];     // URLs das imagens de promoção (Painel B4:B6)
 let novidadesText = "";   // texto/link de novidades (Painel B8)
+let monthHasHist = true;  // o mês vigente existe na aba histórico? (se não, só temos semanal)
 let monthSalesCount = 0;  // total de vendas validadas do mês (inclui Jean)
 
 function copaList(title, names, key){
