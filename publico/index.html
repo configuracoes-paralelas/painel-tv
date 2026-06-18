@@ -39,20 +39,20 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit;background:n
 #menu{
   position:fixed;inset:0;z-index:10;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:clamp(40px,6vh,90px);
-  padding:6vh 5vw;
+  gap:clamp(16px,3.2vh,52px);
+  padding:clamp(16px,4vh,48px) 5vw;
   background:
     radial-gradient(70% 50% at 50% 4%, rgba(33,161,75,.07), transparent 60%),
     linear-gradient(180deg, #ffffff, var(--paper-2) 70%);
   text-align:center;
 }
 #menu .brand{
-  display:flex;flex-direction:column;align-items:center;gap:22px;
+  display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.4vh,20px);
   opacity:0;transform:translateY(18px);
   animation:rise .9s .05s cubic-bezier(.16,1,.3,1) forwards;
 }
 #menu .brand img{
-  width:clamp(260px,34vw,520px);height:auto;
+  width:auto;height:auto;max-width:min(44vw,440px);max-height:24vh;
   filter:drop-shadow(0 16px 34px rgba(20,8,8,.14));
 }
 #menu .eyebrow{
@@ -70,7 +70,7 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit;background:n
   position:relative;overflow:hidden;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:clamp(18px,2vw,30px);
-  aspect-ratio:1/.82;
+  aspect-ratio:1/.82;max-height:50vh;
   border-radius:32px;
   background:var(--paper);
   border:1px solid var(--line);
@@ -211,6 +211,22 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit;background:n
 .overlay .btn-text{margin-top:6px;padding:14px 30px;border-radius:14px;background:var(--red);
   color:#fff;font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:clamp(14px,1.6vw,18px)}
 .overlay .btn-text:hover,.overlay .btn-text:focus-visible{background:var(--red-deep);outline:none}
+
+/* celular em pé / janela estreita: empilha os dois cards */
+@media (max-width:640px), (orientation:portrait){
+  .choices{grid-template-columns:1fr;width:min(560px,92vw);gap:clamp(14px,2.4vh,26px)}
+  .choice{aspect-ratio:auto;max-height:none;min-height:clamp(148px,23vh,260px);gap:clamp(12px,2vh,22px)}
+  .choice .lbl{font-size:clamp(42px,12vw,66px)}
+  .choice .ico{width:clamp(72px,15vw,108px);height:clamp(72px,15vw,108px)}
+  #menu .brand img{max-height:18vh}
+  #menu .eyebrow{font-size:clamp(12px,3vw,16px)}
+}
+/* paisagem bem baixa (celular deitado / notebook curto): encolhe um pouco mais */
+@media (orientation:landscape) and (max-height:520px){
+  #menu .brand img{max-height:30vh}
+  .choice{max-height:62vh}
+  .choice .lbl{font-size:clamp(34px,7vh,60px)}
+}
 
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.001s !important}
@@ -499,12 +515,16 @@ function playCur(slot){
         if(wantSound) slot.yt.unMute(); else slot.yt.mute();
         slot.yt.loadVideoById({videoId:item.yid, startSeconds:item.at||0}); // autoplay
       }catch(e){}
-      // autoplay COM som costuma ser bloqueado -> cai pra mudo (TV nunca trava)
+      // se o navegador BLOQUEAR o autoplay com som, cai pra mudo (a TV nunca trava).
+      // espera mais (o YouTube demora a engatar) e só muta se REALMENTE não começou —
+      // assim não mata o som de um vídeo que só estava carregando.
       setTimeout(()=>{ try{
-        if(slot===cur && slot.yt.getPlayerState && slot.yt.getPlayerState()!==1){
+        const st = slot.yt.getPlayerState ? slot.yt.getPlayerState() : -1;
+        // 1 = PLAYING, 3 = BUFFERING -> está indo com som, mantém
+        if(slot===cur && st!==1 && st!==3){
           slot.yt.mute(); wantSound=false; updateSoundIcon(); slot.yt.playVideo();
         }
-      }catch(e){} }, 1800);
+      }catch(e){} }, 3200);
       // watchdog: sem YouTube (offline / id errado)
       setTimeout(()=>{ try{
         const st = slot.yt.getPlayerState ? slot.yt.getPlayerState() : -1;
