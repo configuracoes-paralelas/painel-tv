@@ -208,6 +208,34 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit;background:n
 .sound-cta:focus{outline:none;box-shadow:0 0 0 4px rgba(255,255,255,.85), 0 14px 38px rgba(33,161,75,.5)}
 @keyframes ctaPulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.05)}}
 
+/* pop-up "nova família" — card vermelho centralizado, estilo selo da marca */
+.promo{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(.7);opacity:0;
+  z-index:38;pointer-events:none;
+  display:flex;align-items:center;gap:clamp(12px,2.4vw,32px);
+  padding:clamp(22px,3.2vw,42px) clamp(28px,4vw,58px);
+  border-radius:clamp(22px,2.6vw,34px);
+  background:var(--red);
+  box-shadow:0 34px 90px rgba(0,0,0,.5), 0 0 0 6px rgba(255,255,255,.06);
+  transition:transform .5s cubic-bezier(.2,1.55,.35,1), opacity .3s ease;
+  will-change:transform,opacity;
+}
+.promo.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+.promo-plus{flex:none;display:grid;place-items:center}
+.promo-plus svg{width:clamp(64px,8vw,120px);height:clamp(64px,8vw,120px);display:block}
+.promo.show .promo-plus{animation:plusPop .7s cubic-bezier(.2,1.7,.35,1) both}
+@keyframes plusPop{0%{transform:scale(0) rotate(-35deg)}100%{transform:scale(1) rotate(-6deg)}}
+.promo-words{display:flex;flex-direction:column;align-items:flex-start;color:#fff;line-height:.92}
+.promo-words b{font-family:'Inter',sans-serif;font-weight:900;letter-spacing:-.01em;
+  text-transform:lowercase;font-size:clamp(26px,4.4vw,58px)}
+.promo-sub{margin-top:.55em;font-family:'Inter',sans-serif;font-weight:800;
+  font-size:clamp(13px,1.7vw,21px);color:#fff;opacity:.96;letter-spacing:.01em}
+@media (max-width:640px){
+  .promo{gap:14px;padding:20px 24px}
+  .promo-words b{font-size:clamp(24px,8vw,40px)}
+}
+
 /* overlays (claros) */
 .overlay{
   position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;
@@ -316,6 +344,20 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit;background:n
     </button>
   </div>
 
+  <!-- pop-up "nova família" (selo no meio da tela, aleatório) -->
+  <div class="promo" id="promo" role="status" aria-live="polite">
+    <span class="promo-plus" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><g fill="#21A14B">
+        <rect x="46" y="12" width="28" height="96" rx="13"/>
+        <rect x="12" y="46" width="96" height="28" rx="13"/>
+      </g></svg>
+    </span>
+    <span class="promo-words">
+      <b>uma</b><b>família</b><b>metrocasa</b>
+      <span class="promo-sub" id="promoText"></span>
+    </span>
+  </div>
+
   <!-- loading -->
   <div class="overlay" id="loading">
     <div class="spin"></div>
@@ -343,8 +385,20 @@ const CFG = {
   id: "1sbnI1velrz-B-ZBGGXuVIGOQzjeAJ9J1cbtlOgltGGs",
   sheet: "Paineis-Links2",
   range: "A2:B1000",    // A = loja, B = decorado (linha 1 é cabeçalho, pulada)
-  pollMs: 5 * 60 * 1000
+  pollMs: 5 * 60 * 1000,
+  // pop-up "nova família" — aparece em intervalos ALEATÓRIOS durante os vídeos
+  promoMinMs: 20 * 1000,   // espera no mínimo 20s
+  promoMaxMs: 50 * 1000,   // e no máximo 50s entre um pop-up e outro
+  promoShowMs: 6 * 1000    // fica 6s na tela
 };
+
+/* Frase pequena embaixo do selo (sorteia uma a cada aparição — edite à vontade) */
+const PROMOS = [
+  "na Loja ao Lado! 💚❤️",
+  "Sonho da casa própria realizado! 🏠",
+  "Você + Perto ❤️💚",
+  "Bem-vindos à família! 🔑💚"
+];
 
 /* ---------- CSV mínimo (lida com aspas e vírgulas internas) ---------- */
 function parseCSV(text){
@@ -497,6 +551,7 @@ async function startCategory(cat){
   prepareSlot(cur, 0);
   playCur(cur);
   preloadNext();
+  schedulePromo();   // começa os pop-ups "nova família" em intervalos aleatórios
 }
 
 function buildQueue(cat){
@@ -648,7 +703,7 @@ function showError(on, title, msg){
 function backToMenu(){
   stopSlot(slotA); stopSlot(slotB);
   try{ slotA.vid.removeAttribute("src"); slotB.vid.removeAttribute("src"); }catch(e){}
-  queue=[]; busy=false;
+  queue=[]; busy=false; stopPromo();
   $("#player").classList.add("hidden"); $("#menu").classList.remove("hidden");
   showError(false); showLoading(false); showSoundCta(false);
   focusMenu();
@@ -663,6 +718,23 @@ function showSoundCta(on){
   if(on){ setTimeout(()=>{ try{ cta.focus(); }catch(e){} }, 60); }
 }
 $("#soundCta").addEventListener("click", ()=>{ setSound(true); showSoundCta(false); });
+
+/* ---------- pop-up "nova família" (aleatório, só durante os vídeos) ---------- */
+let promoTimer=null;
+function showPromoOnce(){
+  if($("#player").classList.contains("hidden")) return;     // só no player
+  if(!$("#error").classList.contains("hidden")) return;     // não sobre tela de erro
+  $("#promoText").textContent = PROMOS[Math.floor(Math.random()*PROMOS.length)];
+  const el=$("#promo");
+  el.classList.add("show");
+  setTimeout(()=> el.classList.remove("show"), CFG.promoShowMs);
+}
+function schedulePromo(){
+  clearTimeout(promoTimer);
+  const delay = CFG.promoMinMs + Math.random()*(CFG.promoMaxMs-CFG.promoMinMs);
+  promoTimer = setTimeout(()=>{ showPromoOnce(); schedulePromo(); }, delay);
+}
+function stopPromo(){ clearTimeout(promoTimer); $("#promo").classList.remove("show"); }
 
 function updateSoundIcon(){
   const on=wantSound;
@@ -723,6 +795,7 @@ function armFullscreen(){ if(!isFs()) goFullscreen(); }
 /* ---------- teclado / controle remoto ---------- */
 document.addEventListener("keydown", (e)=>{
   if(e.key==="f" || e.key==="F"){ toggleFullscreen(); return; }   // tecla F = tela cheia
+  if(e.key==="p" || e.key==="P"){ showPromoOnce(); return; }       // tecla P = testar o pop-up
   const inPlayer = !$("#player").classList.contains("hidden");
 
   if(!inPlayer){
