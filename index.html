@@ -656,6 +656,8 @@ const LEVELS = [
   { key:"HALLOFFAME",     word:"CAMPEÕES DO MÊS PASSADO", eyebrow:"Relembrando", cardTitle:"RELEMBRANDO", winners:true },
   { key:"YEAR2026",       word:"CAMPEÕES 2026",     eyebrow:"", topYear:true, year:"2026" },
   { key:"COPA",           word:"COPA METROCASA",   eyebrow:"Campeonato interno", copa:true },
+  { key:"COPAIMG1",       greenimg:true, imgIndex:0 },
+  { key:"COPAIMG2",       greenimg:true, imgIndex:1 },
   { key:"PROMOCOES",      word:"PROMOÇÕES",        eyebrow:"", promo:true },
   { key:"NOVIDADES",      word:"NOVIDADES METROCASA", cardTitle:"NOVIDADES", news:true },
   { key:"MATERIAIS",      word:"FIQUE LIGADO",       cardTitle:"COMUNICADO", comunicado:true },
@@ -1025,6 +1027,13 @@ async function loadAll(initial){
       novidadesText=((nv[0]&&nv[0][0])||"").toString().trim();
     }catch(e){ console.warn("Falha ao ler novidades (Painel B8):", e.message); novidadesText=""; }
 
+    // imagens verdes pós-Copa (Painel B10 e B11) — lidas em separado p/ manter a ordem.
+    // mesma regra das promoções: célula vazia = aquele painel não aparece.
+    try{ const a=await fetchCsv(CFG.painel, "B10"); copaImgs[0]=driveThumb((a[0]&&a[0][0])||""); }
+    catch(e){ console.warn("Falha ao ler imagem pós-Copa (Painel B10):", e.message); copaImgs[0]=""; }
+    try{ const b=await fetchCsv(CFG.painel, "B11"); copaImgs[1]=driveThumb((b[0]&&b[0][0])||""); }
+    catch(e){ console.warn("Falha ao ler imagem pós-Copa (Painel B11):", e.message); copaImgs[1]=""; }
+
     const [h,res,copaCsv]=await Promise.all([
       fetchCsv(CFG.hist).catch(e=>{ console.warn("Falha ao ler historico:", e.message); return []; }),
       fetchCsv(CFG.resumo).catch(e=>{ console.warn("Falha ao ler Resumo:", e.message); return []; }),
@@ -1171,6 +1180,8 @@ function viewLevels(){
   if(!String(novidadesText||"").trim()) arr = arr.filter(l=>!l.news);
   // PROMOÇÕES: se não houver nenhuma imagem (Painel B4:B6), não mostra o painel.
   if(!(promoImages||[]).filter(Boolean).length) arr = arr.filter(l=>!l.promo);
+  // PAINÉIS VERDES PÓS-COPA: cada um some se a sua imagem (B10/B11) não existir.
+  arr = arr.filter(l => !l.greenimg || String(copaImgs[l.imgIndex]||"").trim());
   // MENSAIS: se o mês vigente não existe no histórico, só temos semanal -> esconde os mensais.
   if(!monthHasHist) arr = arr.filter(l=>l.source!=="mensal");
   return arr;
@@ -1193,12 +1204,16 @@ function renderLevel(i,withCard){
   // ao sair da Copa, remove na hora
   clearTimeout(copaFrameTimer);
   const appEl=document.getElementById("app");
-  if(entry && entry.copa){ copaFrameTimer=setTimeout(()=>appEl.classList.add("copa-frame"), withCard?2500:0); }
+  const isGreen=(entry && entry.copa) || lvl.greenimg;
+  const greenDelay=(withCard && !lvl.greenimg)?2500:0;  // painéis verdes pós-Copa não têm letreiro -> aplica na hora
+  if(isGreen){ copaFrameTimer=setTimeout(()=>appEl.classList.add("copa-frame"), greenDelay); }
   else { appEl.classList.remove("copa-frame"); }
   const board=document.createElement("div");
-  board.className="board"+(lvl.promo?" promoboard":(lvl.news?" newsboard":(lvl.comunicado?" comunicadoboard":((entry&&entry.copa)?" copaboard":""))));
+  board.className="board"+(lvl.greenimg?" copaboard":(lvl.promo?" promoboard":(lvl.news?" newsboard":(lvl.comunicado?" comunicadoboard":((entry&&entry.copa)?" copaboard":"")))));
 
-  if(lvl.promo){
+  if(lvl.greenimg){
+    board.innerHTML = greenImgHtml(copaImgs[lvl.imgIndex]);
+  }else if(lvl.promo){
     board.innerHTML = promoHtml();
   }else if(lvl.news){
     board.innerHTML = newsHtml();
@@ -1256,7 +1271,7 @@ function renderLevel(i,withCard){
   // stagger promo cards
   board.querySelectorAll(".promo-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
 
-  if(withCard){
+  if(withCard && !lvl.greenimg){
     const card=document.createElement("div");
     card.className="titlecard";
     if(lvl.copa){
@@ -1342,6 +1357,7 @@ function copaClassify(items){
 }
 const copaScrollPos = {}; // marcador: de onde cada lista retoma na próxima exibição
 let promoImages = [];     // URLs das imagens de promoção (Painel B4:B6)
+let copaImgs = ["",""];   // imagens verdes pós-Copa: [0]=Painel B10, [1]=Painel B11
 let novidadesText = "";   // texto/link de novidades (Painel B8)
 let monthHasHist = true;  // o mês vigente existe na aba histórico? (se não, só temos semanal)
 let monthSalesCount = 0;  // total de vendas validadas do mês (inclui Jean)
@@ -1475,6 +1491,12 @@ function promoHtml(){
     ? imgs.map(u=>`<div class="promo-card"><img src="${esc(u)}" alt="Promoção" onerror="this.closest('.promo-card').classList.add('hide')"></div>`).join("")
     : `<div class="promo-empty">${"Sem imagens em Painel!B4, B5 e B6 (ou não compartilhadas por link)."}</div>`;
   return `<div class="promo-wrap promo-${imgs.length}">${cards}</div>`;
+}
+// Painéis verdes pós-Copa: uma única imagem centralizada, sem letreiro.
+function greenImgHtml(url){
+  const u=String(url||"").trim();
+  if(!u) return emptyMsg("Sem imagem (Painel B10/B11 vazio ou não compartilhado por link).");
+  return `<div class="promo-wrap promo-1"><div class="promo-card"><img src="${esc(u)}" alt="" onerror="this.closest('.promo-card').classList.add('hide')"></div></div>`;
 }
 function newsHtml(){
   const v=String(novidadesText||"").trim();
