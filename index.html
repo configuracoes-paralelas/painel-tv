@@ -502,6 +502,29 @@ body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
+
+/* ---------- LIVE (Painel!B13) — cobre a tela real, fora do #app que escala/gira ---------- */
+#liveOverlay{
+  position:fixed;inset:0;z-index:75;background:#000;display:none;
+}
+#liveOverlay.show{display:block}
+#liveOverlay iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+#liveMsg{
+  position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:24px;text-align:center;padding:60px;color:var(--text);
+  background:radial-gradient(80% 80% at 50% 50%,var(--ink-2),var(--ink));
+}
+#liveOverlay.msg #liveMsg{display:flex}
+#liveOverlay.msg iframe{display:none}
+#liveMsg .big{font-family:'Anton',sans-serif;font-size:clamp(40px,120px,96px);color:var(--live);letter-spacing:.02em}
+#liveMsg .small{color:var(--muted);font-size:clamp(18px,32px,26px);max-width:1100px;line-height:1.5;word-break:break-all}
+#liveHint{
+  position:absolute;left:50%;bottom:42px;transform:translateX(-50%);z-index:2;
+  padding:12px 22px;border-radius:999px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.18);
+  color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:clamp(14px,22px,18px);letter-spacing:.02em;
+  display:none;animation:beat 2.4s infinite;pointer-events:none;
+}
+#liveOverlay.show.muted #liveHint{display:block}
 </style>
 </head>
 <body>
@@ -538,6 +561,11 @@ body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none
   </div>
   <div class="toast-wrap" id="toastWrap"></div>
 </div></div>
+<div id="liveOverlay">
+  <iframe id="liveFrame" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <div id="liveMsg"><div class="big">AO VIVO</div><div class="small" id="liveMsgTxt"></div></div>
+  <div id="liveHint">Toque para ativar o som</div>
+</div>
 <div id="credit">Pedro Aquino - Operações</div>
 
 
@@ -1034,6 +1062,10 @@ async function loadAll(initial){
     try{ const b=await fetchCsv(CFG.painel, "B11"); copaImgs[1]=driveThumb((b[0]&&b[0][0])||""); }
     catch(e){ console.warn("Falha ao ler imagem pós-Copa (Painel B11):", e.message); copaImgs[1]=""; }
 
+    // LIVE (Painel!B13): link presente => para tudo e mostra a live em tela cheia.
+    try{ const lv=await fetchCsv(CFG.painel, "B13"); liveUrl=((lv[0]&&lv[0][0])||"").toString().trim(); }
+    catch(e){ console.warn("Falha ao ler live (Painel B13):", e.message); liveUrl=""; }
+
     const [h,res,copaCsv]=await Promise.all([
       fetchCsv(CFG.hist).catch(e=>{ console.warn("Falha ao ler historico:", e.message); return []; }),
       fetchCsv(CFG.resumo).catch(e=>{ console.warn("Falha ao ler Resumo:", e.message); return []; }),
@@ -1077,6 +1109,7 @@ async function loadAll(initial){
     hideStatus();
     if(initial){ levelIndex=0; renderLevel(0,true); $("#nav").style.visibility="visible"; scheduleAdvance(); }
     else { renderDots(); refreshFeed(); } // mantém a tela, só atualiza dados e o feed
+    applyLiveMode(); // entra/sai do modo live conforme Painel!B13
   }catch(err){
     showStatus("error", err.message||String(err));
   }
@@ -1547,6 +1580,7 @@ function renderDots(){
 function scheduleAdvance(){
   clearTimeout(advanceTimer);
   if(!playing) return;
+  if(typeof liveActive!=="undefined" && liveActive) return; // live no ar: não roda slides
   advanceTimer=setTimeout(()=>{ next(); }, Math.max(4,CFG.secs)*1000);
 }
 function next(){ goTo(levelIndex+1); }
@@ -1755,6 +1789,92 @@ function armFullscreenOnGesture(){
 }
 setTimeout(()=>{ goFullscreen().catch(()=>armFullscreenOnGesture()); }, 3000);
 armAudioOnGesture();
+
+/* ============================================================
+   MODO LIVE — link em Painel!B13 (YouTube)
+   B13 com link -> para a rotação e mostra a live em tela cheia.
+   B13 vazio    -> volta a rotação automaticamente no próximo poll.
+============================================================ */
+let liveUrl = "";              // texto bruto lido de Painel!B13
+let liveActive = false;        // overlay da live está visível?
+let currentLiveEmbed = "";     // embed atualmente carregado (evita recarregar a cada poll)
+
+// Converte vários formatos de link do YouTube em URL de embed com autoplay (mudo p/ o navegador deixar tocar).
+function ytEmbed(raw){
+  const u=(raw||"").toString().trim();
+  if(!u) return "";
+  const opts="autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1";
+  // LINK DE CANAL: .../channel/UC... -> mostra a live atual do canal (paste-once).
+  // Obs.: só funciona enquanto o canal estiver AO VIVO (e a live for pública). Sem live = tela preta.
+  let m=u.match(/youtube\.com\/channel\/(UC[A-Za-z0-9_-]{20,})/i);
+  if(m) return `https://www.youtube.com/embed/live_stream?channel=${m[1]}&${opts}`;
+  // watch?v= / youtu.be/ / live/ / embed/ / shorts/ / v/  -> live específica (mais robusto)
+  m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|live\/|embed\/|shorts\/|v\/))([A-Za-z0-9_-]{11})/i);
+  if(m) return `https://www.youtube.com/embed/${m[1]}?${opts}`;
+  // só o ID (11 chars)
+  if(/^[A-Za-z0-9_-]{11}$/.test(u)) return `https://www.youtube.com/embed/${u}?${opts}`;
+  return "";
+}
+
+function enterLiveVideo(embed){
+  const ovl=$("#liveOverlay"), fr=$("#liveFrame");
+  currentLiveEmbed=embed;
+  ovl.classList.remove("msg");
+  fr.src=embed;                       // começa mudo (mute=1)
+  ovl.classList.add("show","muted");  // "muted" mostra a dica de tocar p/ ativar som
+  liveActive=true;
+  clearTimeout(advanceTimer);         // congela a rotação
+  armLiveUnmute();
+}
+function enterLiveMsg(txt){
+  const ovl=$("#liveOverlay");
+  currentLiveEmbed="";
+  $("#liveMsgTxt").textContent=txt;
+  $("#liveFrame").src="";
+  ovl.classList.add("show","msg");
+  ovl.classList.remove("muted");
+  liveActive=true;
+  clearTimeout(advanceTimer);
+}
+function exitLive(){
+  const ovl=$("#liveOverlay");
+  ovl.classList.remove("show","msg","muted");
+  $("#liveFrame").src="";             // para o vídeo/áudio de fato
+  currentLiveEmbed="";
+  liveActive=false;
+  // retoma a apresentação de onde estava
+  renderLevel(levelIndex,false);
+  if(playing) scheduleAdvance();
+}
+// No 1º toque/clique, recarrega o embed sem mudo (o gesto libera o áudio no navegador).
+function armLiveUnmute(){
+  const ovl=$("#liveOverlay");
+  const h=()=>{
+    if(liveActive && currentLiveEmbed){
+      $("#liveFrame").src=currentLiveEmbed.replace("mute=1","mute=0");
+      ovl.classList.remove("muted");
+    }
+    ovl.removeEventListener("click",h);
+    ovl.removeEventListener("touchend",h);
+  };
+  ovl.addEventListener("click",h);
+  ovl.addEventListener("touchend",h);
+}
+
+// Decide entrar/sair do modo live. Chamada ao fim de cada loadAll (boot e poll).
+function applyLiveMode(){
+  const embed=ytEmbed(liveUrl);
+  if(embed){
+    if(!liveActive || embed!==currentLiveEmbed) enterLiveVideo(embed); // só recarrega se o link mudou
+  }else if(liveUrl){
+    // tem algo em B13 mas não é um link de YouTube reconhecido
+    if(!liveActive || !$("#liveOverlay").classList.contains("msg")){
+      enterLiveMsg("Link em Painel!B13 não reconhecido como YouTube:  "+liveUrl);
+    }
+  }else{
+    if(liveActive) exitLive();
+  }
+}
 
 restart();
 </script>
