@@ -219,6 +219,105 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .composite .row .num{font-size:clamp(16px,32.6px,26px)}
 .composite .col-head .lbl{font-size:clamp(11px,19.2px,15px)}
 
+/* ---- Ranking 4-up (MENSAL / SEMANAL) — 4 categorias lado a lado ---- */
+.rank4{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,36px,30px);min-height:0;overflow:hidden}
+.rank4 .subpanel{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.rank4 .subhead{font-family:'Anton',sans-serif;font-size:clamp(20px,42px,36px);text-transform:uppercase;color:var(--text);margin-bottom:6px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:clamp(6px,12px,10px)}
+.rank4 .subhead .vlbl{font-family:'Inter',sans-serif;font-size:clamp(11px,18px,14px);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);flex:0 0 auto}
+.rank4 .rows{display:flex;flex-direction:column;gap:clamp(7px,13px,10px);overflow:hidden;flex:1}
+.rank4 .row{grid-template-columns:clamp(46px,66px,62px) minmax(0,1fr) clamp(66px,106px,90px);gap:10px;padding:clamp(7px,13px,11px) clamp(10px,18px,15px);border-radius:13px}
+.rank4 .row .pos{font-size:clamp(22px,46px,38px)}
+.rank4 .row .name{font-size:clamp(18px,35px,29px);font-weight:700}
+.rank4 .row .num.sales{font-size:clamp(18px,34px,28px);font-weight:800}
+
+/* ---- Pódio top-3 (MENSAL / SEMANAL) — 4 cadeias, 1º/2º/3º com foto ---- */
+.podium-eyebrow{text-align:center;font-family:'Inter',sans-serif;font-weight:800;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);font-size:clamp(14px,26px,20px);margin-bottom:clamp(6px,14px,10px)}
+.podium3{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,34px,26px);min-height:0;overflow:hidden}
+.podcol{display:flex;flex-direction:column;justify-content:space-between;min-height:0;overflow:hidden;gap:clamp(6px,14px,10px);
+  padding:clamp(10px,24px,18px) clamp(6px,14px,10px) clamp(6px,16px,12px);border-radius:20px;
+  background:linear-gradient(160deg,rgba(255,255,255,.035),rgba(48,20,20,.4));
+  border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  opacity:0;transform:translateY(16px)}
+.board.show .podcol{animation:rowIn .6s cubic-bezier(.16,1,.3,1) forwards}
+.podcol-head{font-family:'Anton',sans-serif;font-size:clamp(16px,32px,26px);text-transform:uppercase;
+  text-align:center;color:var(--text);letter-spacing:.02em;line-height:1;flex:0 0 auto;order:-1}
+
+/* pódio escalonado: 2º (esq) · 1º (centro, alto, troféu) · 3º (dir) */
+.podium{display:grid;grid-template-columns:1fr 1.18fr 1fr;align-items:end;gap:clamp(3px,9px,6px);min-height:0}
+.ped{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:0;gap:clamp(5px,12px,9px)}
+.ped-person{display:flex;flex-direction:column;align-items:center;gap:clamp(2px,7px,5px);width:100%;min-width:0}
+.ped-trophy{font-style:normal;font-size:clamp(22px,48px,38px);line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
+.ped .pname{font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.05;text-align:center;max-width:100%;font-size:clamp(14px,26px,20px)}
+.ped1 .pname{font-size:clamp(16px,32px,25px)}
+.ped .pvend{line-height:1}
+.ped .pvend b{font-family:'Inter',sans-serif;font-weight:800;color:var(--text);font-size:clamp(18px,36px,28px)}
+.ped1 .pvend b{font-size:clamp(22px,46px,35px)}
+/* meta = movimento (▲▼/NOVO) + distância pro de cima; some quando não há nada */
+.pmeta{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 6px;max-width:100%;min-height:0}
+.pmeta:empty{display:none}
+.pgap{font-size:clamp(10px,18px,14px);font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mv{display:inline-flex;align-items:center;gap:2px;font-weight:800;line-height:1;border-radius:999px;
+  font-size:clamp(10px,17px,13px);padding:2px 7px;flex:0 0 auto}
+.mv-up{color:#0b3d17;background:#57d977}
+.mv-down{color:#fff;background:rgba(255,76,76,.9)}
+.mv-new{color:#3a2a00;background:var(--gold)}
+
+/* foto redonda com anel de medalha */
+.pphoto{position:relative;width:clamp(62px,116px,92px);aspect-ratio:1;border-radius:50%;flex:0 0 auto;
+  display:grid;place-items:center;overflow:visible;
+  background:radial-gradient(circle at 32% 26%,#4a1e1e,#2A1010 70%);
+  color:#f0cf86;font-family:'Anton',sans-serif;font-size:clamp(26px,50px,40px)}
+.ped1 .pphoto{width:clamp(78px,144px,120px);font-size:clamp(32px,60px,50px)}
+.pphoto.gold{box-shadow:0 0 0 3px var(--gold),0 6px 18px rgba(0,0,0,.4)}
+.pphoto.silver{box-shadow:0 0 0 3px var(--silver),0 6px 18px rgba(0,0,0,.4)}
+.pphoto.bronze{box-shadow:0 0 0 3px var(--bronze),0 6px 18px rgba(0,0,0,.4)}
+.pphoto .pph-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.pphoto .pph-fb{place-items:center;width:100%;height:100%}
+
+/* pedestais coloridos: número no topo + nomes do time em marca d'água (barras altas) */
+.ped-block{position:relative;overflow:hidden;width:100%;display:flex;flex-direction:column;align-items:center;
+  border-radius:14px 14px 0 0;padding:clamp(6px,14px,10px) clamp(6px,12px,9px) 0;
+  box-shadow:inset 0 3px 0 rgba(255,255,255,.18),0 -6px 22px rgba(0,0,0,.28)}
+.ped-num{font-family:'Anton',sans-serif;line-height:1;font-size:clamp(30px,72px,56px);text-shadow:0 2px 0 rgba(0,0,0,.22);flex:0 0 auto}
+.ped-wm{flex:1 1 auto;min-height:0;width:100%;overflow:hidden;margin-top:clamp(4px,10px,7px);
+  font-family:'Inter',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.02em;
+  line-height:1.3;text-align:center;word-break:break-word}
+.ped1 .ped-block{height:520px;background:linear-gradient(180deg,#f6d885,#d9a938)}
+.ped2 .ped-block{height:388px;background:linear-gradient(180deg,#eef1f7,#aab3c4)}
+.ped3 .ped-block{height:278px;background:linear-gradient(180deg,#e9ac77,#b9743f)}
+.ped1 .ped-num{color:#4a3407}
+.ped2 .ped-num{color:#31363d}
+.ped3 .ped-num{color:#4a2c15}
+.ped1 .ped-wm{font-size:clamp(10px,16px,13px);color:rgba(74,52,7,.46)}
+.ped2 .ped-wm{font-size:clamp(9px,15px,12px);color:rgba(49,54,61,.48)}
+.ped3 .ped-wm{font-size:clamp(9px,14px,11px);color:rgba(74,44,21,.5)}
+/* pódio anual MINIMALISTA: sem marca d'água, número grande centralizado na barra */
+.podium3.minimal .ped-block{justify-content:center;padding-top:0}
+.podium3.minimal .ped-num{font-size:clamp(40px,92px,72px)}
+/* pódio anual em 2x2 (quatro cantos): Diretor·Superintendente em cima, Gerente·Vendedor embaixo.
+   Barras menores p/ caber nos quadrantes; nomes MAIORES (vai numa TV). */
+.podium3.quad{grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:clamp(12px,28px,22px)}
+.podium3.quad .ped{gap:clamp(3px,8px,6px)}
+.podium3.quad .pphoto{width:clamp(48px,88px,68px);font-size:clamp(20px,40px,32px)}
+.podium3.quad .ped1 .pphoto{width:clamp(58px,106px,84px);font-size:clamp(24px,46px,38px)}
+.podium3.quad .ped1 .ped-block{height:190px}
+.podium3.quad .ped2 .ped-block{height:142px}
+.podium3.quad .ped3 .ped-block{height:102px}
+.podium3.quad .ped-num{font-size:clamp(32px,72px,54px)}
+.podium3.quad .pname{font-size:clamp(21px,44px,35px)}
+.podium3.quad .ped1 .pname{font-size:clamp(25px,52px,42px)}
+.podium3.quad .pvend b{font-size:clamp(22px,44px,35px)}
+.podium3.quad .ped1 .pvend b{font-size:clamp(27px,56px,45px)}
+.ped.empty .ped-person{opacity:.3}
+.ped.empty .ped-block{filter:grayscale(.65) brightness(.6)}
+.podempty{flex:1;display:grid;place-items:center;color:var(--muted);text-align:center;font-size:clamp(13px,22px,17px);opacity:.7}
+
+/* recém-validado: brilho pulsante (vale p/ pódio e 4-up) */
+@keyframes hotpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,81,71,0)}50%{box-shadow:0 0 0 5px rgba(255,81,71,.4),0 0 30px rgba(255,81,71,.55)}}
+.ped.hot .pphoto{animation:hotpulse 1.25s ease-in-out infinite}
+.row.hot{animation:hotpulse 1.25s ease-in-out infinite;border-color:rgba(255,81,71,.65)}
+
 /* ---- Campeões do ano (grid 3x2 de blocos com top 3) ---- */
 .composite.yeargrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;gap:clamp(14px,32.6px,26px)}
 .yeargrid .subpanel{
@@ -230,6 +329,16 @@ button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 .yeargrid .subhead small{color:var(--gold-deep)}
 .yeargrid .col-head{padding:0 14px 6px}
 .yeargrid .row{padding:8px 14px}
+/* fotinha antes do nome (painel Pódio 2026) */
+.yeargrid.withphotos .row{padding:clamp(6px,12px,10px) 14px}
+.yname{display:flex;align-items:center;gap:clamp(7px,14px,11px);min-width:0;overflow:hidden}
+.yname .ynm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ythumb{position:relative;flex:0 0 auto;width:clamp(30px,58px,46px);height:clamp(30px,58px,46px);border-radius:50%;
+  overflow:hidden;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 26%,#4a1e1e,#2A1010 70%);
+  color:#f0cf86;font-family:'Anton',sans-serif;font-size:clamp(15px,26px,21px);
+  box-shadow:0 0 0 2px rgba(255,255,255,.14)}
+.ythumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
 /* ---- Páginas ao vivo: ranking (esq) + feed de últimas vendas (dir) ---- */
 .livewrap{flex:1;display:flex;gap:clamp(18px,46.1px,40px);min-height:0;overflow:hidden}
@@ -662,33 +771,33 @@ const VALID_STAGES = [
 
   
 const LEVELS = [
-  // ===== BLOCO SEMANAL (cadeia completa) =====
-  { key:"DIRETOR_SEM",    word:"DIRETORES",        tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"DIRETOR",
-    excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO"], live:true },
-  { key:"SUPERINTENDENTE_SEM",word:"SUPERINTENDENTES", tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"GESTOR",
-    excludeNames:["JEAN"], live:true },
-  { key:"GERENTE_SEM", word:"GERENTES", tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"GERENTE", live:true },
-  { key:"VENDEDOR_SEM", word:"VENDEDORES", tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"VENDEDOR",
-    excludeNames:["PARCERIA"], live:true },
+  // ===== MENSAL — 1 tela com as 4 categorias + 1 tela de pódio (tempo real, mês atual) =====
+  { key:"MENSAL_RANK",   word:"MENSAL",         cardTitle:"MENSAL", rank4:true, source:"mensal" },
+  { key:"MENSAL_PODIO",  word:"PÓDIO DO MÊS",   cardTitle:"PÓDIO",  podio:true, source:"mensal" },
 
-  // ===== BLOCO MENSAL (cadeia completa) =====
-  { key:"DIRETOR",        word:"DIRETORES",        tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"DIRETOR",
-    excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO","---"], live:true },
-  { key:"SUPERINTENDENTE",    word:"SUPERINTENDENTES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"GESTOR",
-    excludeNames:["JEAN"], live:true },
-  { key:"GERENTE",     word:"GERENTES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"GERENTE", live:true },
-  { key:"VENDEDOR",     word:"VENDEDORES", tag:"MENSAL",  source:"mensal",  eyebrow:"MENSAL",  col:"VENDEDOR",
-    excludeNames:["PARCERIA"], live:true },
+  // ===== SEMANAL — 1 tela com as 4 categorias + 1 tela de pódio (tempo real, semana atual) =====
+  { key:"SEMANAL_RANK",  word:"SEMANAL",        cardTitle:"SEMANAL", rank4:true, source:"semanal" },
+  { key:"SEMANAL_PODIO", word:"PÓDIO DA SEMANA",cardTitle:"PÓDIO",   podio:true, source:"semanal" },
 
   // ===== DEMAIS PAINÉIS =====
   { key:"HALLOFFAME",     word:"CAMPEÕES DO MÊS PASSADO", eyebrow:"Relembrando", cardTitle:"RELEMBRANDO", winners:true },
-  { key:"YEAR2026",       word:"CAMPEÕES 2026",     eyebrow:"", topYear:true, year:"2026" },
+  { key:"YEAR2026_RANK",  word:"CAMPEÕES 2026", cardTitle:"CAMPEÕES 2026", rank4:true, source:"year", year:"2026" },
+  { key:"YEAR2026_PODIO", word:"PÓDIO 2026", cardTitle:"PÓDIO 2026", podio:true, source:"year", year:"2026", minimal:true, quad:true },
   { key:"COPA",           word:"COPA METROCASA",   eyebrow:"Campeonato interno", copa:true },
   { key:"COPAIMG1",       greenimg:true, imgIndex:0 },
   { key:"COPAIMG2",       greenimg:true, imgIndex:1 },
   { key:"PROMOCOES",      word:"PROMOÇÕES",        eyebrow:"", promo:true },
   { key:"NOVIDADES",      word:"NOVIDADES METROCASA", cardTitle:"NOVIDADES", news:true },
   { key:"MATERIAIS",      word:"FIQUE LIGADO",       cardTitle:"COMUNICADO", comunicado:true },
+];
+
+// Cadeia de categorias dos rankings MENSAL/SEMANAL (colunas do painel 4-up e do pódio).
+// Mesmas regras de exclusão de antes; desempate igual (aggregate: vendas > entrada > VGV).
+const RANK_CHAIN = [
+  { word:"DIRETOR",         col:"DIRETOR",  excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO","---"] },
+  { word:"SUPERINTENDENTE", col:"GESTOR",   excludeNames:["JEAN"] },
+  { word:"GERENTE",         col:"GERENTE" },
+  { word:"VENDEDOR",        col:"VENDEDOR", excludeNames:["PARCERIA"] },
 ];
 
 // Campeões (top da categoria) — usados em "Prata da Casa" (top 1) e "Campeões 2026" (top 3).
@@ -717,6 +826,8 @@ let audioCtx = null;
 let notifAudio = null;
 let recentValidations = [];
 let recentValidationsSem = [];
+let posSnap = {};             // snapshot de posições p/ movimento ▲▼ (snapKey -> Map(nome->posição))
+let hotNames = new Map();     // recém-validados -> validade em ms (brilho pulsante)
 
 /* ============================================================
    UTIL
@@ -958,6 +1069,41 @@ function aggregate(validated, spec){
   );
 }
 
+// monta a hierarquia p/ a marca d'água: diretor->sups, sup->gerentes, gerente->corretores
+function buildTeamMaps(rws){
+  const dir=new Map(), sup=new Map(), ger=new Map();
+  const cleanG=s=>String(s||"").replace(/\s*\([GB]\)\s*$/i,"").trim();
+  const add=(m,key,val)=>{ key=String(key||"").trim(); val=String(val||"").trim();
+    if(!key||!val) return; const k=norm(key); if(!m.has(k)) m.set(k,new Map()); m.get(k).set(norm(val),val); };
+  for(const r of (rws||[])){
+    if(norm(r.diretor)==="JEAN") continue;
+    add(dir, r.diretor, r.gestor);          // diretor -> superintendentes
+    add(sup, r.gestor, cleanG(r.gerente));  // superintendente -> gerentes
+    if(!norm(r.vendedor).includes("PARCERIA")) add(ger, cleanG(r.gerente), r.vendedor); // gerente -> corretores
+  }
+  const toObj=m=>{const o={}; m.forEach((names,k)=>o[k]=[...names.values()].sort((a,b)=>a.localeCompare(b,"pt-BR"))); return o;};
+  return { dir:toObj(dir), sup:toObj(sup), ger:toObj(ger) };
+}
+
+// pega o topo N de um ranking e anexa o movimento vs a leitura anterior (mv),
+// depois atualiza o snapshot daquela chave. mv = {dir:'up'|'down'|'new', delta}
+function rankWithMv(full, snapKey, n){
+  const prev = posSnap[snapKey];
+  const top = full.slice(0,n).map((d,idx)=>{
+    const cur=idx+1; let mv=null;
+    if(prev){
+      const pp=prev.get(norm(d.name));
+      if(pp==null) mv={dir:"new"};
+      else if(pp>cur) mv={dir:"up",delta:pp-cur};
+      else if(pp<cur) mv={dir:"down",delta:cur-pp};
+    }
+    return Object.assign({}, d, {mv});
+  });
+  const m=new Map(); full.forEach((d,i)=>m.set(norm(d.name), i+1));
+  posSnap[snapKey]=m;
+  return top;
+}
+
 function buildRankings(rows, mKey, resRows, copaItems){
   const validSet = new Set(VALID_STAGES.map(norm));
   const isValid = r => validSet.has(norm(r.estagio));
@@ -1007,16 +1153,45 @@ function buildRankings(rows, mKey, resRows, copaItems){
       result[lvl.key] = { copa:true, items: copaItems||[] };
     }else if(lvl.winners){
       result[lvl.key] = winners;
-    }else if(lvl.topYear){
-      const sp=s=>norm(s).replace(/\s+/g,""); // ignora espaços: "JEAN (G)" == "JEAN(G)"
-      const exGer=new Set((lvl.excludeGerente||[]).map(sp));
-      const exGes=new Set((lvl.excludeGestor||[]).map(sp));
+    }else if(lvl.yearGrid){
+      // grid 2x2 anual: top-N por categoria; com foto (pódio) ou só stats (ranking)
       const yv = rows.filter(r=> String(monthKey(r.mes)).startsWith(lvl.year)
-        && isValid(r) && notJean(r) && notVaga(r)
-        && !exGer.has(sp(r.gerente))
-        && !exGes.has(sp(r.gestor)) );
-      result[lvl.key] = { topYear:true, year:lvl.year,
-        items: WINNER_SOURCES.map(s=>({ label:s.label, top:aggregate(yv,s).slice(0,3) })) };
+        && isValid(r) && notJean(r) && notVaga(r) );
+      const n = lvl.topN || 3;
+      result[lvl.key] = { yearGrid:true, year:lvl.year, photos:!!lvl.photos, hideTitle:!!lvl.hideTitle,
+        items: WINNER_SOURCES.map(s=>({ label:s.label, top: aggregate(yv,s).slice(0,n) })) };
+    }else if(lvl.rank4){
+      // 1 tela com as 4 categorias lado a lado (top 8 cada): mensal, semanal ou anual
+      const src = lvl.source==="semanal" ? validatedSem
+                : lvl.source==="year" ? rows.filter(r=> String(monthKey(r.mes)).startsWith(lvl.year) && isValid(r) && notJean(r) && notVaga(r))
+                : validated;
+      result[lvl.key] = { rank4:true, source:lvl.source,
+        cols: RANK_CHAIN.map(s=>({ word:s.word, items: rankWithMv(aggregate(src,s), lvl.key+"|"+s.col, 8) })) };
+    }else if(lvl.podio){
+      // pódio: TOP 3 de Diretor·Superintendente·Gerente (sem Vendedor). mensal/semanal:
+      // fonte mensal/semanal + marca d'água do time. anual (minimal): fonte ano, sem marca d'água.
+      const src = lvl.source==="semanal" ? validatedSem
+                : lvl.source==="year" ? rows.filter(r=> String(monthKey(r.mes)).startsWith(lvl.year) && isValid(r) && notJean(r) && notVaga(r))
+                : validated;
+      let mapFor, countFor, orderTeam;
+      if(!lvl.minimal){
+        const tm = buildTeamMaps(lvl.source==="semanal" ? resRows : monthRows);
+        const cnt = spec => Object.fromEntries(aggregate(src, spec).map(x=>[norm(x.name), x.vendas]));
+        countFor = { DIRETOR: cnt(RANK_CHAIN[1]), GESTOR: cnt(RANK_CHAIN[2]), GERENTE: cnt(RANK_CHAIN[3]) };
+        mapFor = col => col==="DIRETOR"?tm.dir : col==="GESTOR"?tm.sup : tm.ger;
+        orderTeam = (names, counts, ownNorm) => (names||[])
+          .filter(n=>norm(n)!==ownNorm) // tira o próprio nome (ex.: gerente que também vende)
+          .sort((a,b)=> (counts[norm(b)]||0)-(counts[norm(a)]||0) || a.localeCompare(b,"pt-BR"));
+      }
+      // quad (anual): 4 cadeias em 2x2; normal (mensal/semanal): 3 cadeias sem Vendedor
+      const chain = lvl.quad ? RANK_CHAIN : RANK_CHAIN.slice(0,3);
+      result[lvl.key] = { podio:true, source:lvl.source, minimal:!!lvl.minimal, quad:!!lvl.quad,
+        items: chain.map(s=>{
+          const top = rankWithMv(aggregate(src,s), lvl.key+"|"+s.col, 3);
+          if(!lvl.minimal){ const m=mapFor(s.col), counts=countFor[s.col];
+            top.forEach(d=>{ d.team = orderTeam(m[norm(d.name)], counts, norm(d.name)); }); }
+          return { label:s.word, top };
+        }) };
     }else{
       const src = lvl.source==="semanal" ? validatedSem : validated;
       result[lvl.key] = aggregate(src, lvl);
@@ -1254,6 +1429,29 @@ function renderLevel(i,withCard){
     board.innerHTML = comunicadoHtml();
   }else if(entry && entry.copa){
     board.innerHTML = copaHtml(entry);
+  }else if(entry && entry.rank4){
+    // 1 tela: 4 categorias lado a lado (Diretor · Superintendente · Gerente · Vendedor)
+    const blocks=entry.cols.map(c=>`
+      <div class="subpanel">
+        <div class="subhead">${esc(c.word)}<span class="vlbl">Vendas</span></div>
+        <div class="rows">${ c.items.length
+            ? c.items.map((d,idx)=>row4Html(d,idx)).join("")
+            : emptyMsg("Sem vendas validadas.") }</div>
+      </div>`).join("");
+    board.innerHTML=`
+      <div class="board-head">${headTitle(lvl)}</div>
+      <div class="rank4">${blocks}</div>`;
+  }else if(entry && entry.podio){
+    // pódio TOP 3 (mês/semana atual) — 4 cadeias, cada uma com 1º/2º/3º e foto
+    const cols=entry.items;
+    const anyone=cols.some(c=>(c.top&&c.top.length));
+    const eyebrow = lvl.source==="semanal" ? "PÓDIO DA SEMANA" : lvl.source==="year" ? ("PÓDIO "+(lvl.year||"")) : "PÓDIO DO MÊS";
+    const quando = lvl.source==="semanal" ? "nesta semana" : lvl.source==="year" ? "neste ano" : "neste mês";
+    board.innerHTML = anyone
+      ? `<div class="podium-eyebrow">${eyebrow}</div>
+         <div class="podium3${entry.minimal?" minimal":""}${entry.quad?" quad":""}">${cols.map(podiumColHtml).join("")}</div>`
+      : `<div class="board-head">${headTitle(lvl)}</div>
+         ${emptyMsg("Sem vendas validadas ainda "+quando+".")}`;
   }else if(entry && entry.winners){
     const items=entry.items.filter(x=>x.champ);
     board.innerHTML=`
@@ -1261,18 +1459,16 @@ function renderLevel(i,withCard){
       ${ items.length
           ? `<div class="hall">${items.map(hallCard).join("")}</div>`
           : emptyMsg("Sem dados do mês passado para exibir.") }`;
-  }else if(entry && entry.topYear){
-    const blocks=entry.items.map(it=>{
-      const top=it.top;
-      return `<div class="subpanel">
+  }else if(entry && entry.yearGrid){
+    const rowFn = entry.photos ? (d,idx)=>yearRowHtml(d,idx) : (d,idx)=>rowHtml(d,idx,'nocur');
+    const blocks=entry.items.map(it=>`
+      <div class="subpanel">
         <div class="subhead">${esc(it.label)}</div>
         ${COLHEAD}
-        <div class="rows">${ top.length? top.map((d,idx)=>rowHtml(d,idx,'nocur')).join("") : emptyMsg("Sem validações em "+entry.year+".") }</div>
-      </div>`;
-    }).join("");
-    board.innerHTML=`
-      <div class="board-head">${headTitle(lvl)}</div>
-      <div class="composite yeargrid">${blocks}</div>`;
+        <div class="rows">${ it.top.length? it.top.map((d,idx)=>rowFn(d,idx)).join("") : emptyMsg("Sem validações em "+entry.year+".") }</div>
+      </div>`).join("");
+    const head = entry.hideTitle ? "" : `<div class="board-head">${headTitle(lvl)}</div>`;
+    board.innerHTML=`${head}<div class="composite yeargrid${entry.photos?" withphotos":""}">${blocks}</div>`;
   }else{
     const data=entry||[];
     const top=data.slice(0,topN);
@@ -1296,11 +1492,19 @@ function renderLevel(i,withCard){
   });
   // stagger hall cards
   board.querySelectorAll(".hall-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.1:0.2)+idx*0.13+"s"; });
+  // stagger colunas do pódio
+  board.querySelectorAll(".podcol").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
   // stagger feed cards
   board.querySelectorAll(".feedcard").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.2:0.2)+idx*0.08+"s"; });
   // stagger copa lists
   board.querySelectorAll(".copa-list").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
   if(entry && entry.copa) setupCopaScroll(board, withCard);
+  applyHot(board); // acende quem validou há pouco (pódio e 4-up)
+  // pódio: nomes longos (VASCONCELOS, etc.) — encolhe só o que estoura, sem truncar
+  if(entry && entry.podio){
+    requestAnimationFrame(()=>fitPodiumNames(board));
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>fitPodiumNames(board));
+  }
   // stagger promo cards
   board.querySelectorAll(".promo-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
 
@@ -1334,6 +1538,109 @@ function rowHtml(d,idx,mode,live){
   return `<div class="${cls}">
     <div class="pos">${medal?`<span class="medal">${medal}</span>`:pos}</div>
     <div class="name" title="${esc(d.name)}">${esc(d.name)}</div>
+    <div class="num sales tabular">${fmtInt(d.vendas)}</div>
+    <div class="num money tabular">${fm(d.entrada)}</div>
+    <div class="num money tabular">${fm(d.vlrvenda)}</div>
+  </div>`;
+}
+
+// linha do painel 4-up: só posição/medalha · nome · vendas (como no esboço)
+function row4Html(d,idx){
+  const pos=idx+1;
+  const cls = "row" + (pos<=3 ? ` p${pos}` : "");
+  const medal = pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":"";
+  return `<div class="${cls}" data-name="${esc(norm(d.name))}">
+    <div class="pos">${medal?`<span class="medal">${medal}</span>`:pos}</div>
+    <div class="name" title="${esc(d.name)}">${esc(d.name)}${mvChip(d.mv)}</div>
+    <div class="num sales tabular">${fmtInt(d.vendas)}</div>
+  </div>`;
+}
+
+// ajusta a fonte dos nomes do pódio que não cabem em 1 linha (sem reticências)
+function fitPodiumNames(root){
+  root.querySelectorAll('.pname').forEach(el=>{
+    el.style.fontSize=''; // volta ao tamanho do CSS antes de medir
+    let fs=parseFloat(getComputedStyle(el).fontSize), guard=0;
+    while(el.scrollWidth>el.clientWidth+1 && fs>12 && guard++<40){ fs-=1; el.style.fontSize=fs+"px"; }
+  });
+}
+// coluna do pódio: uma cadeia (Diretor/Superintendente/...) como pódio 2-1-3 com foto
+function podiumColHtml(cat){
+  const top=cat.top||[];
+  const head=`<div class="podcol-head">${esc(cat.label)}</div>`;
+  if(!top.length) return `<div class="podcol">${head}<div class="podempty">Sem vendas validadas</div></div>`;
+  // ordem visual: 2º (esquerda) · 1º (centro) · 3º (direita)
+  const peds = [[top[1],2],[top[0],1],[top[2],3]].map(([d,pos])=>podPedHtml(d,pos,top)).join("");
+  return `<div class="podcol">${head}<div class="podium">${peds}</div></div>`;
+}
+// um pedestal do pódio: troféu (1º) + foto + nome + distância + vendas + bloco com número
+function podPedHtml(d, pos, arr){
+  if(!d){ // cadeia com menos de 3 pessoas -> pedestal vazio (mantém o formato)
+    return `<div class="ped ped${pos} empty">
+      <div class="ped-person"><div class="pphoto"><span class="pph-fb">–</span></div><div class="pname">—</div></div>
+      <div class="ped-block"><span class="ped-num">${pos}</span></div>
+    </div>`;
+  }
+  const initial=esc((d.name||"?").trim().charAt(0).toUpperCase());
+  const ring = pos===1?"gold":pos===2?"silver":"bronze";
+  const fotoUrl=copaPhotoByName[norm(d.name)];
+  const inner = fotoUrl
+    ? `<img class="pph-img" src="${esc(driveThumb(fotoUrl,'w400'))}" alt="${esc(d.name)}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+       <span class="pph-fb" style="display:none">${initial}</span>`
+    : `<span class="pph-fb">${initial}</span>`;
+  // marca d'água no pedestal: time abaixo dessa pessoa em LISTA (1 por linha), já ordenado por vendas
+  const wm = (d.team&&d.team.length) ? `<div class="ped-wm">${d.team.map(esc).join("<br>")}</div>` : "";
+  return `<div class="ped ped${pos}" data-name="${esc(norm(d.name))}">
+    <div class="ped-person">
+      <div class="pphoto ${ring}${fotoUrl?" has-photo":""}">${inner}</div>
+      <div class="pname" title="${esc(d.name)}">${esc(d.name)}</div>
+      <div class="pvend"><b class="tabular">${fmtInt(d.vendas)}</b></div>
+      <div class="pmeta">${mvChip(d.mv)}</div>
+    </div>
+    <div class="ped-block"><span class="ped-num">${pos}</span>${wm}</div>
+  </div>`;
+}
+// selo de movimento vs a leitura anterior (aparece só quando houve mudança)
+function mvChip(mv){
+  if(!mv) return "";
+  if(mv.dir==="new")  return `<span class="mv mv-new">NOVO</span>`;
+  if(mv.dir==="up")   return `<span class="mv mv-up">▲${mv.delta}</span>`;
+  if(mv.dir==="down") return `<span class="mv mv-down">▼${mv.delta}</span>`;
+  return "";
+}
+const HOT_MS = 18000; // quanto tempo a pessoa fica "acesa" após validar
+// marca os envolvidos numa venda recém-validada (vendedor + cadeia) p/ brilhar
+function markHot(names){
+  const now = Date.now();
+  (names||[]).forEach(n=>{
+    const k=norm(String(n||"").replace(/\s*\([GB]\)\s*$/i,"")); // tira sufixo (G)/(B) do gerente
+    if(k && k!=="---") hotNames.set(k, now+HOT_MS);
+  });
+  applyHot(document);
+  setTimeout(()=>applyHot(document), HOT_MS+150); // limpa quando expira
+}
+// aplica/remove a classe .hot nos elementos [data-name] conforme a validade
+function applyHot(root){
+  const now=Date.now();
+  root.querySelectorAll("[data-name]").forEach(el=>{
+    const exp=hotNames.get(el.getAttribute("data-name"));
+    el.classList.toggle("hot", !!(exp && exp>now));
+  });
+}
+
+// linha do grid anual COM fotinha antes do nome (painel "pódio 2026")
+function yearRowHtml(d,idx){
+  const pos=idx+1;
+  const cls="row"+(pos<=3?` p${pos}`:"");
+  const medal=pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":"";
+  const initial=esc((d.name||"?").trim().charAt(0).toUpperCase());
+  const fotoUrl=copaPhotoByName[norm(d.name)];
+  const thumb=`<span class="ythumb">${ fotoUrl?`<img src="${esc(driveThumb(fotoUrl,'w200'))}" alt="" onerror="this.remove()">`:"" }<i>${initial}</i></span>`;
+  const fm=n=>fmtCompact(n,true);
+  return `<div class="${cls}">
+    <div class="pos">${medal?`<span class="medal">${medal}</span>`:pos}</div>
+    <div class="name yname">${thumb}<span class="ynm" title="${esc(d.name)}">${esc(d.name)}</span></div>
     <div class="num sales tabular">${fmtInt(d.vendas)}</div>
     <div class="num money tabular">${fm(d.entrada)}</div>
     <div class="num money tabular">${fm(d.vlrvenda)}</div>
@@ -1611,6 +1918,8 @@ function queueToast(r){
     </div>`;
   wrap.appendChild(t);
   playNotif();
+  // acende o vendedor e toda a cadeia (gerente/superintendente/diretor) no ranking
+  markHot([r.vendedor, r.gerente, r.gestor, r.diretor]);
   setTimeout(()=>{ t.classList.add("out"); setTimeout(()=>t.remove(),500); }, 6500);
 }
 
