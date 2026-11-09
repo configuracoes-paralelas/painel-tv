@@ -624,7 +624,7 @@ body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none
 }
 </style>
 </head>
-<body class="chrome-hidden">
+<body>
 
 <div id="scaler">
   <div id="app" role="application" aria-label="Painel TV Metrocasa — Ranking de vendas" style="transform: translate(-50%, -50%) rotate(0deg) scale(0.684375);">
@@ -974,7 +974,7 @@ function colMap(header){
     if(n==="MES VIGENTE"||n==="MES") idx.mes=i;
     else if(n==="EMPREENDIMENTO") idx.empreendimento=i;
     else if(n==="EMPREEND") idx.empreend=i;
-    else if(n==="ESTAGIO"||n==="STATUS") idx.estagio=i;
+    else if(n.startsWith("ESTAGI")||n==="STATUS") idx.estagio=i;
     else if(n.startsWith("VENDEDOR")) idx.vendedor=i;
     else if(n==="GERENTE") idx.gerente=i;
     else if(n==="GESTOR") idx.gestor=i;
