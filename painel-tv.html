@@ -5,7 +5,7 @@
 <meta name="description" content="Ranking de vendas ao vivo — Metrocasa Operações">
 
 <!-- PWA / tela inicial -->
-<meta name="theme-color" content="#170808">
+<meta name="theme-color" content="#1A0808">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,37 +19,52 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;500;600;700;800&amp;family=Space+Grotesk:ital,wght@0,400;0,600;0,700;0,800;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
 <style>
 /* =============================================================
    DESIGN TOKENS
 ============================================================= */
 :root{
-  /* Brand — vinho Metrocasa (base escura) */
-  --ink:          #170808;
-  --ink-2:        #221010;
-  --surface:      #341818;
-  --surface-2:    #432020;
-  --surface-3:    #562828;
+  /* =============================================================
+     BRAND METROCASA
+     TODO: confirmar HEX oficial no manual de marca.
+     Valores atuais são proxies alinhados à comunicação pública.
+  ============================================================= */
+  --brand-primary:         #EC1C24;  /* vermelho Metrocasa — accent principal */
+  --brand-primary-strong:  #CE1126;  /* variante mais escura (hovers, bordas) */
+  --brand-primary-vivid:   #FF1F2B;  /* usado em micro highlights */
+  --brand-primary-dim:     #7A0F0B;  /* vermelho muito escuro (bordas do card institucional) */
+  --brand-ink:             #1A0808;  /* preto-vinho de marca */
+  --brand-offwhite:        #FBF3F0;  /* branco com calor */
+  --brand-on-red:          #FFFFFF;
 
-  /* Linhas / divisórias */
-  --line:         rgba(255,255,255,.08);
-  --line-strong:  rgba(255,255,255,.14);
+  /* Base clara da interface — identidade institucional Metrocasa */
+  --ink:          #FFFFFF;   /* fundo branco puro */
+  --ink-2:        #FBF3F0;   /* branco quente (pills, variações) */
+  --surface:      #FFFFFF;   /* cards */
+  --surface-2:    #F7EEEB;   /* cards em destaque */
+  --surface-3:    #F0E3DF;   /* profundidade sutil */
 
-  /* Textos (contraste WCAG AA sobre vinho escuro) */
-  --text:         #FBEDED;
-  --text-dim:     #E7CFCF;
-  --muted:        #D9B4B4;  /* elevado em relação ao #C49595 original */
+  /* Linhas / divisórias (agora escuras sobre branco) */
+  --line:         rgba(26,8,8,.10);
+  --line-strong:  rgba(26,8,8,.18);
+  --line-brand:   rgba(236,28,36,.40);
 
-  /* Vermelho de marca */
-  --primary:        #941F18;
+  /* Textos (contraste WCAG AA sobre branco) */
+  --text:         #1A0808;   /* preto-vinho de marca */
+  --text-dim:     #4A2626;
+  --muted:        #7A5555;
+
+  /* Aliases legados (mantidos p/ não quebrar nada;
+     agora apontam pros tokens da marca) */
+  --primary:        var(--brand-primary-dim);
   --primary-hover:  #A5211B;
-  --primary-strong: #B6211D;
-  --primary-soft:   #EC1C24;
+  --primary-strong: var(--brand-primary-strong);
+  --primary-soft:   var(--brand-primary);
 
   /* Status / destaques */
-  --live:       #FF5147;
-  --live-deep:  #EC1C24;
+  --live:       var(--brand-primary-vivid);
+  --live-deep:  var(--brand-primary);
   --highlight:  #FF8A80;
   --danger:     #FF6B6B;
 
@@ -66,18 +81,33 @@
   /* Raios */
   --r-sm: 10px; --r-md: 14px; --r-lg: 18px; --r-xl: 22px; --r-pill: 999px;
 
-  /* Sombras */
-  --shadow-sm: 0 4px 12px rgba(0,0,0,.25);
-  --shadow-md: 0 14px 34px rgba(0,0,0,.35);
-  --shadow-lg: 0 24px 60px rgba(148,31,24,.45);
-  --shadow-inset: inset 0 1px 0 rgba(255,255,255,.06);
+  /* Sombras (sutis sobre fundo claro) */
+  --shadow-sm: 0 2px 8px rgba(26,8,8,.06);
+  --shadow-md: 0 8px 24px rgba(26,8,8,.08);
+  --shadow-lg: 0 20px 48px rgba(236,28,36,.14);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,.4);
 
-  /* Motion */
-  --ease-out:  cubic-bezier(.16,1,.3,1);
-  --ease-in:   cubic-bezier(.4,0,.2,1);
-  --dur-fast:  .18s;
-  --dur-med:   .45s;
-  --dur-slow:  .8s;
+  /* Motion — padrão cinematográfico */
+  --ease-out:    cubic-bezier(.16,1,.3,1);   /* expo-out — entradas */
+  --ease-in:     cubic-bezier(.65,0,.35,1);  /* ease-in-out suave — saídas */
+  --ease-spring: cubic-bezier(.34,1.56,.64,1); /* overshoot sutil — toast/dots */
+  --dur-micro:   .2s;    /* hover/focus */
+  --dur-fast:    .2s;    /* alias legado */
+  --dur-med:     .45s;   /* entradas de rows/cards */
+  --dur-slow:    .7s;    /* transições de painel */
+  --dur-cinema:  1.2s;   /* card institucional */
+
+  /* Tipografia */
+  --font-sans:    'Inter', system-ui, sans-serif;
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-brand:   'Space Grotesk', 'Inter', sans-serif;
+
+  /* Logo (altura variável conforme contexto) */
+  --brand-logo-h: 44px;
+
+  /* Pattern decorativo de marca — trilhos horizontais sutis
+     (evocação de trilho de metrô, linguagem "metro" + "casa"). */
+  --brand-pattern: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60'><g fill='none' stroke='%23EC1C24' stroke-width='0.5' opacity='0.06'><line x1='0' y1='18' x2='120' y2='18'/><line x1='0' y1='22' x2='120' y2='22'/></g><g fill='%231A0808' opacity='0.08'><circle cx='30' cy='20' r='1'/><circle cx='90' cy='20' r='1'/></g></svg>");
 }
 
 /* =============================================================
@@ -117,9 +147,32 @@ img{display:block;max-width:100%}
   transform-origin:center center;
   transform:translate(-50%,-50%) scale(1);
   background:
-    radial-gradient(90% 60% at 50% -10%, rgba(236,28,36,.08), transparent 60%),
+    var(--brand-pattern),
+    radial-gradient(90% 60% at 50% -10%, rgba(236,28,36,.10), transparent 60%),
     radial-gradient(120% 120% at 50% 100%, var(--ink-2) 0%, var(--ink) 65%);
+  background-size: 120px 60px, auto, auto;
+  background-repeat: repeat, no-repeat, no-repeat;
   border-radius:2px;
+  animation: patternDrift 180s linear infinite; /* drift lentíssimo, quase imperceptível */
+}
+@keyframes patternDrift{
+  from{ background-position: 0 0, 0 0, 0 0; }
+  to  { background-position: 120px 60px, 0 0, 0 0; }
+}
+
+/* Trilho decorativo (linha vermelho vivo) no topo do #app, evocando "metrô" */
+#app::before{
+  content:"";
+  position:absolute;left:0;right:0;top:0;height:2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--brand-primary) 15%,
+    var(--brand-primary-vivid) 50%,
+    var(--brand-primary) 85%,
+    transparent 100%);
+  z-index:40;
+  opacity:.85;
+  pointer-events:none;
 }
 
 /* =============================================================
@@ -133,18 +186,53 @@ img{display:block;max-width:100%}
   z-index:30;
 }
 .brand{display:flex;align-items:center;gap:var(--s-4)}
-.brand .dot{
-  width:12px;height:12px;border-radius:50%;background:var(--live);
-  box-shadow:0 0 0 0 rgba(236,28,36,.45);
+.brand-mark{
+  display:flex;align-items:center;
+  height:var(--brand-logo-h);
+  color:var(--brand-primary);
+  opacity:0;transform:translateX(-10px);
+  animation: brandMarkIn .7s .1s var(--ease-out) forwards;
+  will-change: transform, opacity;
+}
+.brand-mark svg,
+.brand-mark img{height:100%;width:auto;display:block;user-select:none;-webkit-user-drag:none}
+.brand-sep{
+  width:1px;height:32px;
+  background:linear-gradient(180deg, transparent, var(--line-brand), transparent);
+  margin:0 var(--s-2);
+}
+.brand-title{display:flex;flex-direction:column;justify-content:center;gap:2px}
+.brand-title b{
+  font-family:var(--font-brand);
+  font-weight:700;letter-spacing:.02em;font-size:28px;line-height:1;
+  text-transform:uppercase;
+}
+.brand-title .sub{
+  color:var(--muted);font-size:18px;font-weight:500;
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-brand);
+}
+.brand-title .sub .live-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:2px 10px;border-radius:var(--r-pill);
+  background:rgba(255,31,43,.12);border:1px solid rgba(255,31,43,.35);
+  color:var(--brand-primary-vivid);font-weight:800;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+}
+.brand-title .sub .live-pill::before{
+  content:"";width:7px;height:7px;border-radius:50%;background:var(--brand-primary-vivid);
+  box-shadow:0 0 0 0 rgba(255,31,43,.5);
   animation:beat 2.4s infinite var(--ease-out);
 }
 @keyframes beat{
-  0%  {box-shadow:0 0 0 0 rgba(236,28,36,.45)}
-  70% {box-shadow:0 0 0 10px rgba(236,28,36,0)}
-  100%{box-shadow:0 0 0 0 rgba(236,28,36,0)}
+  0%  {box-shadow:0 0 0 0 rgba(255,31,43,.5)}
+  70% {box-shadow:0 0 0 8px rgba(255,31,43,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,31,43,0)}
 }
-.brand b{font-weight:800;letter-spacing:.3px;font-size:30px;line-height:1.1}
-.brand .sub{color:var(--muted);font-size:21px;font-weight:500;margin-top:2px}
+@keyframes brandMarkIn{ to{opacity:1;transform:none} }
+/* Compatibilidade: antigo .brand .dot não usado, mas mantemos classe caso seja re-injetada */
+.brand .dot{display:none}
+.brand b{font-weight:800;letter-spacing:.3px;font-size:28px;line-height:1.1}
 .spacer{flex:1}
 
 .month-pill{
@@ -173,10 +261,19 @@ img{display:block;max-width:100%}
 .titlecard{
   position:absolute;inset:0;z-index:20;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(80% 80% at 50% 50%,var(--ink-2),var(--ink));
+  background:radial-gradient(80% 80% at 50% 50%,var(--brand-primary),var(--brand-primary-dim));
   pointer-events:none;opacity:0;
 }
 .titlecard.show{animation:cardIn 2.4s var(--ease-out) forwards}
+.titlecard .tc-logo{
+  height:clamp(120px,14vh,190px);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:clamp(18px,2.6vh,34px);
+  opacity:0;transform:scale(.85);
+}
+.titlecard .tc-logo img{height:100%;width:auto;display:block;filter:brightness(0) invert(1)}
+.titlecard.show .tc-logo{animation:tcLogoIn .8s .05s var(--ease-out) forwards}
+@keyframes tcLogoIn{to{opacity:1;transform:scale(1)}}
 @keyframes cardIn{
   0%{opacity:0}
   8%{opacity:1}
@@ -197,17 +294,39 @@ img{display:block;max-width:100%}
 }
 .titlecard .word span{
   display:inline-block;opacity:0;
-  transform:translateY(28%) rotateX(15deg);
-  transform-origin:bottom;
+  transform:translateY(60%) skewX(-3deg); /* "typing moderno" */
+  transform-origin:bottom left;
+  will-change: transform, opacity;
 }
-.titlecard.show .word span{animation:letterIn .8s var(--ease-out) forwards}
+.titlecard.show .word span{animation:letterIn .7s var(--ease-out) forwards}
 @keyframes letterIn{to{opacity:1;transform:none}}
+
+/* Trilho de metrô como rule (linha + 2 estações nas pontas).
+   Entra com scaleX de 0→1 a partir do centro, estações aparecem depois. */
 .titlecard .rule{
-  width:0;height:3px;margin-top:16px;border-radius:2px;
-  background:linear-gradient(90deg,transparent,var(--primary-soft),transparent);
+  position:relative;
+  width:min(520px,60vw);height:3px;margin-top:22px;
+  background:linear-gradient(90deg,
+    transparent 0%, var(--brand-primary) 15%,
+    var(--brand-primary-vivid) 50%,
+    var(--brand-primary) 85%, transparent 100%);
+  border-radius:2px;
+  transform:scaleX(0);transform-origin:center;
 }
+.titlecard .rule::before,
+.titlecard .rule::after{
+  content:"";position:absolute;top:50%;width:10px;height:10px;border-radius:50%;
+  background:var(--brand-primary-vivid);
+  box-shadow:0 0 12px rgba(255,31,43,.6);
+  transform:translate(-50%,-50%) scale(0);
+  transition: transform .3s var(--ease-spring);
+}
+.titlecard .rule::before{left:8%}
+.titlecard .rule::after{left:92%}
 .titlecard.show .rule{animation:ruleGrow .9s .4s var(--ease-out) forwards}
-@keyframes ruleGrow{to{width:min(420px,52vw)}}
+.titlecard.show .rule::before{transform:translate(-50%,-50%) scale(1);transition-delay:1.1s}
+.titlecard.show .rule::after{transform:translate(-50%,-50%) scale(1);transition-delay:1.3s}
+@keyframes ruleGrow{to{transform:scaleX(1)}}
 @keyframes fadeUp{to{opacity:1;transform:none}}
 
 /* =============================================================
@@ -217,10 +336,13 @@ img{display:block;max-width:100%}
   position:absolute;inset:0;z-index:10;
   padding:34px clamp(24px,5vw,80px) 40px;
   display:flex;flex-direction:column;
-  opacity:0;
+  opacity:0;transform:translateY(20px);
+  will-change: transform, opacity;
 }
-.board.show{animation:boardIn .6s .1s ease forwards}
-@keyframes boardIn{to{opacity:1}}
+.board.show{animation:boardIn .5s var(--ease-out) forwards}
+.board.leaving{animation:boardOut .4s var(--ease-in) forwards}
+@keyframes boardIn{ to{opacity:1;transform:none} }
+@keyframes boardOut{ to{opacity:0;transform:translateY(-20px)} }
 
 .board-head{display:flex;align-items:baseline;gap:var(--s-6);margin-bottom:var(--s-4)}
 .board-head h2{
@@ -244,21 +366,41 @@ img{display:block;max-width:100%}
   grid-template-columns:90px minmax(0,1fr) 150px 240px 240px;
   align-items:center;gap:20px;
 }
-.col-head{padding:0 28px 10px;border-bottom:1px solid var(--line);margin-bottom:12px}
+/* col-head como "trilho de metrô" sutil: linha fina vermelha + 2 bullets nas pontas */
+.col-head{
+  position:relative;
+  padding:0 28px 14px;margin-bottom:12px;
+  border-bottom:0;
+}
+.col-head::after{
+  content:"";position:absolute;left:0;right:0;bottom:4px;height:1px;
+  background:linear-gradient(90deg,
+    transparent 0%, var(--brand-primary) 10%,
+    rgba(236,28,36,.45) 50%,
+    var(--brand-primary) 90%, transparent 100%);
+  opacity:.55;
+}
+.col-head::before{
+  /* bullet estação à esquerda */
+  content:"";position:absolute;left:4px;bottom:1px;width:6px;height:6px;border-radius:50%;
+  background:var(--brand-primary);box-shadow:0 0 6px rgba(236,28,36,.5);
+}
+.col-head{counter-reset:none}
 .col-head .lbl{text-align:right;color:var(--muted);font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .col-head .lbl.sales{text-align:center}
 
 .rows{display:flex;flex-direction:column;gap:12px;overflow:hidden;flex:1}
 .row{
   padding:14px 28px;border-radius:var(--r-md);
-  background:linear-gradient(90deg,var(--surface),rgba(48,20,20,.55));
+  background:linear-gradient(90deg,var(--surface),rgba(240,227,223,.6));
   border:1px solid var(--line);
   box-shadow:var(--shadow-inset);
-  opacity:0;transform:translateY(14px);
+  opacity:0;transform:translateY(14px) scale(.98);
   flex:1 1 0;min-height:0;overflow:hidden;white-space:nowrap;
+  will-change: transform, opacity;
 }
-.board.show .row{animation:rowIn .55s var(--ease-out) forwards}
-@keyframes rowIn{to{opacity:1;transform:none}}
+.board.show .row{animation:rowIn .45s var(--ease-out) forwards}
+@keyframes rowIn{to{opacity:1;transform:translateY(0) scale(1)}}
 .row .pos{
   font-family:'Anton',sans-serif;font-size:clamp(30px,3.2vw,50px);
   color:var(--muted);text-align:center;display:flex;align-items:center;justify-content:center;
@@ -270,22 +412,22 @@ img{display:block;max-width:100%}
   overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums;
 }
 .row .num.sales{color:var(--text);text-align:center}
-.row .num.money{color:#f3dada}
+.row .num.money{color:var(--text-dim)}
 
 /* Pódio — refinado, menos berrante */
 .row.p1{
-  background:linear-gradient(90deg, rgba(255,200,92,.18), rgba(255,200,92,.03) 60%, rgba(48,20,20,.55));
+  background:linear-gradient(90deg, rgba(255,200,92,.18), rgba(255,200,92,.03) 60%, rgba(240,227,223,.6));
   border-color:rgba(255,200,92,.42);
   box-shadow:var(--shadow-inset),0 0 24px rgba(255,200,92,.08);
 }
 .row.p1 .pos{color:var(--gold)}
 .row.p2{
-  background:linear-gradient(90deg, rgba(227,231,239,.11), rgba(48,20,20,.55));
+  background:linear-gradient(90deg, rgba(227,231,239,.11), rgba(240,227,223,.6));
   border-color:rgba(227,231,239,.28);
 }
 .row.p2 .pos{color:var(--silver)}
 .row.p3{
-  background:linear-gradient(90deg, rgba(226,160,106,.14), rgba(48,20,20,.55));
+  background:linear-gradient(90deg, rgba(226,160,106,.14), rgba(240,227,223,.6));
   border-color:rgba(226,160,106,.3);
 }
 .row.p3 .pos{color:var(--bronze)}
@@ -295,11 +437,12 @@ img{display:block;max-width:100%}
 .composite{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:30px;overflow:hidden;min-height:0}
 .subpanel{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .subhead{
-  font-family:'Anton',sans-serif;font-size:clamp(22px,3vw,40px);
-  text-transform:uppercase;color:var(--primary-soft);margin-bottom:8px;
+  font-family:var(--font-brand);font-weight:700;font-size:clamp(20px,2.8vw,34px);
+  text-transform:uppercase;color:var(--brand-primary);margin-bottom:8px;
+  letter-spacing:.02em;
   display:flex;align-items:baseline;gap:12px;
 }
-.subhead small{font-family:'Inter',sans-serif;font-size:16px;font-weight:600;color:var(--muted)}
+.subhead small{font-family:var(--font-brand);font-size:16px;font-weight:600;color:var(--muted)}
 .composite .col-head,.composite .row{grid-template-columns:56px minmax(0,1fr) 76px 140px 140px;gap:12px}
 .composite .col-head{padding:0 18px 8px}
 .composite .row{padding:10px 18px;border-radius:13px}
@@ -310,13 +453,29 @@ img{display:block;max-width:100%}
 
 /* Campeões 2026 */
 .composite.yeargrid{grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;gap:clamp(14px,2vw,26px)}
+/* Layout horizontal: cada função numa coluna, até 10 linhas cada */
+.composite.yeargrid-row{grid-template-columns:repeat(auto-fit,minmax(0,1fr));grid-auto-rows:1fr;gap:clamp(10px,1.4vw,20px)}
+.yeargrid-row .subpanel{padding:clamp(10px,1.3vw,18px);min-width:0}
+.yeargrid-row .subhead{font-size:clamp(14px,1.6vw,22px);margin-bottom:6px}
+.yeargrid-row .col-head{padding:0 10px 4px}
+.yeargrid-row .col-head,.yeargrid-row .row{grid-template-columns:34px minmax(0,1.6fr) 54px 72px 72px;gap:6px}
+.yeargrid-row .col-head .lbl{font-size:11px;letter-spacing:.06em}
+.yeargrid-row .row{padding:5px 10px;border-radius:10px}
+.yeargrid-row .row .pos{font-size:clamp(14px,1.6vw,20px)}
+.yeargrid-row .row .name{
+  font-size:clamp(12px,1.3vw,17px);
+  overflow:visible;text-overflow:clip;white-space:nowrap;
+  letter-spacing:-.01em;
+}
+.yeargrid-row .row .num{font-size:clamp(12px,1.3vw,17px)}
+.yeargrid-row .rows{gap:clamp(3px,.5vw,6px)}
 .yeargrid .subpanel{
   padding:clamp(12px,1.6vw,20px) clamp(14px,1.8vw,22px);border-radius:var(--r-lg);
-  background:linear-gradient(160deg,rgba(255,200,92,.09),rgba(48,20,20,.5));
+  background:linear-gradient(160deg,rgba(255,200,92,.09),rgba(240,227,223,.4));
   border:1px solid rgba(255,200,92,.26);
   box-shadow:var(--shadow-inset);
 }
-.yeargrid .subhead{font-size:clamp(17px,2.2vw,30px);color:#fff}
+.yeargrid .subhead{font-size:clamp(17px,2.2vw,30px);color:var(--text)}
 .yeargrid .subhead small{color:var(--gold-deep)}
 .yeargrid .col-head{padding:0 14px 6px}
 .yeargrid .row{padding:8px 14px}
@@ -345,8 +504,9 @@ img{display:block;max-width:100%}
   display:flex;flex-direction:column;min-height:0;overflow:hidden;
 }
 .feedhead{
-  font-family:'Anton',sans-serif;font-size:clamp(17px,2vw,26px);
-  text-transform:uppercase;letter-spacing:.03em;color:var(--live);
+  font-family:var(--font-brand);font-weight:700;
+  font-size:clamp(16px,1.9vw,22px);
+  text-transform:uppercase;letter-spacing:.12em;color:var(--brand-primary-vivid);
   margin-bottom:14px;display:flex;align-items:center;gap:10px;
 }
 .feedhead .fh-dot{
@@ -359,7 +519,7 @@ img{display:block;max-width:100%}
   display:flex;flex-direction:column;justify-content:center;gap:8px;
   padding:clamp(12px,1.6vw,20px) clamp(14px,1.8vw,22px);
   border-radius:var(--r-md);border:1px solid var(--line);border-left:5px solid var(--live);
-  background:linear-gradient(90deg,rgba(236,28,36,.12),rgba(48,20,20,.55));
+  background:linear-gradient(90deg,rgba(236,28,36,.12),rgba(240,227,223,.6));
   box-shadow:var(--shadow-inset);
   opacity:0;transform:translateY(14px);
 }
@@ -386,12 +546,20 @@ img{display:block;max-width:100%}
   display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   gap:clamp(6px,1.2vw,12px);
   padding:clamp(14px,2.6vw,30px);border-radius:var(--r-xl);min-height:0;overflow:hidden;
-  background:linear-gradient(160deg,rgba(255,200,92,.13),rgba(48,20,20,.5));
-  border:1px solid rgba(255,200,92,.32);
-  box-shadow:var(--shadow-inset),0 18px 40px rgba(0,0,0,.35);
-  opacity:0;transform:translateY(16px);
+  background:#fff;
+  border:1px solid rgba(224,166,54,.35);
+  box-shadow:var(--shadow-md), inset 0 0 0 1px rgba(224,166,54,.08);
+  opacity:0;transform:translateY(30px) scale(.9);
+  will-change: transform, opacity;
 }
-.board.show .hall-card{animation:rowIn .6s var(--ease-out) forwards}
+.board.show .hall-card{animation:hallIn .65s var(--ease-out) forwards}
+@keyframes hallIn{to{opacity:1;transform:translateY(0) scale(1)}}
+.board.show .hall-card .crown{animation:crownBounce .4s var(--ease-spring) 1.4s backwards}
+@keyframes crownBounce{
+  0%{transform:scale(0) rotate(-20deg)}
+  60%{transform:scale(1.15) rotate(5deg)}
+  100%{transform:scale(1) rotate(0)}
+}
 .hall-card .portrait{
   position:relative;
   width:clamp(60px,8vw,108px);height:clamp(60px,8vw,108px);
@@ -399,21 +567,19 @@ img{display:block;max-width:100%}
   background:radial-gradient(circle at 32% 26%,#fff4d6,#f0cf86 64%,#caa44f);
   color:#3b2b07;font-family:'Anton',sans-serif;
   font-size:clamp(28px,4vw,52px);
-  box-shadow:0 0 0 4px rgba(244,210,122,.25),0 8px 22px rgba(0,0,0,.45);
+  box-shadow:0 0 0 4px rgba(224,166,54,.25),0 6px 16px rgba(26,8,8,.12);
 }
 .hall-card .crown{
   position:absolute;top:-15px;right:-8px;font-style:normal;
   font-size:clamp(22px,3vw,34px);filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));
 }
-.hall-card .portrait.has-photo{background:#2A1010;overflow:visible}
+.hall-card .portrait.has-photo{background:#F7EEEB;overflow:visible}
 .hall-card .portrait .hc-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
 .hall-card .portrait .hc-fallback{place-items:center;width:100%;height:100%}
-.hall-card .cat{font-size:clamp(11px,1.4vw,16px);font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.hall-card .cat{font-family:var(--font-brand);font-size:clamp(11px,1.4vw,16px);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep)}
 .hall-card .cname{
   font-family:'Anton',sans-serif;font-size:clamp(24px,3.6vw,50px);line-height:1;
-  text-transform:uppercase;
-  background:linear-gradient(180deg,#fff,var(--gold) 130%);
-  -webkit-background-clip:text;background-clip:text;color:#fff;
+  text-transform:uppercase;color:var(--text);
   max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
 .hall-card .hstats{display:flex;gap:clamp(12px,2vw,28px);margin-top:4px}
@@ -421,6 +587,148 @@ img{display:block;max-width:100%}
 .hall-card .hstats b{font-size:clamp(17px,2.4vw,30px);font-weight:800;color:var(--text);white-space:nowrap;font-variant-numeric:tabular-nums}
 .hall-card .hstats span{font-size:clamp(10px,1.2vw,13px);color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 .slogan{text-align:center;margin-top:16px;color:var(--gold);font-style:italic;font-size:clamp(14px,2vw,22px);letter-spacing:.04em;opacity:.9}
+
+/* =============================================================
+   PÓDIO OLÍMPICO — Campeões do mês passado & Campeões do ano
+============================================================= */
+.podio-grid{
+  flex:1;display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:1fr;
+  gap:clamp(16px,2.2vw,28px);overflow:hidden;min-height:0;
+}
+.podio-block{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding:clamp(14px,2vw,22px) clamp(12px,1.6vw,20px) clamp(10px,1.4vw,16px);
+  border-radius:var(--r-xl);min-height:0;overflow:hidden;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(255,200,92,.18), transparent 65%),
+    linear-gradient(180deg,#fff, #fbf4ee);
+  border:1px solid rgba(224,166,54,.25);
+  box-shadow:var(--shadow-md), inset 0 0 0 1px rgba(224,166,54,.06);
+  opacity:0;transform:translateY(24px) scale(.96);
+}
+.board.show .podio-block{animation:podioIn .7s var(--ease-out) forwards}
+@keyframes podioIn{to{opacity:1;transform:translateY(0) scale(1)}}
+.podio-block .podio-cat{
+  font-family:var(--font-brand);font-size:clamp(12px,1.4vw,17px);font-weight:800;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);
+  position:absolute;top:clamp(10px,1.4vw,16px);left:0;right:0;text-align:center;
+}
+.podio-row{
+  display:grid;grid-template-columns:1fr 1.25fr 1fr;align-items:end;
+  gap:clamp(8px,1.2vw,18px);width:100%;margin-top:clamp(24px,3vw,40px);
+}
+.podio-spot{display:flex;flex-direction:column;align-items:center;min-width:0;opacity:0;transform:translateY(40px)}
+.board.show .podio-spot{animation:spotIn .6s var(--ease-spring) forwards}
+.podio-spot.silver {animation-delay:.25s}
+.podio-spot.gold   {animation-delay:.55s}
+.podio-spot.bronze {animation-delay:.4s}
+@keyframes spotIn{to{opacity:1;transform:translateY(0)}}
+
+.podio-portrait{
+  position:relative;border-radius:50%;overflow:visible;flex:none;display:grid;place-items:center;
+  color:#3b2b07;font-family:'Anton',sans-serif;
+}
+.podio-portrait .ph-inner{
+  position:absolute;inset:0;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+}
+.podio-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.podio-portrait .ph-fallback{
+  width:100%;height:100%;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 26%,#fff4d6,#f0cf86 64%,#caa44f);
+}
+
+/* Tamanhos e brilho por posição */
+.podio-spot.gold   .podio-portrait{width:clamp(80px,10vw,130px);height:clamp(80px,10vw,130px);
+  box-shadow:0 0 0 5px #F3C44A,0 0 36px rgba(243,196,74,.55),0 8px 22px rgba(26,8,8,.18)}
+.podio-spot.silver .podio-portrait{width:clamp(62px,7.6vw,100px);height:clamp(62px,7.6vw,100px);
+  box-shadow:0 0 0 4px #CFD4DC,0 0 22px rgba(207,212,220,.5),0 6px 16px rgba(26,8,8,.14)}
+.podio-spot.bronze .podio-portrait{width:clamp(54px,6.8vw,88px);height:clamp(54px,6.8vw,88px);
+  box-shadow:0 0 0 4px #D28E5A,0 0 20px rgba(210,142,90,.5),0 6px 14px rgba(26,8,8,.14)}
+
+/* Medalha + coroa */
+.podio-portrait .medal{
+  position:absolute;bottom:-6px;right:-4px;width:clamp(26px,3vw,38px);height:clamp(26px,3vw,38px);
+  border-radius:50%;display:grid;place-items:center;
+  font-family:'Anton',sans-serif;font-size:clamp(14px,1.6vw,20px);color:#3b2a07;
+  background:radial-gradient(circle at 32% 26%,#fff7d8,#f3c44a 60%,#b48a1f);
+  border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+.podio-spot.silver .podio-portrait .medal{background:radial-gradient(circle at 32% 26%,#fff,#d7dce4 60%,#8a8f99);color:#2b2f36}
+.podio-spot.bronze .podio-portrait .medal{background:radial-gradient(circle at 32% 26%,#fde3cf,#c9834d 60%,#7a4a24);color:#3a2110}
+
+.podio-spot.gold .podio-portrait::before{
+  content:"👑";position:absolute;top:-28px;left:50%;transform:translateX(-50%) scale(0) rotate(-20deg);
+  font-size:clamp(26px,3.4vw,42px);filter:drop-shadow(0 3px 4px rgba(0,0,0,.4));
+  animation:crownPop .5s var(--ease-spring) 1.1s forwards;
+}
+@keyframes crownPop{to{transform:translateX(-50%) scale(1) rotate(0)}}
+
+/* Base/degrau do pódio */
+.podio-base{
+  width:100%;margin-top:clamp(10px,1.4vw,16px);
+  display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:clamp(4px,.8vw,10px);align-items:end;
+}
+.podio-step{
+  background:linear-gradient(180deg,#f5e3d6,#e8c8a8);
+  border:1px solid rgba(224,166,54,.4);border-bottom:0;
+  border-top-left-radius:8px;border-top-right-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Anton',sans-serif;color:#7a4a24;font-size:clamp(18px,2.2vw,28px);
+  opacity:0;transform:scaleY(.2);transform-origin:bottom;
+}
+.board.show .podio-step{animation:stepGrow .55s var(--ease-out) forwards}
+.podio-step.s2{animation-delay:.3s;height:clamp(30px,3.5vh,42px);background:linear-gradient(180deg,#e8ecf2,#c8cfdb);color:#3b4252;border-color:#b3bac7}
+.podio-step.s1{animation-delay:.6s;height:clamp(44px,5vh,58px);background:linear-gradient(180deg,#ffe28a,#f3c44a);color:#4a3406;border-color:#b48a1f}
+.podio-step.s3{animation-delay:.45s;height:clamp(24px,2.8vh,34px);background:linear-gradient(180deg,#f5c5a0,#c9834d);color:#4a2210;border-color:#8a5a2a}
+@keyframes stepGrow{to{transform:scaleY(1);opacity:1}}
+
+/* Nome + stats sob cada posição */
+.podio-spot .ps-name{
+  font-family:'Anton',sans-serif;font-weight:400;
+  font-size:clamp(14px,1.8vw,22px);line-height:1;
+  color:var(--text);text-transform:uppercase;letter-spacing:.02em;
+  margin-top:10px;max-width:100%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;
+}
+.podio-spot.gold .ps-name{font-size:clamp(16px,2.1vw,26px)}
+.podio-spot .ps-vendas{
+  font-family:var(--font-brand);font-size:clamp(10px,1.1vw,13px);font-weight:700;
+  color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:2px;
+}
+.podio-spot .ps-vendas b{color:var(--text);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* Confete sutil (motion de celebração) */
+.podio-block::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(3px 3px at 15% 20%, #F3C44A 50%, transparent 51%),
+    radial-gradient(3px 3px at 82% 24%, #EC1C24 50%, transparent 51%),
+    radial-gradient(2px 2px at 30% 38%, #C9834D 50%, transparent 51%),
+    radial-gradient(3px 3px at 72% 42%, #F3C44A 50%, transparent 51%),
+    radial-gradient(2px 2px at 10% 55%, #EC1C24 50%, transparent 51%),
+    radial-gradient(3px 3px at 90% 60%, #CFD4DC 50%, transparent 51%);
+  opacity:0;
+}
+.board.show .podio-block::after{animation:confetti 2.4s .7s var(--ease-out) forwards}
+@keyframes confetti{
+  0%{opacity:0;transform:translateY(-10px)}
+  25%{opacity:1}
+  100%{opacity:0;transform:translateY(40px)}
+}
+
+/* Vazio */
+.podio-block .podio-empty{
+  width:100%;flex:1;display:grid;place-items:center;text-align:center;
+  color:var(--muted);font-family:var(--font-brand);font-size:clamp(14px,1.6vw,20px);
+  padding:clamp(18px,2vw,24px);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .board.show .podio-block,.board.show .podio-spot,.board.show .podio-step,
+  .board.show .podio-block::after,.podio-spot.gold .podio-portrait::before{
+    animation:none !important;opacity:1 !important;transform:none !important;
+  }
+}
 
 /* Promoções */
 .board.promoboard{padding:clamp(16px,2.4vw,32px)}
@@ -454,10 +762,10 @@ img{display:block;max-width:100%}
 .cmc-wrap{flex:1;display:flex;align-items:center;justify-content:center;gap:clamp(28px,4vw,52px);min-height:0;overflow:hidden}
 .cmc-left{flex:0 1 auto;min-width:0;max-width:920px;opacity:0;transform:translateY(16px)}
 .board.show .cmc-left{animation:rowIn .6s var(--ease-out) .05s forwards}
-.cmc-eyebrow{font-size:clamp(15px,1.8vw,20px);font-weight:800;letter-spacing:.22em;color:var(--highlight);text-transform:uppercase;margin-bottom:14px}
+.cmc-eyebrow{font-family:var(--font-brand);font-size:clamp(15px,1.8vw,20px);font-weight:800;letter-spacing:.24em;color:var(--brand-primary-vivid);text-transform:uppercase;margin-bottom:14px}
 .cmc-title{
   font-family:'Anton',sans-serif;font-weight:400;line-height:.96;
-  font-size:clamp(52px,8.5vw,96px);color:#fff;margin:0 0 18px;letter-spacing:.005em;
+  font-size:clamp(52px,8.5vw,96px);color:var(--text);margin:0 0 18px;letter-spacing:.005em;
 }
 .cmc-title span{color:var(--gold)}
 .cmc-lead{font-size:clamp(20px,2.4vw,28px);line-height:1.32;color:var(--text);max-width:980px;margin:0 0 22px}
@@ -482,6 +790,132 @@ img{display:block;max-width:100%}
 .cmc-url{font-size:clamp(15px,1.6vw,18px);font-weight:700;color:#5b3030;letter-spacing:.01em}
 
 /* =============================================================
+   CARD INSTITUCIONAL (transição cinematográfica a cada N painéis)
+============================================================= */
+.institucionalcard{
+  position:absolute;inset:0;z-index:25;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--s-6);
+  background: radial-gradient(60% 50% at 50% 50%,
+    var(--brand-primary) 0%, var(--brand-primary-strong) 55%, var(--brand-primary-dim) 100%);
+  pointer-events:none;overflow:hidden;
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); /* começa fechado à esquerda */
+}
+.institucionalcard.show{
+  animation: instCardIn var(--dur-cinema) var(--ease-out) forwards,
+             instCardOut .5s var(--ease-in) 3.2s forwards;
+}
+@keyframes instCardIn{
+  0%  { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+  60% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+  100%{ clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+}
+@keyframes instCardOut{
+  to{ opacity:0; transform: scale(1.02); }
+}
+.institucionalcard::before{
+  /* grafismo horizontal (trilho branco) atrás do logo */
+  content:"";position:absolute;left:0;right:0;top:50%;height:1px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+  transform:translateY(-50%) scaleX(0);
+  animation:instLine .9s var(--ease-out) .35s forwards;
+}
+@keyframes instLine{to{transform:translateY(-50%) scaleX(1)}}
+.institucionalcard .inst-mark{
+  color:var(--brand-on-red);
+  height:var(--brand-logo-h);
+  display:flex;align-items:center;
+  opacity:0;transform:scale(.85);
+  animation:instLogoIn .8s var(--ease-out) .5s forwards;
+}
+.institucionalcard .inst-mark svg,
+.institucionalcard .inst-mark img{height:100%;width:auto;display:block}
+/* Fundo vermelho do card: logo (vermelho) é invertido pra branco via filter */
+.institucionalcard .inst-mark img{filter:brightness(0) invert(1)}
+.institucionalcard.light .inst-mark img{filter:none}
+@keyframes instLogoIn{to{opacity:1;transform:scale(1)}}
+.institucionalcard .inst-slogan{
+  font-family:var(--font-brand);font-weight:600;font-style:italic;
+  color:rgba(255,255,255,.95);
+  font-size:clamp(28px,3.4vw,46px);
+  letter-spacing:.01em;text-align:center;max-width:70%;
+  opacity:0;transform:translateX(40px);
+  animation:instSloganIn .7s var(--ease-out) .85s forwards;
+}
+@keyframes instSloganIn{to{opacity:1;transform:translateX(0)}}
+/* Variante dark-on-light (futuro: alternar entre as duas) */
+.institucionalcard.light{
+  background: radial-gradient(60% 50% at 50% 50%,
+    var(--brand-offwhite) 0%, #f5e4e0 55%, #e8c7c0 100%);
+}
+.institucionalcard.light .inst-mark{color:var(--brand-primary)}
+.institucionalcard.light .inst-slogan{color:var(--brand-primary-strong)}
+
+/* =============================================================
+   PAINEL "METROCASA EM NÚMEROS" — stat tiles
+============================================================= */
+.board.institucionalboard{
+  background:
+    var(--brand-pattern),
+    radial-gradient(80% 70% at 50% 40%, rgba(236,28,36,.12), transparent 70%);
+  background-size: 120px 60px, auto;
+}
+.inst-wrap{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--s-5);min-height:0;overflow:hidden;position:relative;
+}
+.inst-wrap .inst-logo-sig{
+  position:absolute;right:28px;bottom:16px;
+  height:36px;color:var(--brand-primary);opacity:.5;
+}
+.inst-wrap .inst-logo-sig svg,
+.inst-wrap .inst-logo-sig img{height:100%;width:auto;display:block}
+.inst-head{
+  text-align:center;margin-bottom:var(--s-4);
+}
+.inst-head h2{
+  font-family:var(--font-display);font-weight:400;
+  font-size:clamp(50px,7.5vw,110px);line-height:.95;color:var(--text);letter-spacing:.015em;
+  text-transform:uppercase;
+}
+.inst-head .sub{
+  font-family:var(--font-brand);font-weight:600;
+  font-size:clamp(16px,2vw,24px);color:var(--muted);
+  letter-spacing:.14em;text-transform:uppercase;margin-top:8px;
+}
+.inst-grid{
+  flex:1;display:grid;grid-template-columns:repeat(2,1fr);
+  grid-auto-rows:1fr;gap:clamp(18px,2.4vw,32px);
+  width:100%;max-width:1480px;min-height:0;
+}
+.inst-tile{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--s-2);padding:clamp(20px,3vw,40px);
+  border-radius:var(--r-xl);
+  background:#fff;
+  border:1px solid rgba(236,28,36,.22);
+  box-shadow:var(--shadow-md), inset 0 0 0 1px rgba(236,28,36,.04);
+  opacity:0;transform:translateY(24px) scale(.95);
+  will-change: transform, opacity;
+}
+.board.show .inst-tile{animation:hallIn .6s var(--ease-out) forwards}
+.inst-tile .num{
+  font-family:var(--font-display);font-weight:400;
+  font-size:clamp(56px,7.2vw,118px);line-height:.95;color:var(--brand-primary);
+  font-variant-numeric:tabular-nums;letter-spacing:.015em;
+  white-space:nowrap;
+}
+.inst-tile .num .suffix{
+  font-size:.55em;color:var(--brand-primary-vivid);margin-left:6px;
+  font-weight:400;letter-spacing:.02em;
+}
+.inst-tile .label{
+  font-family:var(--font-brand);font-weight:700;
+  font-size:clamp(14px,1.8vw,22px);color:var(--muted);
+  letter-spacing:.14em;text-transform:uppercase;text-align:center;
+}
+
+/* =============================================================
    NAV (dots)
 ============================================================= */
 .nav{
@@ -491,11 +925,16 @@ img{display:block;max-width:100%}
 .nav .seg{display:flex;gap:8px}
 .dot{
   width:9px;height:9px;border-radius:50%;background:var(--surface-2);
-  border:1px solid var(--line);transition:all var(--dur-fast) var(--ease-in);
+  border:1px solid var(--line);
+  transition:
+    width .4s var(--ease-spring),
+    background-color .3s var(--ease-out),
+    border-color var(--dur-micro) var(--ease-in),
+    border-radius .4s var(--ease-spring);
   cursor:pointer;
 }
 .dot:hover{border-color:var(--line-strong)}
-.dot.active{background:var(--primary-soft);width:26px;border-radius:6px;border-color:transparent}
+.dot.active{background:var(--brand-primary);width:26px;border-radius:6px;border-color:transparent}
 .nav .ctrl{margin:0 6px;color:var(--muted);font-size:12px;font-weight:600}
 .nav button.tlink{
   background:transparent;color:var(--muted);font-size:12px;font-weight:600;
@@ -509,17 +948,20 @@ body.chrome-hidden{cursor:none}
 body.chrome-hidden .topbar{opacity:0;transform:translateY(-14px);pointer-events:none}
 body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none}
 
-/* Crédito discreto */
+/* Assinatura institucional discreta — bottom-right, sempre visível */
 #credit{
   position:fixed;
-  right:calc(12px + env(safe-area-inset-right));
-  bottom:calc(8px + env(safe-area-inset-bottom));
+  right:calc(14px + env(safe-area-inset-right));
+  bottom:calc(10px + env(safe-area-inset-bottom));
   z-index:50;
-  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;
-  color:var(--muted);opacity:.5;
+  font-family:var(--font-brand);font-size:12px;font-weight:600;letter-spacing:.06em;
+  color:var(--muted);opacity:.65;
   pointer-events:none;user-select:none;
   text-shadow:0 1px 4px rgba(0,0,0,.55);
+  display:flex;align-items:center;gap:8px;
 }
+#credit .url{color:var(--brand-primary-vivid);font-weight:800;letter-spacing:.02em}
+#credit .dot-sep{opacity:.5}
 
 /* =============================================================
    TOASTS
@@ -533,24 +975,60 @@ body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none
   min-width:min(720px,90vw);max-width:92vw;
   display:flex;align-items:center;gap:22px;
   padding:22px 30px;border-radius:var(--r-lg);
-  background:linear-gradient(120deg,rgba(236,28,36,.2),var(--surface));
+  background:linear-gradient(120deg,rgba(236,28,36,.22),var(--surface));
   border:1px solid rgba(236,28,36,.5);
-  box-shadow:var(--shadow-lg),0 0 50px rgba(236,28,36,.22);
-  transform:translateY(40px) scale(.96);opacity:0;
-  animation:toastIn .5s var(--ease-out) forwards;
+  box-shadow:var(--shadow-lg),0 0 50px rgba(236,28,36,.26);
+  opacity:0;transform:translateY(50px) scale(.9);
+  animation:toastIn .55s var(--ease-spring) forwards;
+  will-change: transform, opacity;
+  position:relative;
 }
-.toast.out{animation:toastOut .45s var(--ease-in) forwards}
-@keyframes toastIn{to{transform:none;opacity:1}}
-@keyframes toastOut{to{transform:translateY(20px) scale(.97);opacity:0}}
+.toast.out{animation:toastOut .4s var(--ease-in) forwards}
+/* Spring com overshoot: 0 → -8px → 0 */
+@keyframes toastIn{
+  0%  {opacity:0;transform:translateY(50px) scale(.9)}
+  70% {opacity:1;transform:translateY(-8px) scale(1.02)}
+  100%{opacity:1;transform:translateY(0)   scale(1)}
+}
+@keyframes toastOut{to{transform:translateY(10px) scale(.98);opacity:0}}
+
 .toast .badge{
-  flex:0 0 auto;width:60px;height:60px;border-radius:var(--r-md);
+  flex:0 0 auto;width:62px;height:62px;border-radius:var(--r-md);
   display:grid;place-items:center;
-  background:var(--live);color:#fff;font-weight:800;font-size:28px;
+  background:var(--brand-primary);color:var(--brand-on-red);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.15), 0 0 18px rgba(236,28,36,.5);
 }
-.toast .body{line-height:1.35}
-.toast .body .who{font-weight:800;font-size:clamp(22px,3vw,30px)}
-.toast .body .what{color:#FFD9D6;font-size:clamp(18px,2.4vw,24px)}
-.toast .body .val{font-weight:800;color:var(--live)}
+.toast .badge svg,
+.toast .badge img{width:70%;height:70%;display:block;object-fit:contain}
+.toast .badge img{filter:brightness(0) invert(1)}  /* fundo vermelho, logo vira branco */
+
+.toast .thumb{
+  flex:0 0 auto;width:72px;height:72px;border-radius:var(--r-md);
+  overflow:hidden;background:var(--surface-2);
+  display:grid;place-items:center;
+  border:1px solid var(--line-brand);
+}
+.toast .thumb img{width:100%;height:100%;object-fit:cover}
+.toast .thumb svg{width:60%;height:60%;color:var(--brand-primary)}
+
+.toast .body{line-height:1.35;flex:1 1 auto;min-width:0}
+.toast .body .who{font-family:var(--font-brand);font-weight:800;font-size:clamp(22px,3vw,30px);text-transform:uppercase;letter-spacing:.01em}
+.toast .body .what{color:var(--text-dim);font-size:clamp(18px,2.4vw,24px);margin-top:2px}
+.toast .body .val{font-weight:800;color:var(--brand-primary-vivid)}
+
+.toast .tag-story{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:8px;padding:4px 12px;border-radius:var(--r-pill);
+  font-family:var(--font-brand);font-weight:800;
+  font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  background:rgba(255,200,92,.18);border:1px solid rgba(255,200,92,.5);color:var(--gold);
+  opacity:0;transform:scale(.8);
+  animation:tagPop .3s var(--ease-spring) .55s forwards;
+}
+.toast .tag-story.lead{
+  background:rgba(236,28,36,.22);border-color:rgba(255,31,43,.6);color:var(--brand-primary-vivid);
+}
+@keyframes tagPop{to{opacity:1;transform:scale(1)}}
 
 /* =============================================================
    SETTINGS / OVERLAY
@@ -619,22 +1097,27 @@ body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none
    REDUCED MOTION
 ============================================================= */
 @media (prefers-reduced-motion:reduce){
-  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
-  .brand .dot,.feedhead .fh-dot{animation:none!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
+  .brand .dot,.feedhead .fh-dot,.brand-title .sub .live-pill::before{animation:none!important}
+  #app{animation:none!important}
+  .institucionalcard{animation:instCardIn .01ms linear forwards, instCardOut .01ms linear 3.2s forwards!important}
+  .titlecard .rule{transform:scaleX(1)!important}
+  .titlecard .rule::before,.titlecard .rule::after{transform:translate(-50%,-50%) scale(1)!important}
 }
 </style>
 </head>
-<body>
+<body class="chrome-hidden">
 
 <div id="scaler">
   <div id="app" role="application" aria-label="Painel TV Metrocasa — Ranking de vendas" style="transform: translate(-50%, -50%) rotate(0deg) scale(0.684375);">
 
     <header class="topbar" role="banner">
       <div class="brand">
-        <span class="dot" aria-hidden="true"></span>
-        <div>
-          <b>RANKING DE VENDAS</b>
-          <div class="sub" id="liveSub">Validações ao vivo · aguardando dados</div>
+        <div class="brand-mark" id="brandMark" role="img" aria-label="Metrocasa"><img src="assets/brand/metrocasa-horizontal.png" alt="Metrocasa" draggable="false"></div>
+        <div class="brand-sep" aria-hidden="true"></div>
+        <div class="brand-title">
+          <b>Ranking de Vendas</b>
+          <div class="sub" id="liveSub"><span class="live-pill">Live</span><span id="liveSubText">aguardando dados</span></div>
         </div>
       </div>
       <div class="spacer"></div>
@@ -658,10 +1141,148 @@ body.chrome-hidden .nav{opacity:0;transform:translateY(14px);pointer-events:none
     </nav>
 
     <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="false"></div>
+
+    <!-- Mascotes (SVG+CSS, não interferem no sistema; estilos e lógica no fim do arquivo) -->
+    <div class="mascots-den" id="mascotsDen" aria-hidden="true">
+
+      <!-- ALVO -->
+      <div class="mascot target ready" id="target" data-state="IDLE" style="transition: transform 2069ms cubic-bezier(0.45, 0.05, 0.35, 1), opacity 0.8s; transform: translate3d(1418.26px, 239.155px, 0px) translate(-50%, -50%);">
+        <svg viewBox="0 0 120 130">
+          <defs>
+            <radialGradient id="mgTargetShade" cx=".36" cy=".3" r=".8">
+              <stop offset="0" stop-color="#fff" stop-opacity=".4"></stop>
+              <stop offset=".55" stop-color="#fff" stop-opacity="0"></stop>
+              <stop offset="1" stop-color="#3a0006" stop-opacity=".18"></stop>
+            </radialGradient>
+          </defs>
+          <ellipse cx="60" cy="124" rx="34" ry="4.5" fill="#1A0808" opacity=".08"></ellipse>
+          <g class="target-body">
+            <circle cx="60" cy="60" r="56" fill="#B81E26"></circle>
+            <circle cx="60" cy="60" r="53" fill="#E8323A"></circle>
+            <circle cx="60" cy="60" r="42" fill="#fff"></circle>
+            <circle cx="60" cy="60" r="31" fill="#E8323A"></circle>
+            <circle cx="60" cy="60" r="20" fill="#fff"></circle>
+            <circle cx="60" cy="60" r="9.5" fill="#E8323A"></circle>
+            <circle cx="60" cy="60" r="56" fill="url(#mgTargetShade)"></circle>
+            <circle class="target-ripple" cx="60" cy="60" r="54" fill="none" stroke="#EC1C24" stroke-width="3"></circle>
+          </g>
+          <g class="target-arrow">
+            <circle cx="60" cy="60" r="3.2" fill="#3a0006" opacity=".45"></circle>
+            <path d="M60,60 L101,19" stroke="#6B4528" stroke-width="3.6" stroke-linecap="round"></path>
+            <g transform="translate(101,19) rotate(-45)">
+              <path d="M0,0 L-13,0 L-18,-8 L-4,-8 Z" fill="#EC1C24"></path>
+              <path d="M0,0 L-13,0 L-18,8 L-4,8 Z" fill="#fff" stroke="#E5C9CB" stroke-width="1"></path>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <!-- LOBO -->
+      <div class="mascot wolf ready" id="wolf" data-state="ROAMING" data-dir="right" style="transition: transform 1050ms cubic-bezier(0.45, 0.05, 0.35, 1), opacity 0.8s; transform: translate3d(802.891px, 793.867px, 0px) translate(-50%, -50%);">
+        <svg viewBox="0 0 230 150">
+          <defs>
+            <linearGradient id="mgWolf" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#6C7486"></stop>
+              <stop offset="1" stop-color="#3E4555"></stop>
+            </linearGradient>
+          </defs>
+          <ellipse cx="112" cy="138" rx="80" ry="5" fill="#1A0808" opacity=".10"></ellipse>
+          <g class="wolf-all">
+            <g class="wolf-tail">
+              <path fill="url(#mgWolf)" d="M48,74 C28,70 10,80 2,98 C14,93 24,93 34,95 C26,101 22,110 20,118 C34,106 46,94 54,84 Z"></path>
+            </g>
+            <rect class="wolf-leg b" x="54" y="88" width="11" height="46" rx="5" fill="#2F3542"></rect>
+            <rect class="wolf-leg a" x="150" y="88" width="11" height="46" rx="5" fill="#2F3542"></rect>
+            <path fill="url(#mgWolf)" d="M40,70 C60,52 120,48 160,56 C176,60 184,72 180,88 C176,100 150,104 120,104 C90,104 56,100 44,92 C34,86 32,78 40,70 Z"></path>
+            <rect class="wolf-leg a" x="70" y="90" width="11" height="46" rx="5" fill="#4C5464"></rect>
+            <rect class="wolf-leg b" x="164" y="90" width="11" height="46" rx="5" fill="#4C5464"></rect>
+            <path fill="#BFC5D0" d="M150,64 C146,78 150,92 160,100 C165,90 167,78 163,66 Z"></path>
+            <g class="wolf-head">
+              <path fill="#3A4150" d="M171,36 L178,6 L190,33 Z"></path>
+              <path fill="#3A4150" d="M184,33 L195,8 L201,37 Z"></path>
+              <path fill="url(#mgWolf)" d="M150,62 C155,42 169,31 186,30 L197,33 C207,37 215,43 227,49 C228,55 222,60 213,62 L197,64 C187,72 173,80 160,82 Z"></path>
+              <path fill="#BFC5D0" d="M197,58 L225,54 C223,59 217,62 211,63 L195,64 Z"></path>
+              <circle cx="226" cy="50.5" r="3.2" fill="#111318"></circle>
+              <path class="m-mouth" d="M204,63 L216,61"></path>
+              <path class="m-brow" d="M186,38.5 L202,42.5"></path>
+              <g class="m-eye">
+                <path fill="#F2C14E" d="M189,42 L201,44.5 L192,47.5 Z"></path>
+                <circle cx="195.5" cy="44.6" r="1.4" fill="#111318"></circle>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <!-- TUBARÃO -->
+      <div class="mascot shark ready" id="shark" data-state="IDLE" data-dir="right" style="transition: transform 4277ms cubic-bezier(0.45, 0.05, 0.35, 1), opacity 0.8s; transform: translate3d(1618.69px, 511.676px, 0px) translate(-50%, -50%);">
+        <svg viewBox="0 0 220 100">
+          <defs>
+            <linearGradient id="mgShark" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#4E5E73"></stop>
+              <stop offset="1" stop-color="#2A3443"></stop>
+            </linearGradient>
+            <clipPath id="mcSharkBody">
+              <path d="M28,52 C48,30 100,22 150,28 C180,32 204,44 216,54 C204,60 186,66 166,68 C120,74 64,70 28,58 Z"></path>
+            </clipPath>
+          </defs>
+          <g class="shark-all">
+            <g class="shark-tail">
+              <path fill="#2A3443" d="M36,52 L4,18 L16,55 L2,90 Z"></path>
+            </g>
+            <path fill="#2A3443" d="M100,28 C112,19 121,9 129,0 C129,12 133,22 141,30 Z"></path>
+            <path fill="url(#mgShark)" d="M28,52 C48,30 100,22 150,28 C180,32 204,44 216,54 C204,60 186,66 166,68 C120,74 64,70 28,58 Z"></path>
+            <g clip-path="url(#mcSharkBody)">
+              <ellipse cx="130" cy="78" rx="92" ry="16" fill="#DDE3EA"></ellipse>
+            </g>
+            <path class="shark-gills" d="M150,42 l-3,14 M157,41 l-3,15 M164,41 l-3,14"></path>
+            <path class="shark-fin" fill="#2A3443" d="M120,64 L102,94 L144,66 Z"></path>
+            <path class="shark-teeth" d="M191,59.5 l3,3 l3,-3 l3,3 l3,-3 l3,3"></path>
+            <path class="m-brow" d="M172,39 L188,43.5"></path>
+            <g class="m-eye">
+              <ellipse cx="181" cy="46" rx="3.6" ry="2.8" fill="#0E1116"></ellipse>
+              <circle cx="182" cy="45.2" r=".8" fill="#fff"></circle>
+            </g>
+          </g>
+          <g class="shark-bubbles">
+            <circle class="shark-bubble" cx="218" cy="50" r="2.6"></circle>
+            <circle class="shark-bubble" cx="219" cy="54" r="1.8"></circle>
+            <circle class="shark-bubble" cx="216" cy="52" r="1.3"></circle>
+          </g>
+        </svg>
+      </div>
+
+      <!-- GARRA (de pelúcia/fliperama — desce num cabo) -->
+      <div class="mascot claw ready" id="claw" data-state="OPEN" style="transition: transform 500ms cubic-bezier(0.45, 0.05, 0.35, 1), opacity 0.8s; transform: translate3d(1418.26px, 70px, 0px) translate(-50%, -50%);">
+        <svg viewBox="0 0 120 150">
+          <defs>
+            <linearGradient id="mgMetal" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#8A93A4"></stop>
+              <stop offset=".45" stop-color="#EEF1F5"></stop>
+              <stop offset="1" stop-color="#7A8394"></stop>
+            </linearGradient>
+          </defs>
+          <g class="claw-prong l">
+            <path d="M55,44 C38,56 22,74 23,96 C24,110 30,118 38,124" fill="none" stroke="#7A8394" stroke-width="8" stroke-linecap="round"></path>
+            <path d="M55,44 C38,56 22,74 23,96 C24,110 30,118 38,124" fill="none" stroke="#DCE0E7" stroke-width="2.6" stroke-linecap="round"></path>
+            <circle cx="38" cy="124" r="6.5" fill="#EC1C24"></circle>
+          </g>
+          <g class="claw-prong r">
+            <path d="M65,44 C82,56 98,74 97,96 C96,110 90,118 82,124" fill="none" stroke="#7A8394" stroke-width="8" stroke-linecap="round"></path>
+            <path d="M65,44 C82,56 98,74 97,96 C96,110 90,118 82,124" fill="none" stroke="#DCE0E7" stroke-width="2.6" stroke-linecap="round"></path>
+            <circle cx="82" cy="124" r="6.5" fill="#EC1C24"></circle>
+          </g>
+          <rect x="34" y="4" width="52" height="26" rx="9" fill="url(#mgMetal)"></rect>
+          <rect x="35" y="17" width="50" height="7" rx="3" fill="#EC1C24"></rect>
+          <circle cx="60" cy="40" r="12" fill="url(#mgMetal)" stroke="#7A8394" stroke-width="2"></circle>
+          <circle cx="60" cy="40" r="4" fill="#5E6779"></circle>
+        </svg>
+      </div>
+    </div>
   </div>
 </div>
 
-<div id="credit">Pedro Aquino — Operações</div>
+<div id="credit"><span class="url">metrocasa.com.br</span><span class="dot-sep">·</span><span>Operações / Pedro Aquino</span></div>
 
 <!-- Settings -->
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="cfgTitle" hidden="">
@@ -745,6 +1366,51 @@ const log = (...a) => { if (DEBUG) console.log("[painel]", ...a); };
 const warn = (...a) => console.warn("[painel]", ...a);
 
 /* =============================================================
+   LOGO METROCASA (PNG oficial)
+   -------------------------------------------------------------
+   Arquivos em assets/brand/. Para trocar por nova versão oficial,
+   basta substituir o PNG mantendo o nome — nenhum ajuste no código.
+   - metrocasa-horizontal.png → topbar e assinatura do institucional
+   - metrocasa-vertical.png   → card institucional de transição
+   - metrocasa-symbol.png     → badge do toast de validação
+============================================================= */
+const METROCASA_LOGO_HTML      = `<img src="assets/brand/metrocasa-horizontal.png" alt="Metrocasa" draggable="false">`;
+const METROCASA_LOGO_VERT_HTML = `<img src="assets/brand/metrocasa-vertical.png"   alt="Metrocasa" draggable="false">`;
+const METROCASA_M_HTML         = `<img src="assets/brand/metrocasa-symbol.png"     alt="Metrocasa" draggable="false">`;
+/* Aliases legados para não quebrar referências antigas no código */
+const METROCASA_LOGO_SVG = METROCASA_LOGO_HTML;
+const METROCASA_M_SVG    = METROCASA_M_HTML;
+
+/* -------------------------------------------------------------
+   Ícone de prédio (placeholder quando EMPREEND_IMAGES não tem)
+------------------------------------------------------------- */
+const BUILDING_SVG = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M8 42 V14 L24 6 L40 14 V42 Z"/>
+  <rect x="14" y="20" width="5" height="5"/>
+  <rect x="21.5" y="20" width="5" height="5"/>
+  <rect x="29" y="20" width="5" height="5"/>
+  <rect x="14" y="30" width="5" height="12"/>
+  <rect x="21.5" y="30" width="5" height="5"/>
+  <rect x="29" y="30" width="5" height="5"/>
+</svg>`;
+
+/* =============================================================
+   EMPREEND_IMAGES — fotos/renders por empreendimento (opcional)
+   -------------------------------------------------------------
+   TODO: popular com fotos reais. A chave é o nome do empreendimento
+   normalizado (sem acento, maiúsculas, espaços únicos).
+   Exemplo:
+     EMPREEND_IMAGES["PRIME SANTANA"]    = "https://.../prime.jpg";
+     EMPREEND_IMAGES["CLUBE CANGAIBA"]   = "https://drive.google.com/uc?id=XXX";
+   Se chegar uma validação de empreendimento sem imagem registrada,
+   o toast mostra o ícone de prédio como fallback — nunca quebra.
+============================================================= */
+const EMPREEND_IMAGES = {
+  /* PRIME SANTANA: "...", CLUBE GUILHERMINA: "...", ... */
+};
+
+/* =============================================================
    QR MATERIAIS (base64) — Comunicado
 ============================================================= */
 const QR_MATERIAIS = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABcoAAAXKCAIAAABIaMsaAABg2klEQVR42u3dsXUkR7I2UOIdqE9oByhQhSX0Z834/aElUCnQgRbWgPqF4cGbA2LAHnzZ1ZER90orbCezMiMis2J6ep6O4/gFAAAAgK/6H0sAAAAAkNBeAQAAAIhorwAAAABEtFcAAAAAItorAAAAABHtFQAAAICI9goAAABARHsFAAAAIKK9AgAAABDRXgEAAACIaK8AAAAARLRXAAAAACLaKwAAAAAR7RUAAACAiPYKAAAAQER7BQAAACCivQIAAAAQ0V4BAAAAiGivAAAAAES0VwAAAAAi2isAAAAAEe0VAAAAgIj2CgAAAEBEewUAAAAgor0CAAAAENFeAQAAAIhorwAAAABEtFcAAAAAItorAAAAABHtFQAAAICI9goAAABARHsFAAAAIKK9AgAAABDRXgEAAACIaK8AAAAARLRXAAAAACLaKwAAAAAR7RUAAACAiPYKAAAAQER7BQAAACCivQIAAAAQ0V4BAAAAiGivAAAAAES0VwAAAAAi2isAAAAAEe0VAAAAgIj2CgAAAEBEewUAAAAgor0CAAAAENFeAQAAAIhorwAAAABEtFcAAAAAItorAAAAABHtFQAAAICI9goAAABARHsFAAAAIKK9AgAAABDRXgEAAACIaK8AAAAARLRXAAAAACLaKwAAAAAR7RUAAACAiPYKAAAAQER7BQAAACCivQIAAAAQ0V4BAAAAiGivAAAAAES0VwAAAAAi2isAAAAAEe0VAAAAgIj2CgAAAEBEewUAAAAgor0CAAAAENFeAQAAAIhorwAAAABEtFcAAAAAItorAAAAABHtFQAAAICI9goAAABARHsFAAAAIKK9AgAAABDRXgEAAACIaK8AAAAARLRXAAAAACLaKwAAAAAR7RUAAACAiPYKAAAAQER7BQAAACCivQIAAAAQ0V4BAAAAiGivAAAAAES0VwAAAAAi2isAAAAAEe0VAAAAgIj2CgAAAEBEewUAAAAgor0CAAAAENFeAQAAAIhorwAAAABEtFcAAAAAItorAAAAABHtFQAAAICI9goAAABARHsFAAAAIKK9AgAAABDRXgEAAACIaK8AAAAARLRXAAAAACLaKwAAAAAR7RUAAACAiPYKAAAAQER7BQAAACCivQIAAAAQ0V4BAAAAiGivAAAAAES0VwAAAAAi2isAAAAAEe0VAAAAgIj2CgAAAEBEewUAAAAgor0CAAAAENFeAQAAAIhorwAAAABEtFcAAAAAItorAAAAABHtFQAAAICI9goAAABARHsFAAAAIKK9AgAAABDRXgEAAACIaK8AAAAARLRXAAAAACLaKwAAAAAR7RUAAACAiPYKAAAAQER7BQAAACCivQIAAAAQ0V4BAAAAiGivAAAAAES0VwAAAAAi2isAAAAAEe0VAAAAgIj2CgAAAEBEewUAAAAg8v8BwCJ+MxQPjUUAAAAASUVORK5CYII=";
@@ -757,7 +1423,7 @@ const VALID_STAGES = [
   "VENDA - SV - VALIDADO DIRETO/NR (SV)",
 ];
 
-const CFG_VERSION = 4; // bump: removida aba Copa, adicionada aba fotos explícita
+const CFG_VERSION = 5; // bump: identidade de marca + painel institucional
 const DEFAULTS = {
   v: CFG_VERSION,
   id:       "1F4XlrGMIOqEkPk4JeTJPt7XT3n2o_1lNJsbd_79-Rlo",
@@ -775,41 +1441,80 @@ const DEFAULTS = {
 
 /* Painéis em ordem de rotação */
 const LEVELS = [
-  // SEMANAL
-  { key:"DIRETOR_SEM",         word:"DIRETORES",         tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"DIRETOR",
-    excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO"], live:true },
-  { key:"SUPERINTENDENTE_SEM", word:"SUPERINTENDENTES",  tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"GESTOR",
-    excludeNames:["JEAN"], live:true },
-  { key:"GERENTE_SEM",         word:"GERENTES",          tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"GERENTE", live:true },
-  { key:"VENDEDOR_SEM",        word:"VENDEDORES",        tag:"SEMANAL", source:"semanal", eyebrow:"SEMANAL", col:"VENDEDOR",
-    excludeNames:["PARCERIA"], live:true },
+  // Ranking semanal (Diretor / Superintendente / Gerente)
+  { key:"QUADRO_SEM",   word:"RANKING DA SEMANA",
+    quadro:true, source:"semanal", live:true },
 
-  // MENSAL
-  { key:"DIRETOR",         word:"DIRETORES",         tag:"MENSAL", source:"mensal", eyebrow:"MENSAL", col:"DIRETOR",
-    excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO","---"], live:true },
-  { key:"SUPERINTENDENTE", word:"SUPERINTENDENTES",  tag:"MENSAL", source:"mensal", eyebrow:"MENSAL", col:"GESTOR",
-    excludeNames:["JEAN"], live:true },
-  { key:"GERENTE",         word:"GERENTES",          tag:"MENSAL", source:"mensal", eyebrow:"MENSAL", col:"GERENTE", live:true },
-  { key:"VENDEDOR",        word:"VENDEDORES",        tag:"MENSAL", source:"mensal", eyebrow:"MENSAL", col:"VENDEDOR",
-    excludeNames:["PARCERIA"], live:true },
+  // Ranking mensal (Diretor / Superintendente / Gerente)
+  { key:"QUADRO_MES",   word:"RANKING DO MÊS",
+    quadro:true, source:"mensal",  live:true },
 
-  // DEMAIS
-  { key:"HALLOFFAME", word:"CAMPEÕES DO MÊS PASSADO", eyebrow:"Relembrando", cardTitle:"RELEMBRANDO", winners:true },
-  { key:"YEAR2026",   word:"CAMPEÕES 2026",            eyebrow:"",            topYear:true, year:"2026" },
-  { key:"YEARSUP",    word:"SUPERINTENDENTES 2026",    eyebrow:"",            topYearList:true, year:"2026", col:"GESTOR",   excludeNames:["JEAN"], topN:8 },
-  { key:"YEARGER",    word:"GERENTES 2026",            eyebrow:"",            topYearList:true, year:"2026", col:"GERENTE" },
-  { key:"YEARVEND",   word:"CORRETORES 2026",          eyebrow:"",            topYearList:true, year:"2026", col:"VENDEDOR", excludeNames:["PARCERIA"] },
-  { key:"PROMOCOES",  word:"PROMOÇÕES",                 eyebrow:"",            promo:true },
-  { key:"NOVIDADES",  word:"NOVIDADES METROCASA",       cardTitle:"NOVIDADES", news:true },
-  { key:"MATERIAIS",  word:"FIQUE LIGADO",              cardTitle:"COMUNICADO", comunicado:true },
+  // Top 10 do ano por função (Superintendente / Gerente / Vendedor)
+  { key:"YEAR2026",     word:"TOP 10 DO ANO",          eyebrow:"POR FUNÇÃO",
+    topYear:true, year:"2026" },
+
+  // Pódio olímpico do mês anterior
+  { key:"HALLOFFAME",   word:"CAMPEÕES DO MÊS PASSADO", cardTitle:"RELEMBRANDO", winners:true },
+
+  // Intercalações
+  { key:"PROMOCOES",    word:"PROMOÇÕES",                                         promo:true },
+  { key:"NOVIDADES",    word:"NOVIDADES METROCASA",     cardTitle:"FIQUE POR DENTRO", news:true },
 ];
 
-/* Campeões (top da categoria) — usados em "Prata da Casa" e "Campeões 2026". */
+/* =============================================================
+   ETV — Equipe Time de Vendas ATIVA (quem ainda ocupa a função).
+   Quem saiu da função não aparece mais no ranking daquela função.
+   Fonte: planilha mantida por RH/Operações.
+   Atualize aqui sempre que houver movimentação.
+============================================================= */
+const ACTIVE_DIRETOR = [
+  "BETEL","ISABELLA","LISBOA","JEAN","YAGO",
+];
+const ACTIVE_SUPER = [
+  "ALAN","ANTONELLA","SEIXAS","SCOTT","BELLA","MAITHE","ARTHUR",
+  "DUARTE","VASQUES","GLAD","HERMES","FELIX","TAYNA","VERONICA",
+];
+const ACTIVE_GERENTE = [
+  "AGATHA","CLAY","DIAS","DESSA","TOQUIO","DAMASCENO","ALEXIA",
+  "DANYELY","GOMES","PRETEL","CARLOS","MURILO","CAUA","VERISSIMO",
+  "ED","DIMAS","EDUARDO","XAVIER","ESDRAS","EZEQUIEL","RUSSO",
+  "FILIPE","VALENCIA","BRANDAO","MARROCOS","BENJAMIN","BRITO",
+  "BAREZZI","RAYA","JOTTA","GILMAR","SERENA","LEME","DIEGO",
+  "GUSTAVO","VILELA","YURI","LEANDRO","PIASTRI","MOTA","CADU",
+  "JORDAN","DIANA","JULIO","KAIQUE","KELLY","KENNEDY","LARISSA",
+  "MAVIE","LAURA","LUAN","PONTES","OLEGARIO","CHICAGO","LAYLA",
+  "MAGALI","AZEVEDO","INDIO","BERNARDO","CRUZ","RAVI","MARGO",
+  "MADRID","SIZINO","NATHAN","RENAN","PACHECO","OLDAIR","PET",
+  "SIENA","EMMA","RAYSSA","CALDEIRA","BUARQUE","SIDNEI","ROBSON",
+  "LEAO","SAMUEL","PENELOPE","AGUIAR","TACIANE","SILVESTRE",
+  "CHARLOTE","ALBUQUERQUE","WALLISSON","COUTINHO",
+];
+/* Normaliza aqui mesmo pra não depender da ordem de declaração de `norm`. */
+const _normETV = s => String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").trim().replace(/\s+/g," ").toUpperCase();
+const _toSet = arr => new Set(arr.map(_normETV));
+const ACTIVE_DIRETOR_SET  = _toSet(ACTIVE_DIRETOR);
+const ACTIVE_SUPER_SET    = _toSet(ACTIVE_SUPER);
+const ACTIVE_GERENTE_SET  = _toSet(ACTIVE_GERENTE);
+
+/* Campeões (top da categoria) — usados nos pódios. */
 const WINNER_SOURCES = [
-  { label:"Diretor(a)",      col:"DIRETOR",  excludeNames:["JEAN","PESSONIA","FELIX","FERNANDO"] },
-  { label:"Superintendente", col:"GESTOR",   excludeNames:["JEAN"] },
-  { label:"Gerente",         col:"GERENTE" },
+  { label:"Diretor(a)",      col:"DIRETOR",  activeSet:ACTIVE_DIRETOR_SET,
+    excludeNames:["JEAN","FELIX","FERNANDO","PESSONIA"] },
+  { label:"Superintendente", col:"GESTOR",   activeSet:ACTIVE_SUPER_SET,
+    excludeNames:["JEAN","YAGO"] },
+  { label:"Gerente",         col:"GERENTE",  activeSet:ACTIVE_GERENTE_SET },
   { label:"Vendedor(a)",     col:"VENDEDOR", excludeNames:["PARCERIA"] },
+];
+/* Fontes do Top 10 do ano — igual ao WINNER_SOURCES mas sem a coluna Diretor. */
+const YEAR_SOURCES = WINNER_SOURCES.filter(s => s.col !== "DIRETOR");
+
+/* Fontes usadas APENAS nos rankings semanal/mensal (sem corretor — só gestão). */
+const RANKING_SOURCES = [
+  { label:"Diretor(a)",      col:"DIRETOR",  activeSet:ACTIVE_DIRETOR_SET,
+    excludeNames:["JEAN","FELIX","FERNANDO","PESSONIA","---"] },
+  { label:"Superintendente", col:"GESTOR",   activeSet:ACTIVE_SUPER_SET,
+    excludeNames:["JEAN","YAGO"] },
+  { label:"Gerente",         col:"GERENTE",  activeSet:ACTIVE_GERENTE_SET },
 ];
 
 let CFG = loadCfg();
@@ -838,6 +1543,14 @@ let photoByName = {}; // apelido normalizado -> link da foto
 let soundArmed = false;
 let audioCtx = null;
 
+/* Storytelling: snapshot anterior pra detectar virada de liderança */
+let prevLeaders = {};   // { "DIRETOR_SEM": "ISABELLA", ... }
+let prevVendorBest = {};// { "ISABELLA": { month: "2026-10", vendas: 7 } }
+
+/* Card institucional: a cada N painéis, exibe uma intro de marca */
+let institucionalCounter = 0;
+const INSTITUCIONAL_EVERY = 4;
+
 /* =============================================================
    UTIL
 ============================================================= */
@@ -856,6 +1569,7 @@ function loadCfg(){
     c.topYearN = DEFAULTS.topYearN;
     c.fotos = DEFAULTS.fotos;
     delete c.copa; // v3 -> v4
+    // v4 -> v5: nada a migrar, bump só pra limpar estado
     c.v = CFG_VERSION;
     try{ localStorage.setItem("painelCfg", JSON.stringify(c)); }catch(e){}
   }
@@ -886,8 +1600,7 @@ function fmtCompact(n, noCur){
   if(a>=1e6){ val=a/1e6; suf=" mi"; }
   else if(a>=1e3){ val=a/1e3; suf=" mil"; }
   else return cur+sign+new Intl.NumberFormat("pt-BR").format(Math.round(a));
-  const s = val.toFixed(1).replace(".",",").replace(/,0$/,"");
-  return cur+sign+s+suf;
+  return cur+sign+Math.round(val)+suf;
 }
 function fmtPlain(n){
   n=n||0; const sign=n<0?"-":""; const a=Math.abs(n);
@@ -1056,12 +1769,15 @@ function colValue(row, spec){
 function aggregate(validated, spec){
   const agg=new Map();
   const exSet=new Set((spec.excludeNames||[]).map(norm));
+  const activeSet = spec.activeSet || null;
   for(const r of validated){
     if(spec.rowFilter && !spec.rowFilter(r)) continue;
     let name=(colValue(r,spec)||"").toString().trim();
     if(spec.col==="GERENTE") name=name.replace(/\s*\([GB]\)\s*$/i,"").trim();
     if(!name) continue;
-    if(exSet.has(norm(name))) continue;
+    const nn = norm(name);
+    if(exSet.has(nn)) continue;
+    if(activeSet && !activeSet.has(nn)) continue; // só quem ainda tem a função
     const cur=agg.get(name)||{name,vendas:0,entrada:0,vlrvenda:0};
     cur.vendas+=1; cur.entrada+=r.entrada; cur.vlrvenda+=r.vlrvenda;
     agg.set(name,cur);
@@ -1069,6 +1785,16 @@ function aggregate(validated, spec){
   return [...agg.values()].sort((a,b)=>
     b.vendas-a.vendas || b.entrada-a.entrada || b.vlrvenda-a.vlrvenda
   );
+}
+
+/* Pessonia virou parceria em 06/10/2026: antes dessa data o time dele
+   fazia parte da cadeia (vendas contam); de 06/10 em diante é parceria
+   e nada do time (Pessonia + gerentes/consultores sob ele) conta. */
+const PESSONIA_PARCERIA_TS = new Date(2026,9,6).getTime(); // 06/10/2026
+function pessoniaOK(r){
+  if(norm(r.diretor) !== "PESSONIA") return true;
+  const t = dateVal(r.dataval) || dateVal(r.mes);
+  return t > 0 && t < PESSONIA_PARCERIA_TS;
 }
 
 function buildRankings(rows, mKey, resRows){
@@ -1081,10 +1807,10 @@ function buildRankings(rows, mKey, resRows){
   };
 
   const monthRows = mKey ? rows.filter(r=>monthKey(r.mes)===mKey) : rows.slice();
-  const validated = monthRows.filter(r=>isValid(r) && notJean(r) && notVaga(r));
-  const msc = monthRows.filter(r=>isValid(r) && notVaga(r)).length;
+  const validated = monthRows.filter(r=>isValid(r) && notJean(r) && notVaga(r) && pessoniaOK(r));
+  const msc = monthRows.filter(r=>isValid(r) && notVaga(r) && pessoniaOK(r)).length;
 
-  const validatedSem = (resRows||[]).filter(r=>isValid(r) && notJean(r) && notVaga(r));
+  const validatedSem = (resRows||[]).filter(r=>isValid(r) && notJean(r) && notVaga(r) && pessoniaOK(r));
 
   const notParceria = r => !norm(r.vendedor).includes("PARCERIA");
   const recent = validated.filter(r=>hasDate(r.dataval) && notParceria(r))
@@ -1096,13 +1822,13 @@ function buildRankings(rows, mKey, resRows){
 
   const prevKey = mKey ? prevMonthKey(mKey) : "";
   const prevValidated = prevKey
-    ? rows.filter(r=>monthKey(r.mes)===prevKey && isValid(r) && notJean(r) && notVaga(r))
+    ? rows.filter(r=>monthKey(r.mes)===prevKey && isValid(r) && notJean(r) && notVaga(r) && pessoniaOK(r))
     : [];
   const winners = {
     winners:true,
     monthKey:prevKey,
     monthLabel: prevKey ? labelForMonth(prevKey,"") : "",
-    items: WINNER_SOURCES.map(s=>({ label:s.label, champ:(aggregate(prevValidated,s)[0]||null) })),
+    items: WINNER_SOURCES.map(s=>({ label:s.label, top:aggregate(prevValidated,s).slice(0,3) })),
   };
 
   const result={};
@@ -1110,15 +1836,36 @@ function buildRankings(rows, mKey, resRows){
     if(lvl.promo || lvl.news || lvl.comunicado) continue;
     if(lvl.winners){
       result[lvl.key] = winners;
+    }else if(lvl.quadro){
+      const src = lvl.source==="semanal" ? validatedSem : validated;
+      result[lvl.key] = { quadro:true, source:lvl.source,
+        items: RANKING_SOURCES.map(s=>({ label:s.label, top:aggregate(src,s).slice(0,5) })) };
     }else if(lvl.topYear){
       const yv = rows.filter(r=> String(monthKey(r.mes)).startsWith(lvl.year)
-        && isValid(r) && notJean(r) && notVaga(r));
+        && isValid(r) && notJean(r) && notVaga(r) && pessoniaOK(r));
       result[lvl.key] = { topYear:true, year:lvl.year,
-        items: WINNER_SOURCES.map(s=>({ label:s.label, top:aggregate(yv,s).slice(0,3) })) };
+        items: YEAR_SOURCES.map(s=>({ label:s.label, top:aggregate(yv,s).slice(0,10) })) };
     }else if(lvl.topYearList){
       const yv = rows.filter(r=> String(monthKey(r.mes)).startsWith(lvl.year)
-        && isValid(r) && notJean(r) && notVaga(r));
+        && isValid(r) && notJean(r) && notVaga(r) && pessoniaOK(r));
       result[lvl.key] = { topYearList:true, year:lvl.year, items: aggregate(yv, lvl) };
+    }else if(lvl.institucional){
+      /* Agregados do ano — apenas o que já temos em memória */
+      const yv = rows.filter(r=> String(monthKey(r.mes)).startsWith(lvl.year)
+        && isValid(r) && notJean(r) && notVaga(r) && pessoniaOK(r));
+      const totalVendas = yv.length;
+      const totalVGV    = yv.reduce((a,r)=>a+r.vlrvenda,0);
+      const totalEntr   = yv.reduce((a,r)=>a+r.entrada,0);
+      const empSet = new Set();
+      for(const r of yv){
+        const key = norm(r.empreend) || norm(r.empreendimento);
+        if(key) empSet.add(key);
+      }
+      result[lvl.key] = {
+        institucional:true, year:lvl.year,
+        vendas: totalVendas, vgv: totalVGV, entrada: totalEntr,
+        empreendimentos: empSet.size,
+      };
     }else{
       const src = lvl.source==="semanal" ? validatedSem : validated;
       result[lvl.key] = aggregate(src, lvl);
@@ -1206,6 +1953,16 @@ async function loadAll(initial){
     recentValidationsSem = recentSem;
     monthLabel = mKey ? labelForMonth(mKey,mRaw) : "TODOS OS MESES";
 
+    /* Snapshot de líderes ANTES de detectar validações novas,
+       pra que queueToast consiga comparar "antes x depois" */
+    const prevLeadersBeforeToast = {...prevLeaders};
+    const prevVendorBestBeforeToast = {...prevVendorBest};
+    updateLeaderSnapshots();
+    /* Restaura o snapshot anterior enquanto rodamos a detecção de toasts */
+    const snapshotNow = { leaders: prevLeaders, best: prevVendorBest };
+    prevLeaders = prevLeadersBeforeToast;
+    prevVendorBest = prevVendorBestBeforeToast;
+
     // detecção de validações novas (toast)
     const currentValidated = validated.filter(r=>hasDate(r.dataval));
     if(seenValidations===null){
@@ -1220,8 +1977,13 @@ async function loadAll(initial){
       }
     }
 
+    /* Depois dos toasts, oficializa snapshot novo */
+    prevLeaders = snapshotNow.leaders;
+    prevVendorBest = snapshotNow.best;
+
     $("#monthPill").textContent = "MÊS · " + monthLabel;
-    $("#liveSub").textContent   = `${fmtInt(validated.length)} venda(s) validada(s) · ao vivo`;
+    const nv = validated.length;
+    $("#liveSubText").textContent = `${fmtInt(nv)} venda${nv===1?"":"s"} validada${nv===1?"":"s"}`;
 
     hideStatus();
     if(initial){
@@ -1339,12 +2101,15 @@ function viewLevels(){
   if(!String(novidadesText||"").trim()) arr = arr.filter(l=>!l.news);
   if(!(promoImages||[]).filter(Boolean).length) arr = arr.filter(l=>!l.promo);
   if(!monthHasHist) arr = arr.filter(l=>l.source!=="mensal");
+  /* INSTITUCIONAL: só aparece se houver pelo menos 1 venda no ano agregado */
+  if(rankings && rankings.INSTITUCIONAL && !rankings.INSTITUCIONAL.vendas){
+    arr = arr.filter(l=>!l.institucional);
+  }
   return arr;
 }
 
 function headTitle(lvl){
-  const tag = lvl.tag ? ` <span class="tag tag-${lvl.source}">${lvl.tag}</span>` : "";
-  return `<h2>${esc(lvl.word)}${tag}</h2>`;
+  return `<h2>${esc(lvl.word)}</h2>`;
 }
 
 function rowHtml(d, idx, mode, live){
@@ -1363,26 +2128,45 @@ function rowHtml(d, idx, mode, live){
   </div>`;
 }
 
-function hallCard(x){
-  const c=x.champ;
-  const initial=esc((c.name||"?").trim().charAt(0).toUpperCase());
-  const fotoUrl=photoByName[norm(c.name)];
-  const portrait = fotoUrl
-    ? `<div class="portrait has-photo">
-         <img class="hc-photo" src="${esc(driveThumb(fotoUrl,"w400"))}" alt="Foto de ${esc(c.name)}"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
-         <span class="hc-fallback" style="display:none">${initial}</span>
-         <i class="crown" aria-hidden="true">👑</i>
-       </div>`
-    : `<div class="portrait" aria-hidden="true"><span>${initial}</span><i class="crown">👑</i></div>`;
-  return `<article class="hall-card">
-    ${portrait}
-    <div class="cat">${esc(x.label)}</div>
-    <div class="cname" title="${esc(c.name)}">${esc(c.name)}</div>
-    <div class="hstats">
-      <div><b class="tabular">${fmtInt(c.vendas)}</b><span>Vendas</span></div>
-      <div><b class="tabular">${fmtCompact(c.entrada,true)}</b><span>Entrada</span></div>
-      <div><b class="tabular">${fmtCompact(c.vlrvenda,true)}</b><span>VGV</span></div>
+function podiumSpot(d, place){
+  if(!d) return `<div class="podio-spot ${place}"></div>`;
+  const initial = esc((d.name||"?").trim().charAt(0).toUpperCase());
+  const fotoUrl = photoByName[norm(d.name)];
+  const inner = fotoUrl
+    ? `<img src="${esc(driveThumb(fotoUrl,"w400"))}" alt="Foto de ${esc(d.name)}"
+            onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph-fallback',textContent:'${initial}'}))">`
+    : `<div class="ph-fallback">${initial}</div>`;
+  const medalNum = place==="gold" ? 1 : (place==="silver" ? 2 : 3);
+  return `<div class="podio-spot ${place}">
+    <div class="podio-portrait">
+      <div class="ph-inner">${inner}</div>
+      <span class="medal" aria-hidden="true">${medalNum}</span>
+    </div>
+    <div class="ps-name" title="${esc(d.name)}">${esc(d.name)}</div>
+    <div class="ps-vendas"><b>${fmtInt(d.vendas)}</b> vendas</div>
+  </div>`;
+}
+
+function podiumBlock(x){
+  const top = Array.isArray(x.top) ? x.top : (x.champ ? [x.champ] : []);
+  if(!top.length){
+    return `<article class="podio-block">
+      <div class="podio-cat">${esc(x.label)}</div>
+      <div class="podio-empty">Sem validações.</div>
+    </article>`;
+  }
+  const g = top[0] || null, s = top[1] || null, b = top[2] || null;
+  return `<article class="podio-block">
+    <div class="podio-cat">${esc(x.label)}</div>
+    <div class="podio-row">
+      ${podiumSpot(s,"silver")}
+      ${podiumSpot(g,"gold")}
+      ${podiumSpot(b,"bronze")}
+    </div>
+    <div class="podio-base" aria-hidden="true">
+      <div class="podio-step s2">2</div>
+      <div class="podio-step s1">1</div>
+      <div class="podio-step s3">3</div>
     </div>
   </article>`;
 }
@@ -1428,6 +2212,64 @@ function comunicadoHtml(){
     </div>`;
 }
 
+/* =============================================================
+   PAINEL INSTITUCIONAL — "Metrocasa em Números"
+============================================================= */
+function institucionalHtml(entry){
+  const e = entry || {vendas:0,vgv:0,entrada:0,empreendimentos:0,year:"2026"};
+  const tile = (label, target, format, suffix) => `
+    <div class="inst-tile" data-target="${target}" data-format="${format}">
+      <div class="num"><span class="val">0</span>${suffix?`<span class="suffix">${esc(suffix)}</span>`:""}</div>
+      <div class="label">${esc(label)}</div>
+    </div>`;
+  return `
+    <div class="inst-wrap">
+      <div class="inst-head">
+        <h2>Metrocasa em Números</h2>
+        <div class="sub">Validado · ${esc(e.year||"2026")}</div>
+      </div>
+      <div class="inst-grid">
+        ${tile("Vendas validadas", e.vendas, "int", "")}
+        ${tile("VGV acumulado",    e.vgv,    "compact", "")}
+        ${tile("Entrada total",    e.entrada,"compact", "")}
+        ${tile("Empreendimentos",  e.empreendimentos, "int", "")}
+      </div>
+      <div class="inst-logo-sig" aria-hidden="true">${METROCASA_LOGO_SVG}</div>
+    </div>`;
+}
+
+/* Count-up animado (1.5s, ease-out-expo via requestAnimationFrame) */
+function countUpTiles(container){
+  const tiles = container.querySelectorAll(".inst-tile");
+  tiles.forEach((tile, idx) => {
+    const target = parseFloat(tile.dataset.target) || 0;
+    const fmt = tile.dataset.format;
+    const valEl = tile.querySelector(".val");
+    const dur = 1500;
+    const delay = 300 + idx * 120;
+    const easeOutExpo = t => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+    const fmtVal = v => {
+      if(fmt === "int") return fmtInt(Math.round(v));
+      if(fmt === "compact"){
+        // mostra R$ e "mil/mi" conforme o valor
+        return fmtCompact(v);
+      }
+      return String(Math.round(v));
+    };
+    setTimeout(() => {
+      const t0 = performance.now();
+      function step(now){
+        const t = Math.min(1, (now - t0) / dur);
+        const v = easeOutExpo(t) * target;
+        valEl.textContent = fmtVal(v);
+        if(t < 1) requestAnimationFrame(step);
+        else valEl.textContent = fmtVal(target);
+      }
+      requestAnimationFrame(step);
+    }, delay);
+  });
+}
+
 function renderLevel(i, withCard){
   const V = viewLevels();
   levelIndex = (i + V.length) % V.length;
@@ -1435,13 +2277,14 @@ function renderLevel(i, withCard){
   const entry = (rankings && rankings[lvl.key]);
   const topN = Math.max(3, CFG.top|0);
 
-  stage.querySelectorAll(".board,.titlecard").forEach(n=>n.remove());
+  stage.querySelectorAll(".board,.titlecard,.institucionalcard").forEach(n=>n.remove());
 
   const board = document.createElement("section");
   board.className = "board"
     + (lvl.promo ? " promoboard"
       : (lvl.news ? " newsboard"
-        : (lvl.comunicado ? " comunicadoboard" : "")));
+        : (lvl.comunicado ? " comunicadoboard"
+          : (lvl.institucional ? " institucionalboard" : ""))));
   board.setAttribute("aria-label", lvl.word);
 
   if(lvl.promo){
@@ -1450,25 +2293,40 @@ function renderLevel(i, withCard){
     board.innerHTML = newsHtml();
   }else if(lvl.comunicado){
     board.innerHTML = comunicadoHtml();
+  }else if(lvl.institucional){
+    board.innerHTML = institucionalHtml(entry);
   }else if(entry && entry.winners){
-    const items=entry.items.filter(x=>x.champ);
+    const items=entry.items.filter(x=>Array.isArray(x.top) && x.top.length);
     board.innerHTML=`
       <div class="board-head">${headTitle(lvl)}</div>
       ${ items.length
-          ? `<div class="hall">${items.map(hallCard).join("")}</div>`
+          ? `<div class="podio-grid">${items.map(podiumBlock).join("")}</div>`
           : emptyMsg("Sem dados do mês passado para exibir.") }`;
   }else if(entry && entry.topYear){
+    const blocks = entry.items.map(it=>{
+      const top=it.top||[];
+      return `<div class="subpanel">
+        <div class="subhead">${esc(it.label)}</div>
+        ${COLHEAD}
+        <div class="rows">${ top.length ? top.map((d,idx)=>rowHtml(d,idx,'nocur')).join("") : emptyMsg("Sem validações em "+entry.year+".") }</div>
+      </div>`;
+    }).join("");
+    board.innerHTML=`
+      <div class="board-head">${headTitle(lvl)}</div>
+      <div class="composite yeargrid yeargrid-row">${blocks}</div>`;
+  }else if(entry && entry.quadro){
+    const emptyLabel = entry.source==="semanal" ? "Sem validações nesta semana." : "Sem validações neste mês.";
     const blocks = entry.items.map(it=>{
       const top=it.top;
       return `<div class="subpanel">
         <div class="subhead">${esc(it.label)}</div>
         ${COLHEAD}
-        <div class="rows">${ top.length? top.map((d,idx)=>rowHtml(d,idx,'nocur')).join("") : emptyMsg("Sem validações em "+entry.year+".") }</div>
+        <div class="rows">${ top.length? top.map((d,idx)=>rowHtml(d,idx,'nocur')).join("") : emptyMsg(emptyLabel) }</div>
       </div>`;
     }).join("");
     board.innerHTML=`
       <div class="board-head">${headTitle(lvl)}</div>
-      <div class="composite yeargrid">${blocks}</div>`;
+      <div class="composite yeargrid yeargrid-row">${blocks}</div>`;
   }else if(entry && entry.topYearList){
     const n = lvl.topN ? Math.max(3, lvl.topN|0) : Math.max(3, CFG.topYearN|0);
     const list = (entry.items||[]).slice(0, n);
@@ -1508,26 +2366,58 @@ function renderLevel(i, withCard){
   }
   stage.appendChild(board);
 
-  // stagger rows por painel
+  // stagger rows por painel (50ms entre elementos)
   board.querySelectorAll(".rows").forEach(list=>{
-    list.querySelectorAll(".row").forEach((r,idx)=>{ r.style.animationDelay=(withCard?2.0:0.15)+idx*0.06+"s"; });
+    list.querySelectorAll(".row").forEach((r,idx)=>{ r.style.animationDelay=(withCard?2.0:0.15)+idx*0.05+"s"; });
   });
-  board.querySelectorAll(".hall-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.1:0.2)+idx*0.13+"s"; });
+  board.querySelectorAll(".hall-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.1:0.2)+idx*0.2+"s"; });
+  board.querySelectorAll(".podio-block").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.1:0.2)+idx*0.18+"s"; });
   board.querySelectorAll(".feedcard").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.2:0.2)+idx*0.08+"s"; });
   board.querySelectorAll(".promo-card").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.0:0.15)+idx*0.12+"s"; });
+  board.querySelectorAll(".inst-tile").forEach((c,idx)=>{ c.style.animationDelay=(withCard?2.2:0.3)+idx*0.15+"s"; });
+
+  /* Dispara count-up após o titlecard sair */
+  if(lvl.institucional){
+    setTimeout(()=>countUpTiles(board), withCard ? 2600 : 600);
+  }
+
+  /* Card de transição institucional: a cada N painéis, antes do titlecard normal */
+  const showInstitucional = withCard && (++institucionalCounter % INSTITUCIONAL_EVERY === 0) && !lvl.institucional;
 
   if(withCard){
+    /* 1) Titlecard normal da categoria */
     const card=document.createElement("div");
     card.className="titlecard";
+    const logo = `<div class="tc-logo">${METROCASA_M_HTML}</div>`;
     if(lvl.cardTitle){
-      card.innerHTML = `<div class="word">${splitLetters(lvl.cardTitle)}</div><div class="rule"></div>`;
+      card.innerHTML = `${logo}<div class="word">${splitLetters(lvl.cardTitle)}</div><div class="rule"></div>`;
     }else{
       const eb = lvl.eyebrow ? `<div class="eyebrow${lvl.tag?" eyebrow-tag":""}">${esc(lvl.eyebrow)}</div>` : "";
-      card.innerHTML = `${eb}<div class="word">${splitLetters(lvl.word)}</div><div class="rule"></div>`;
+      card.innerHTML = `${logo}${eb}<div class="word">${splitLetters(lvl.word)}</div><div class="rule"></div>`;
     }
     stage.appendChild(card);
+
+    /* 2) Opcionalmente, intro institucional ANTES do titlecard */
+    if(showInstitucional){
+      const inst = document.createElement("div");
+      inst.className = "institucionalcard";
+      inst.setAttribute("role","img");
+      inst.setAttribute("aria-label","Metrocasa");
+      inst.innerHTML = `
+        <div class="inst-mark">${METROCASA_LOGO_VERT_HTML}</div>
+        <div class="inst-slogan" data-brand-slogan>você + perto</div>`;
+      /* TODO: substituir slogan pelo oficial quando aprovado. */
+      stage.appendChild(inst);
+      requestAnimationFrame(()=>inst.classList.add("show"));
+      /* Duração total da intro: ~3.7s (anim CSS: in 1.2s + hold + out .5s em 3.2s) */
+      setTimeout(()=>inst.remove(), 3800);
+      /* Posterga a entrada do titlecard/board pro final da intro */
+      card.style.animationDelay = "3.6s";
+      board.style.animationDelay = "3.7s";
+    }
+
     requestAnimationFrame(()=>{ card.classList.add("show"); board.classList.add("show"); });
-    setTimeout(()=>card.remove(), 2500);
+    setTimeout(()=>card.remove(), (showInstitucional ? 3600 : 0) + 2500);
   }else{
     requestAnimationFrame(()=>board.classList.add("show"));
   }
@@ -1583,17 +2473,95 @@ function queueToast(r){
   t.setAttribute("role","alert");
   const who=(r.vendedor||"Alguém").toString().trim();
   const emp=(r.empreend||r.empreendimento||"uma venda").toString().trim();
-  t.innerHTML = `<div class="badge" aria-hidden="true">✓</div>
+
+  /* Thumb: foto do empreendimento quando houver; senão, ícone de prédio */
+  const imgUrl = EMPREEND_IMAGES[norm(emp)] || EMPREEND_IMAGES[norm(r.empreendimento)];
+  const thumb = imgUrl
+    ? `<div class="thumb" data-has-img="1"><img src="${esc(imgUrl)}" alt="${esc(emp)}"></div>`
+    : `<div class="thumb" aria-hidden="true">${BUILDING_SVG}</div>`;
+
+  /* Storytelling: tag opcional (LIDERANÇA / RECORDE DO MÊS) */
+  const story = detectStory(r);
+  const tag = story ? `<div class="tag-story ${story.type==='lead'?'lead':''}">${esc(story.label)}</div>` : "";
+
+  t.innerHTML = `
+    <div class="badge" aria-hidden="true">${METROCASA_M_SVG}</div>
+    ${thumb}
     <div class="body">
       <div class="who">${esc(who)}</div>
-      <div class="what">acabou de validar <b>${esc(emp)}</b> a <span class="val">${fmtCompact(r.vlrvenda,true)}</span></div>
+      <div class="what">validou <b>${esc(emp)}</b> a <span class="val">${fmtCompact(r.vlrvenda,true)}</span></div>
+      ${tag}
     </div>`;
   wrap.appendChild(t);
+  /* Fallback do thumb: se imagem falhar, troca por ícone de prédio */
+  const imgEl = t.querySelector(".thumb[data-has-img] img");
+  if(imgEl){
+    imgEl.addEventListener("error", () => {
+      imgEl.parentElement.innerHTML = BUILDING_SVG;
+      imgEl.parentElement.removeAttribute("data-has-img");
+    }, {once:true});
+  }
   playNotif();
   setTimeout(()=>{
     t.classList.add("out");
     setTimeout(()=>t.remove(), 500);
   }, 6500);
+}
+
+/* Storytelling conservador: só marca "liderança" se puder confirmar virada.
+   Compara snapshot ANTERIOR do ranking; se depois dessa venda o vendedor
+   passou a ser #1 numa categoria SEMANAL/MENSAL, mostra a tag.
+   Se não houver snapshot prévio, não faz nada. */
+function detectStory(r){
+  if(!rankings) return null;
+  const vendedor = norm((r.vendedor||"").toString().trim());
+  if(!vendedor || vendedor.includes("PARCERIA")) return null;
+
+  /* Liderança: checa se virou #1 em alguma cat semanal/mensal */
+  const catsToCheck = ["VENDEDOR_SEM","VENDEDOR"];
+  for(const key of catsToCheck){
+    const ranking = rankings[key];
+    if(!Array.isArray(ranking) || !ranking.length) continue;
+    const topName = norm(ranking[0].name);
+    const prev = prevLeaders[key];
+    if(topName === vendedor && prev && prev !== vendedor){
+      return { type:"lead", label:"🏆 Nova liderança" };
+    }
+  }
+
+  /* Recorde do mês (do próprio vendedor): se nº de vendas no mês atual
+     ultrapassou o melhor histórico já visto nesta sessão */
+  const monthlyRanking = rankings.VENDEDOR;
+  if(Array.isArray(monthlyRanking)){
+    const me = monthlyRanking.find(x => norm(x.name) === vendedor);
+    if(me){
+      const prevBest = prevVendorBest[vendedor];
+      if(prevBest && me.vendas > prevBest.vendas && me.vendas >= 3){
+        return { type:"record", label:"📈 Recorde pessoal" };
+      }
+    }
+  }
+  return null;
+}
+
+/* Atualiza snapshots de líderes/recordes — chamar DEPOIS de buildRankings */
+function updateLeaderSnapshots(){
+  if(!rankings) return;
+  ["VENDEDOR_SEM","VENDEDOR","GERENTE_SEM","GERENTE","SUPERINTENDENTE_SEM","SUPERINTENDENTE","DIRETOR_SEM","DIRETOR"].forEach(key=>{
+    const r = rankings[key];
+    if(Array.isArray(r) && r.length){
+      prevLeaders[key] = norm(r[0].name);
+    }
+  });
+  const m = rankings.VENDEDOR;
+  if(Array.isArray(m)){
+    for(const v of m){
+      const n = norm(v.name);
+      if(!prevVendorBest[n] || v.vendas > prevVendorBest[n].vendas){
+        prevVendorBest[n] = { vendas: v.vendas };
+      }
+    }
+  }
 }
 
 function initAudio(){
@@ -1739,9 +2707,18 @@ function restart(){
   seenValidations = null;
   levelIndex = 0;
   playing = true;
+  institucionalCounter = 0;
+  prevLeaders = {};
+  prevVendorBest = {};
   $("#playBtn").textContent = "⏸";
   loadAll(true).then(startPolling);
 }
+
+/* Injeta o logo no topbar (uma vez) */
+(function injectBrand(){
+  const mark = document.getElementById("brandMark");
+  if(mark && !mark.querySelector("svg,img")) mark.innerHTML = METROCASA_LOGO_HTML;
+})();
 
 /* FIT — canvas fixo 1920x1080 escalado/rotacionado */
 function fitApp(){
@@ -1802,6 +2779,372 @@ if("serviceWorker" in navigator && location.protocol !== "file:"){
 
 /* BOOT */
 restart();
+</script>
+
+<!-- ============================================================
+     MASCOTES — tubarão, lobo, alvo e garra de pelúcia
+     Auto-contido: apagar este bloco + o #mascotsDen não afeta o painel.
+     Coordenadas no canvas fixo 1920×1080 (o fitApp escala tudo junto).
+============================================================ -->
+<style>
+.mascots-den{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:35}
+.mascot{
+  position:absolute;left:0;top:0;
+  transform:translate3d(-400px,-400px,0);
+  will-change:transform;opacity:0;transition:opacity .8s ease;
+}
+.mascot.ready{opacity:1}
+.mascot svg{display:block;width:100%;height:auto;overflow:visible}
+.shark{width:176px;filter:drop-shadow(0 10px 12px rgba(26,8,8,.14))}
+.wolf{width:196px}
+.target{width:104px;filter:drop-shadow(0 8px 12px rgba(26,8,8,.10))}
+.claw{width:132px;filter:drop-shadow(0 8px 10px rgba(26,8,8,.14))}
+.shark[data-dir="left"] svg,.wolf[data-dir="left"] svg{transform:scaleX(-1)}
+
+/* Traços comuns */
+.m-mouth{fill:none;stroke:#111318;stroke-width:2.2;stroke-linecap:round}
+.m-brow{fill:none;stroke:#111318;stroke-width:2.6;stroke-linecap:round}
+.shark-teeth{fill:none;stroke:#fff;stroke-width:1.4;stroke-linejoin:miter}
+.m-eye{transform-box:fill-box;transform-origin:center;animation:mBlink 6.2s infinite}
+.wolf .m-eye{animation-duration:7.4s;animation-delay:1.3s}
+@keyframes mBlink{0%,95%,100%{transform:scaleY(1)}97%{transform:scaleY(.15)}}
+
+/* Etiqueta de reação (estado → texto), estilo placar */
+.shark::before,.wolf::before,.target::before{
+  content:"";position:absolute;left:50%;bottom:calc(100% + 6px);
+  padding:6px 10px 5px;border-radius:4px;background:#1A0808;color:#fff;
+  font:800 13px/1 var(--font-brand,'Space Grotesk'),sans-serif;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;
+  box-shadow:0 6px 16px rgba(26,8,8,.22);
+  opacity:0;transform:translate(-50%,6px);
+}
+.shark::after,.wolf::after,.target::after{
+  content:"";position:absolute;left:50%;bottom:calc(100% + 1px);
+  width:8px;height:8px;margin-left:-4px;background:#1A0808;
+  opacity:0;transform:rotate(45deg);
+}
+.shark[data-state="SURPRISED"]::before{content:"!";color:#FF4B52}
+.shark[data-state="CURIOUS"]::before{content:"?"}
+.wolf[data-state="HOWLING"]::before{content:"AUUU"}
+.wolf[data-state="GROWLING"]::before{content:"GRRR";color:#FF4B52}
+.wolf[data-state="SURPRISED"]::before{content:"!";color:#FF4B52}
+.target[data-state="HIT"]::before{content:"NA MOSCA";color:#FF4B52}
+:is(.shark[data-state="SURPRISED"],.shark[data-state="CURIOUS"],
+    .wolf[data-state="HOWLING"],.wolf[data-state="GROWLING"],.wolf[data-state="SURPRISED"],
+    .target[data-state="HIT"])::before{animation:emotePop 1.6s cubic-bezier(.2,.8,.2,1) forwards}
+:is(.shark[data-state="SURPRISED"],.shark[data-state="CURIOUS"],
+    .wolf[data-state="HOWLING"],.wolf[data-state="GROWLING"],.wolf[data-state="SURPRISED"],
+    .target[data-state="HIT"])::after{animation:emoteTail 1.6s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes emotePop{
+  0%{opacity:0;transform:translate(-50%,6px)}
+  12%,82%{opacity:1;transform:translate(-50%,0)}
+  100%{opacity:0;transform:translate(-50%,-4px)}
+}
+@keyframes emoteTail{
+  0%{opacity:0;transform:rotate(45deg)}
+  12%,82%{opacity:1;transform:rotate(45deg)}
+  100%{opacity:0;transform:rotate(45deg)}
+}
+
+/* ---------- Tubarão ---------- */
+.shark-all{transform-origin:120px 50px;animation:sharkFloat 3.4s ease-in-out infinite}
+@keyframes sharkFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-2px) rotate(-1.5deg)}}
+.shark-tail{transform-origin:34px 54px;animation:sharkTail .9s ease-in-out infinite}
+@keyframes sharkTail{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+.shark[data-state="SWIMMING"] .shark-tail,.shark[data-state="SURPRISED"] .shark-tail{animation-duration:.45s}
+.shark[data-state="IDLE"] .shark-tail,.shark[data-state="CURIOUS"] .shark-tail{animation-duration:1.4s}
+.shark-fin{transform-origin:122px 66px;animation:sharkFin 1.8s ease-in-out infinite}
+@keyframes sharkFin{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
+.shark-gills{fill:none;stroke:#1B222D;stroke-width:1.8;stroke-linecap:round;opacity:.55}
+.shark-bubble{fill:none;stroke:#9FB2C6;stroke-width:1.2;opacity:0;transform-box:fill-box;transform-origin:center;animation:sharkBubble 2.8s ease-out infinite}
+.shark-bubble:nth-child(2){animation-delay:.9s}
+.shark-bubble:nth-child(3){animation-delay:1.8s}
+@keyframes sharkBubble{
+  0%{opacity:0;transform:translate(0,0) scale(.5)}
+  20%{opacity:.9}
+  100%{opacity:0;transform:translate(10px,-38px) scale(1.15)}
+}
+
+/* ---------- Lobo ---------- */
+.wolf-tail{transform-origin:50px 80px;animation:wolfWag 1.4s ease-in-out infinite}
+@keyframes wolfWag{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(8deg)}}
+.wolf[data-state="RUNNING"] .wolf-tail{animation-duration:.4s}
+.wolf-leg{transform-box:fill-box;transform-origin:50% 8%}
+.wolf[data-state="ROAMING"] .wolf-leg.a,.wolf[data-state="RUNNING"] .wolf-leg.a{animation:legSwing .42s ease-in-out infinite alternate}
+.wolf[data-state="ROAMING"] .wolf-leg.b,.wolf[data-state="RUNNING"] .wolf-leg.b{animation:legSwing .42s ease-in-out infinite alternate-reverse}
+.wolf[data-state="RUNNING"] .wolf-leg{animation-duration:.22s !important}
+@keyframes legSwing{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+.wolf[data-state="ROAMING"] .wolf-all,.wolf[data-state="RUNNING"] .wolf-all{animation:wolfBob .42s ease-in-out infinite alternate}
+.wolf[data-state="RUNNING"] .wolf-all{animation-duration:.22s}
+@keyframes wolfBob{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+.wolf-head{transform-origin:160px 70px;transition:transform .5s cubic-bezier(.3,1,.4,1)}
+.wolf[data-state="HOWLING"] .wolf-head{transform:rotate(-28deg)}
+.wolf[data-state="HOWLING"] .m-eye{animation:none;transform:scaleY(.2)}
+.wolf[data-state="GROWLING"] .wolf-head{animation:wolfGrowl .1s linear 10}
+@keyframes wolfGrowl{0%,100%{transform:translateX(0)}50%{transform:translateX(1.4px)}}
+.wolf[data-state="STALKING"] .wolf-head{transform:rotate(8deg)}
+
+/* ---------- Alvo ---------- */
+.target-body{transform-origin:60px 60px;animation:targetBob 3.8s ease-in-out infinite}
+@keyframes targetBob{0%,100%{transform:rotate(-4deg)}50%{transform:translateY(-3px) rotate(4deg)}}
+.target[data-state="GRABBED"] .target-body{animation:targetWiggle .32s ease-in-out infinite}
+@keyframes targetWiggle{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+.target[data-state="LANDED"] .target-body{animation:targetSquash .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes targetSquash{0%{transform:scale(1.14,.82)}100%{transform:scale(1)}}
+.target[data-state="HIT"] .target-body{animation:targetHit .5s ease-out}
+@keyframes targetHit{0%{transform:scale(1)}30%{transform:scale(.9)}65%{transform:scale(1.06)}100%{transform:scale(1)}}
+.target-ripple{opacity:0;transform-box:fill-box;transform-origin:center}
+.target[data-state="HIT"] .target-ripple{animation:targetRipple .9s ease-out .1s}
+@keyframes targetRipple{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.45)}}
+.target-arrow{opacity:0;transform-origin:60px 60px}
+.target[data-state="HIT"] .target-arrow{animation:arrowThunk 2.8s ease forwards}
+@keyframes arrowThunk{
+  0%{opacity:0;transform:translate(30px,-30px)}
+  10%{opacity:1;transform:translate(0,0)}
+  16%{transform:rotate(-5deg)}
+  22%{transform:rotate(3deg)}
+  28%{transform:rotate(0)}
+  86%{opacity:1}
+  100%{opacity:0}
+}
+
+/* ---------- Garra de pelúcia ---------- */
+.claw::before{
+  content:"";position:absolute;left:50%;bottom:96%;
+  width:4px;height:1600px;margin-left:-2px;border-radius:2px;
+  background:linear-gradient(90deg,#7A8394,#D6DBE3,#7A8394);
+}
+.claw svg{transform-origin:50% 0;animation:clawSway 2.6s ease-in-out infinite}
+@keyframes clawSway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.claw-prong{transition:transform .38s cubic-bezier(.3,1.5,.5,1)}
+.claw-prong.l{transform-origin:55px 44px}
+.claw-prong.r{transform-origin:65px 44px}
+.claw[data-state="OPEN"] .claw-prong.l{transform:rotate(16deg)}
+.claw[data-state="OPEN"] .claw-prong.r{transform:rotate(-16deg)}
+.claw[data-state="CLOSED"] .claw-prong.l{transform:rotate(-4deg)}
+.claw[data-state="CLOSED"] .claw-prong.r{transform:rotate(4deg)}
+.claw[data-state="MISS"] .claw-prong.l{transform:rotate(-13deg)}
+.claw[data-state="MISS"] .claw-prong.r{transform:rotate(13deg)}
+.claw[data-state="MISS"] svg{animation:clawShake .12s linear 6}
+@keyframes clawShake{0%,100%{transform:rotate(0)}50%{transform:rotate(4deg)}}
+
+@media (prefers-reduced-motion:reduce){.mascots-den{display:none}}
+</style>
+
+<script>
+"use strict";
+(function mascots(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const den = document.getElementById("mascotsDen");
+  if(!den) return;
+
+  const W = 1920, H = 1080;
+  const B = { x0:110, x1:W-110, y0:190, y1:H-120 };   // fora da topbar e do rodapé
+  const rand  = (a,b) => a + Math.random()*(b-a);
+  const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+  const pick  = arr => arr[Math.floor(Math.random()*arr.length)];
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  function mascot(id){
+    const el = document.getElementById(id);
+    const m = { el, x:-400, y:-400, dir:"right", state:"", busy:false, timer:null };
+    m.set  = s => { m.state = s; el.dataset.state = s; };
+    m.face = d => { if(d !== m.dir){ m.dir = d; el.dataset.dir = d; } };
+    m.place = (x, y, dur = 0, ease = "cubic-bezier(.45,.05,.35,1)") => {
+      if(dur && Math.abs(x - m.x) > 4) m.face(x < m.x ? "left" : "right");
+      m.x = x; m.y = y;
+      el.style.transition = dur ? `transform ${Math.round(dur)}ms ${ease}, opacity .8s ease` : "opacity .8s ease";
+      el.style.transform  = `translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
+      if(!dur) void el.offsetWidth;
+    };
+    m.go = (x, y, speed) => {
+      x = clamp(x, B.x0, B.x1); y = clamp(y, B.y0, B.y1);
+      const dur = clamp(Math.hypot(x - m.x, y - m.y) / speed * 1000, 700, 5200);
+      m.place(x, y, dur);
+      return dur;
+    };
+    m.loop = (fn, ms) => {
+      clearTimeout(m.timer);
+      m.timer = setTimeout(function run(){
+        if(document.hidden){ m.timer = setTimeout(run, 1500); return; }
+        fn();
+      }, ms);
+    };
+    m.flash = (s, ms, back) => {
+      if(m.busy) return;
+      m.set(s);
+      setTimeout(() => { if(m.state === s) m.set(back || "IDLE"); }, ms);
+    };
+    return m;
+  }
+
+  const shark = mascot("shark"), wolf = mascot("wolf"), target = mascot("target"), claw = mascot("claw");
+  if(!shark.el || !wolf.el || !target.el || !claw.el) return;
+
+  /* ponto acima de um elemento real do painel, em coordenadas do canvas */
+  function poiPoint(){
+    const els = [...document.querySelectorAll(
+      ".board-head h2, .podio-spot.gold .podio-portrait, .yeargrid-row .row.p1, #dots .dot.active"
+    )];
+    if(!els.length) return null;
+    const r = pick(els).getBoundingClientRect(), d = den.getBoundingClientRect();
+    const k = d.width / W;
+    if(!k || !r.width) return null;
+    return { x:(r.left + r.width/2 - d.left)/k, y:(r.top - d.top)/k - 60 };
+  }
+
+  /* ===== Tubarão ===== */
+  function sharkTick(){
+    if(shark.busy) return shark.loop(sharkTick, 800);
+    const poi = Math.random() < 0.3 ? poiPoint() : null;
+    const t = poi || { x:rand(B.x0, B.x1), y:rand(B.y0, B.y1) };
+    shark.set("SWIMMING");
+    const dur = shark.go(t.x, t.y, rand(200, 320));
+    shark.loop(() => {
+      if(poi){ shark.set("CURIOUS"); shark.loop(sharkTick, rand(1400, 2400)); }
+      else { shark.set("IDLE"); shark.loop(sharkTick, rand(500, 1500)); }
+    }, dur + 60);
+  }
+  shark.dodge = () => {
+    clearTimeout(shark.timer);
+    shark.busy = true;
+    shark.set("SURPRISED");
+    const dur = shark.go(shark.x + (Math.random() < .5 ? -1 : 1) * rand(280, 420), shark.y + rand(-140, 140), 650);
+    setTimeout(() => { shark.busy = false; shark.set("SWIMMING"); shark.loop(sharkTick, 300); }, dur + 120);
+  };
+
+  /* ===== Lobo ===== */
+  function wolfTick(){
+    if(wolf.busy) return wolf.loop(wolfTick, 800);
+    const r = Math.random();
+    if(r < 0.18) return wolfChase();
+    if(r < 0.30) return wolfVisitTarget();
+    if(r < 0.38){
+      wolf.set("HOWLING");
+      return wolf.loop(() => { wolf.set("IDLE"); wolf.loop(wolfTick, rand(600, 1400)); }, 1900);
+    }
+    wolf.set("ROAMING");
+    const dur = wolf.go(rand(B.x0, B.x1), rand(B.y0 + 80, B.y1), rand(220, 320));
+    wolf.loop(() => { wolf.set("IDLE"); wolf.loop(wolfTick, rand(800, 2000)); }, dur + 60);
+  }
+  function wolfChase(){
+    if(shark.busy) return wolf.loop(wolfTick, 1000);
+    wolf.set("RUNNING");
+    const side = shark.x > wolf.x ? -1 : 1;
+    const dur = wolf.go(shark.x + side*180, shark.y + 24, 520);
+    wolf.loop(() => {
+      wolf.face(shark.x < wolf.x ? "left" : "right");
+      wolf.set("GROWLING");
+      if(!shark.busy) shark.dodge();
+      wolf.loop(() => { wolf.set("IDLE"); wolf.loop(wolfTick, rand(900, 1700)); }, 1300);
+    }, dur + 40);
+  }
+  function wolfVisitTarget(){
+    if(target.busy) return wolf.loop(wolfTick, 1000);
+    wolf.set("ROAMING");
+    const side = target.x > wolf.x ? -1 : 1;
+    const dur = wolf.go(target.x + side*150, target.y + 40, 260);
+    wolf.loop(() => {
+      wolf.face(target.x < wolf.x ? "left" : "right");
+      wolf.set("STALKING");
+      wolf.loop(() => { wolf.set("IDLE"); wolf.loop(wolfTick, rand(900, 1800)); }, 1500);
+    }, dur + 60);
+  }
+  wolf.dodge = () => {
+    clearTimeout(wolf.timer);
+    wolf.busy = true;
+    wolf.set("SURPRISED");
+    setTimeout(() => {
+      wolf.set("RUNNING");
+      const dur = wolf.go(wolf.x + (wolf.x > W/2 ? -1 : 1) * rand(300, 440), wolf.y + rand(-60, 60), 560);
+      setTimeout(() => { wolf.busy = false; wolf.set("IDLE"); wolf.loop(wolfTick, 700); }, dur + 80);
+    }, 380);
+  };
+
+  /* ===== Alvo ===== */
+  function targetTick(){
+    if(target.busy) return target.loop(targetTick, 1200);
+    const dur = target.go(rand(B.x0 + 120, B.x1 - 120), rand(B.y0 + 40, B.y1 - 80), rand(110, 160));
+    target.loop(targetTick, dur + rand(2000, 4500));
+  }
+  target.hit = () => {
+    if(target.busy) return;
+    target.set("HIT");
+    setTimeout(() => { if(target.state === "HIT") target.set("IDLE"); }, 2900);
+  };
+
+  /* ===== Garra de pelúcia ===== */
+  async function clawRun(){
+    if(document.hidden || claw.busy) return claw.loop(clawRun, 3000);
+    const victim = pick([target, target, target, wolf, shark]);
+    if(victim.busy) return claw.loop(clawRun, 4000);
+    claw.busy = true;
+    if(victim === target){ target.busy = true; clearTimeout(target.timer); }
+
+    const sx = clamp(victim.x + rand(-420, 420), B.x0, B.x1);
+    claw.set("OPEN");
+    claw.place(sx, -200, 0);
+    claw.place(sx, 70, 900, "cubic-bezier(.2,.8,.3,1)");
+    await sleep(950);
+    const slide = clamp(Math.abs(victim.x - sx) / 420 * 1000, 500, 2200);
+    claw.place(victim.x, 70, slide);
+    await sleep(slide + 250);
+
+    const grabY = victim.y - 68;
+    claw.place(victim.x, grabY, 750, "cubic-bezier(.4,0,.3,1)");
+    if(victim !== target) setTimeout(() => victim.dodge(), 420);
+    await sleep(800);
+
+    if(victim === target){
+      claw.set("CLOSED");
+      target.set("GRABBED");
+      await sleep(380);
+      const ty = target.y, liftY = Math.max(200, ty - 190);
+      claw.place(claw.x, liftY - 68, 900, "cubic-bezier(.4,0,.3,1)");
+      target.place(target.x, liftY, 900, "cubic-bezier(.4,0,.3,1)");
+      await sleep(1500);
+      claw.set("OPEN");
+      target.place(target.x, ty, 520, "cubic-bezier(.55,0,1,.45)");
+      await sleep(540);
+      target.set("LANDED");
+      setTimeout(() => { target.set("IDLE"); target.busy = false; target.loop(targetTick, 1500); }, 600);
+      await sleep(300);
+    }else{
+      claw.set("MISS");
+      await sleep(900);
+    }
+    claw.place(claw.x, -220, 900, "cubic-bezier(.5,0,.8,.4)");
+    await sleep(950);
+    claw.set("OPEN");
+    claw.busy = false;
+    claw.loop(clawRun, rand(9000, 16000));
+  }
+
+  /* ===== Reações ao painel ===== */
+  document.addEventListener("click", () => shark.flash("CURIOUS", 1400, "SWIMMING"), { passive:true });
+
+  const toastWrap = document.getElementById("toastWrap");
+  if(toastWrap){
+    new MutationObserver(muts => {
+      if(!muts.some(m => [...m.addedNodes].some(n => n.classList && n.classList.contains("toast")))) return;
+      target.hit();                       // venda validada = alvo acertado
+      wolf.flash("HOWLING", 1900);
+      shark.flash("HAPPY", 1200, "SWIMMING");
+    }).observe(toastWrap, { childList:true });
+  }
+
+  /* ===== Início ===== */
+  shark.place(B.x0 + 120, 640);
+  wolf.place(W - 280, 860);  wolf.face("left");
+  target.place(1260, 430);
+  claw.place(-400, -400);
+  requestAnimationFrame(() => {
+    [shark, wolf, target, claw].forEach(m => m.el.classList.add("ready"));
+    shark.loop(sharkTick, 900);
+    wolf.loop(wolfTick, 1800);
+    target.loop(targetTick, 3000);
+    claw.loop(clawRun, 7000);
+  });
+})();
 </script>
 
 
